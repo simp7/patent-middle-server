@@ -16,3 +16,7 @@ func New(level golog.Level, port int) *Server {
 	return s
 
 }
+
+func (s *Server) a() {
+
+}
