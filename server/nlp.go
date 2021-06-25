@@ -19,6 +19,6 @@ func English() *nlp {
 	return n
 }
 
-func (n nlp) Process(s string) {
+func (n *nlp) Process(s string) {
 	//n.Cmd.Output()
 }
