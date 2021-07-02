@@ -47,16 +47,24 @@ func (w *web) Search(writer http.ResponseWriter, request *http.Request) {
 
 	w.Infof("GET %s in NLP of %s", formula, country)
 	selected := w.selectNLP(country)
+
 	w.Info("start search")
 
 	for {
-		w.Infof("Current formula is %s", formula)
 
-		if formula == selected.Process(formula) {
+		w.Infof("Current formula is %s", formula)
+		calculated, err := selected.Process(formula)
+
+		if err != nil {
+			w.Error(err)
+			writer.WriteHeader(500)
+			break
+		}
+
+		if formula == calculated {
 			w.Infof("Final result: %s", formula)
 			break
 		}
-		w.Infof("%s", formula)
 
 	}
 
