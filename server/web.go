@@ -31,5 +31,21 @@ func (w *web) Start() error {
 }
 
 func (w *web) Search(ctx iris.Context) {
+	if values := ctx.FormValues(); values != nil {
+		selected := w.selectNLP(values["country"][0])
+		Processor(selected)
+		return
+	}
+	w.Logger().Error("errors in generating map of values")
+}
 
+func (w *web) selectNLP(country string) *nlp {
+	switch country {
+	case "KR":
+		return Korean()
+	case "US":
+		fallthrough
+	default:
+		return English()
+	}
 }
