@@ -1,12 +1,13 @@
 package main
 
 import (
-	"github.com/kataras/golog"
 	"github.com/simp7/patent-middle-server/server"
 )
 
 func main() {
 
-	server.New(golog.DebugLevel, 443)
+	s := server.NewWeb(80)
+	defer s.Server.Close()
+	s.Start()
 
 }

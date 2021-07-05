@@ -1,22 +1,25 @@
 package server
 
 import (
-	"github.com/kataras/golog"
-	"github.com/kataras/iris/v12"
+	"fmt"
+	"github.com/google/logger"
+	"net/http"
+	"os"
 )
 
 type web struct {
-	port string
-	*iris.Application
+	http.Server
+	*logger.Logger
 }
 
-func newWeb(level golog.Level, port int) *web {
+func NewWeb(port int) *web {
 
 	w := new(web)
-	w.Logger().Level = level
+	w.Logger = logger.Init("server", true, false, os.Stdout)
+	w.Infof("Initialize logger")
 
-	w.Application = iris.New()
-	w.port = string(port)
+	address := fmt.Sprintf(":%d", port)
+	w.Server = http.Server{Addr: address}
 
 	return w
 
@@ -24,28 +27,74 @@ func newWeb(level golog.Level, port int) *web {
 
 func (w *web) Start() error {
 
-	w.Get("/search/{patent}", w.Search)
+	w.Info("Start Server")
 
-	return w.Listen(w.port)
+	http.HandleFunc("/", w.Welcome)
+	http.HandleFunc("/search", w.Search)
+
+	return w.ListenAndServe()
 
 }
 
-func (w *web) Search(ctx iris.Context) {
-	if values := ctx.FormValues(); values != nil {
-		selected := w.selectNLP(values["country"][0])
-		Processor(selected)
-		return
+func (w *web) Welcome(writer http.ResponseWriter, _ *http.Request) {
+	writer.Write([]byte("<h1>Hello, world!</h1>"))
+}
+
+func (w *web) Search(writer http.ResponseWriter, request *http.Request) {
+
+	country := unwrap(request, "country")
+	formula := unwrap(request, "formula")
+
+	w.Infof("GET %s in NLP of %s", formula, country)
+	selected := w.selectNLP(country)
+
+	w.Info("start search")
+
+	for {
+
+		w.Infof("Current formula is %s", formula)
+		calculated, err := selected.Process(formula)
+
+		if err != nil {
+			w.Error(err)
+			writer.WriteHeader(500)
+			break
+		}
+
+		if formula == calculated {
+			w.Infof("Final result: %s", formula)
+			break
+		}
+
 	}
-	w.Logger().Error("errors in generating map of values")
+
+	_, err := writer.Write([]byte(formula))
+	if err != nil {
+		w.Error(err)
+	}
+	//TODO: KIPRIS에서 API를 통한 검색 및 출력
+
+}
+
+func unwrap(request *http.Request, key string) string {
+	result := ""
+	if value := request.URL.Query()[key]; len(value) != 0 {
+		result = value[0]
+	}
+	return result
 }
 
 func (w *web) selectNLP(country string) *nlp {
+
 	switch country {
 	case "KR":
+		w.Info("Select Korean")
 		return Korean()
 	case "US":
 		fallthrough
 	default:
+		w.Info("Select English")
 		return English()
 	}
+
 }
