@@ -5,9 +5,7 @@ import (
 )
 
 func main() {
-
-	s := server.NewWeb(80)
-	defer s.Server.Close()
+	s := server.New(80)
+	defer s.Close()
 	s.Start()
-
 }

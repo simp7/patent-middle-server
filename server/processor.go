@@ -6,22 +6,17 @@ import (
 )
 
 type processor struct {
-	reader io.Reader
 }
 
-func Processor(reader io.Reader) *processor {
+func Processor() *processor {
 	p := new(processor)
-	p.reader = reader
 	return p
 }
 
-func (p *processor) Process() ([]unit, error) {
-	return p.extract(p.reader)
-}
-
-func (p *processor) extract(reader io.Reader) ([]unit, error) {
+func (p *processor) Process(reader io.Reader) ([]unit, error) {
 
 	r := csv.NewReader(reader)
+
 	records, err := r.ReadAll()
 	if err != nil {
 		return nil, err
@@ -33,10 +28,10 @@ func (p *processor) extract(reader io.Reader) ([]unit, error) {
 
 func (p *processor) convertRecords(records [][]string) (result []unit, err error) {
 
-	result = make([]unit, len(records)-1)
+	result = make([]unit, len(records))
 
 	for i := range result {
-		result[i], err = p.convertRecord(records[i+1])
+		result[i], err = p.convertRecord(records[i])
 		if err != nil {
 			return
 		}
