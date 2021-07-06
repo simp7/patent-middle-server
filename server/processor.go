@@ -5,15 +5,7 @@ import (
 	"io"
 )
 
-type processor struct {
-}
-
-func Processor() *processor {
-	p := new(processor)
-	return p
-}
-
-func (p *processor) Process(reader io.Reader) ([]unit, error) {
+func ProcessCSV(reader io.Reader) ([]unit, error) {
 
 	r := csv.NewReader(reader)
 
@@ -22,16 +14,16 @@ func (p *processor) Process(reader io.Reader) ([]unit, error) {
 		return nil, err
 	}
 
-	return p.convertRecords(records)
+	return convertRecords(records)
 
 }
 
-func (p *processor) convertRecords(records [][]string) (result []unit, err error) {
+func convertRecords(records [][]string) (result []unit, err error) {
 
 	result = make([]unit, len(records))
 
 	for i := range result {
-		result[i], err = p.convertRecord(records[i])
+		result[i], err = convertRecord(records[i])
 		if err != nil {
 			return
 		}
@@ -41,6 +33,6 @@ func (p *processor) convertRecords(records [][]string) (result []unit, err error
 
 }
 
-func (p *processor) convertRecord(record []string) (unit, error) {
+func convertRecord(record []string) (unit, error) {
 	return Unit(record[0], record[1])
 }

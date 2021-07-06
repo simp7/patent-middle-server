@@ -13,4 +13,5 @@ type Formula interface {
 	Group
 	Exclude(string)
 	Alias(int, string)
+	Verify() error
 }
