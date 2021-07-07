@@ -7,14 +7,14 @@ import (
 	"os"
 )
 
-type web struct {
+type server struct {
 	http.Server
 	*logger.Logger
 }
 
-func NewWeb(port int) *web {
+func New(port int) *server {
 
-	w := new(web)
+	w := new(server)
 	w.Logger = logger.Init("server", true, false, os.Stdout)
 	w.Infof("Initialize logger")
 
@@ -25,44 +25,53 @@ func NewWeb(port int) *web {
 
 }
 
-func (w *web) Start() error {
+func (s *server) Close() error {
+	err := s.Server.Close()
+	if err != nil {
+		s.Error(err)
+	}
+	s.Logger.Close()
+	return err
+}
 
-	w.Info("Start Server")
+func (s *server) Start() error {
 
-	http.HandleFunc("/", w.Welcome)
-	http.HandleFunc("/search", w.Search)
+	s.Info("Start Server")
 
-	return w.ListenAndServe()
+	http.HandleFunc("/", s.Welcome)
+	http.HandleFunc("/search", s.Search)
+
+	return s.ListenAndServe()
 
 }
 
-func (w *web) Welcome(writer http.ResponseWriter, _ *http.Request) {
+func (s *server) Welcome(writer http.ResponseWriter, _ *http.Request) {
 	writer.Write([]byte("<h1>Hello, world!</h1>"))
 }
 
-func (w *web) Search(writer http.ResponseWriter, request *http.Request) {
+func (s *server) Search(writer http.ResponseWriter, request *http.Request) {
 
 	country := unwrap(request, "country")
 	formula := unwrap(request, "formula")
 
-	w.Infof("GET %s in NLP of %s", formula, country)
-	selected := w.selectNLP(country)
+	s.Infof("GET %s in NLP of %s", formula, country)
+	selected := s.selectNLP(country)
 
-	w.Info("start search")
+	s.Info("start search")
 
 	for {
 
-		w.Infof("Current formula is %s", formula)
+		s.Infof("Current formula is %s", formula)
 		calculated, err := selected.Process(formula)
 
 		if err != nil {
-			w.Error(err)
+			s.Error(err)
 			writer.WriteHeader(500)
 			break
 		}
 
 		if formula == calculated {
-			w.Infof("Final result: %s", formula)
+			s.Infof("Final result: %s", formula)
 			break
 		}
 
@@ -70,7 +79,7 @@ func (w *web) Search(writer http.ResponseWriter, request *http.Request) {
 
 	_, err := writer.Write([]byte(formula))
 	if err != nil {
-		w.Error(err)
+		s.Error(err)
 	}
 	//TODO: KIPRIS에서 API를 통한 검색 및 출력
 
@@ -84,16 +93,18 @@ func unwrap(request *http.Request, key string) string {
 	return result
 }
 
-func (w *web) selectNLP(country string) *nlp {
+func (s *server) selectNLP(country string) *nlp {
+
+	//TODO: reader 수정
 
 	switch country {
 	case "KR":
-		w.Info("Select Korean")
+		s.Info("Select Korean")
 		return Korean()
 	case "US":
 		fallthrough
 	default:
-		w.Info("Select English")
+		s.Info("Select English")
 		return English()
 	}
 
