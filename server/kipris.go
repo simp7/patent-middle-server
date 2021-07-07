@@ -2,6 +2,6 @@ package server
 
 import "encoding/csv"
 
-type Kipris interface {
-	GetClaims(input string) *csv.Reader
+type ClaimDB interface {
+	GetClaims(input string) (*csv.Reader, error)
 }
