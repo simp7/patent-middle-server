@@ -3,14 +3,14 @@ package server
 import (
 	"fmt"
 	"github.com/google/logger"
-	"github.com/simp7/patent-middle-server/server/kipris"
+	"github.com/simp7/patent-middle-server/server/claimDB"
 	"net/http"
 	"os"
 )
 
 type server struct {
 	http.Server
-	Kipris
+	ClaimDB
 	*logger.Logger
 }
 
@@ -23,7 +23,7 @@ func New(port int) *server {
 	address := fmt.Sprintf(":%d", port)
 	w.Server = http.Server{Addr: address}
 
-	w.Kipris = kipris.New(os.Getenv("KIPRIS"))
+	w.ClaimDB = claimDB.New(os.Getenv("KIPRIS"))
 
 	return w
 
