@@ -3,12 +3,14 @@ package server
 import (
 	"fmt"
 	"github.com/google/logger"
+	"github.com/simp7/patent-middle-server/server/kipris"
 	"net/http"
 	"os"
 )
 
 type server struct {
 	http.Server
+	Kipris
 	*logger.Logger
 }
 
@@ -20,6 +22,8 @@ func New(port int) *server {
 
 	address := fmt.Sprintf(":%d", port)
 	w.Server = http.Server{Addr: address}
+
+	w.Kipris = kipris.New(os.Getenv("KIPRIS"))
 
 	return w
 
@@ -52,37 +56,34 @@ func (s *server) Welcome(writer http.ResponseWriter, _ *http.Request) {
 func (s *server) Search(writer http.ResponseWriter, request *http.Request) {
 
 	country := unwrap(request, "country")
-	formula := unwrap(request, "formula")
+	input := unwrap(request, "formula")
 
-	s.Infof("GET %s in NLP of %s", formula, country)
+	s.Infof("GET %s in NLP of %s", input, country)
 	selected := s.selectNLP(country)
 
 	s.Info("start search")
+	s.GetClaims(input)
 
-	for {
-
-		s.Infof("Current formula is %s", formula)
-		calculated, err := selected.Process(formula)
-
-		if err != nil {
-			s.Error(err)
-			writer.WriteHeader(500)
-			break
-		}
-
-		if formula == calculated {
-			s.Infof("Final result: %s", formula)
-			break
-		}
-
+	s.Info("perform NLP")
+	_, err := s.processNLP(selected, input)
+	if err != nil {
+		s.Error(err)
+		writer.WriteHeader(500)
 	}
 
-	_, err := writer.Write([]byte(formula))
+	_, err = writer.Write([]byte(input))
 	if err != nil {
 		s.Error(err)
 	}
-	//TODO: KIPRIS에서 API를 통한 검색 및 출력
 
+}
+
+func (s *server) processNLP(instance nlp, input string) ([]unit, error) {
+	_, err := instance.Process(input)
+	if err != nil {
+		return nil, err
+	}
+	return ProcessCSV(os.Stdin)
 }
 
 func unwrap(request *http.Request, key string) string {
@@ -93,9 +94,7 @@ func unwrap(request *http.Request, key string) string {
 	return result
 }
 
-func (s *server) selectNLP(country string) *nlp {
-
-	//TODO: reader 수정
+func (s *server) selectNLP(country string) nlp {
 
 	switch country {
 	case "KR":

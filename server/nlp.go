@@ -1,34 +1,22 @@
 package server
 
-import (
-	"fmt"
-	"os/exec"
-	"strings"
-)
+import "os/exec"
 
 type nlp struct {
-	*exec.Cmd
-	processor *processor
+	cmd string
 }
 
-func Korean() *nlp {
-	n := new(nlp)
-	n.processor = Processor()
-	//n.Cmd = exec.Command("")
-	return n
+func Korean() nlp {
+	//TODO: 국내 특허 검색 명령어 삽입
+	return nlp{""}
 }
 
-func English() *nlp {
-	n := new(nlp)
-	n.processor = Processor()
-	//n.Cmd = exec.Command("")
-	return n
+func English() nlp {
+	//TODO: 해외 특허 검색 명령어 삽입
+	return nlp{""}
 }
 
 func (n *nlp) Process(s string) (string, error) {
-	//n.Cmd.Output()
-	u, err := n.processor.Process(strings.NewReader(s))
-	fmt.Println(u)
-	//TODO: 유저 입력을 받아서 새로운 검색식 만들기
-	return s, err
+	result, err := exec.Command(n.cmd, s).Output()
+	return string(result), err
 }
