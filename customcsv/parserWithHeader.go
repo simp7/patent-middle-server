@@ -14,6 +14,7 @@ func ParserWithHeader(reader io.Reader) hasHeader {
 }
 
 func (h *hasHeader) Parse() (result []model.CSVUnit, err error) {
+
 	result, err = h.csvParser.Parse()
 	if len(result) > 0 {
 		result = result[1:]

@@ -17,7 +17,7 @@ var (
 )
 
 func TestServer_Search(t *testing.T) {
-	testFunc(t, "/search?formula=블록체인*전자투표&country=KR", "블록체인*전자투표")
+	testFunc(t, "/search/KR/블록체인*전자투표", "블록체인*전자투표")
 }
 
 func TestServer_Welcome(t *testing.T) {
