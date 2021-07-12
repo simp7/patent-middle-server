@@ -1,4 +1,4 @@
-package csvParser
+package customcsv
 
 import (
 	"github.com/simp7/patent-middle-server/model"

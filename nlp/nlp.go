@@ -1,4 +1,4 @@
-package server
+package nlp
 
 import (
 	"encoding/csv"
@@ -19,7 +19,7 @@ func English() nlp {
 	return nlp{""}
 }
 
-func (n *nlp) Process(s string) (string, error) {
+func (n nlp) Process(s string) (string, error) {
 	result, err := exec.Command(n.cmd, s).Output()
 	csv.NewWriter(exec.Command(n.cmd, s).Stdout)
 	return string(result), err
