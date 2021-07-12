@@ -3,9 +3,9 @@ package server
 import (
 	"fmt"
 	"github.com/google/logger"
-	"github.com/simp7/patent-middle-server/server/claimDB"
 	"net/http"
 	"os"
+	"strings"
 )
 
 type server struct {
@@ -14,7 +14,7 @@ type server struct {
 	*logger.Logger
 }
 
-func New(port int) *server {
+func New(port int, claimDB ClaimDB) *server {
 
 	w := new(server)
 	w.Logger = logger.Init("server", true, false, os.Stdout)
@@ -23,7 +23,7 @@ func New(port int) *server {
 	address := fmt.Sprintf(":%d", port)
 	w.Server = http.Server{Addr: address}
 
-	w.ClaimDB = claimDB.New(os.Getenv("KIPRIS"))
+	w.ClaimDB = claimDB
 
 	return w
 
@@ -79,11 +79,13 @@ func (s *server) Search(writer http.ResponseWriter, request *http.Request) {
 }
 
 func (s *server) processNLP(instance nlp, input string) ([]unit, error) {
-	_, err := instance.Process(input)
+	s.Infof("Process %s in NLP", input)
+	result, err := instance.Process(input)
 	if err != nil {
 		return nil, err
 	}
-	return ProcessCSV(os.Stdin)
+
+	return ProcessCSV(strings.NewReader(result))
 }
 
 func unwrap(request *http.Request, key string) string {
