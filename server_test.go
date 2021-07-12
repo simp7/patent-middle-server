@@ -1,7 +1,7 @@
 package main
 
 import (
-	claimDB2 "github.com/simp7/patent-middle-server/claimDB"
+	"github.com/simp7/patent-middle-server/claimDB"
 	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http"
@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	testServer = New(80, claimDB2.Test())
+	testServer = New(80, claimDB.Test())
 	testClient = &http.Client{}
 	once       = sync.Once{}
 )

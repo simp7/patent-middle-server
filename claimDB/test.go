@@ -13,6 +13,6 @@ func Test() *testDB {
 }
 
 func (t *testDB) GetClaims(input string) (*csv.Reader, error) {
-	file, err := os.Open("testSet.csv")
+	file, err := os.Open(input + ".csv")
 	return csv.NewReader(file), err
 }
