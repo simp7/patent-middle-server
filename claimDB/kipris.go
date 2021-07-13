@@ -1,53 +1,44 @@
 package claimDB
 
 import (
-	"encoding/csv"
 	"encoding/xml"
+	"github.com/simp7/patent-middle-server/model"
 	"io"
 	"net/http"
+	"strconv"
 	"sync"
 )
 
 type kipris struct {
 	*http.Client
-	key       string
+	apiKey    string
 	SearchURL string
 	ClaimURL  string
 }
 
-func New(key string) *kipris {
+func New(apiKey string) *kipris {
 	return &kipris{
 		&http.Client{},
-		key,
-		"http://kipo-api.kipi.or.kr/openapi/service/patUtiModInfoSearchSevice/getAdvancedSearch",
-		"http://kipo-api.kipi.or.kr/openapi/service/patUtiModInfoSearchSevice/getBibliographyDetailInfoSearch",
+		apiKey,
+		"http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getWordSearch",
+		"http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getBibliographyDetailInfoSearch",
 	}
 }
 
-func (k *kipris) GetClaims(input string) (*csv.Reader, error) {
+func (k *kipris) GetClaims(input string) ([]model.CSVUnit, error) {
 
-	numbers, err := k.searchNo(input)
+	numbers, err := k.searchNumbers(input)
 	if err != nil {
 		return nil, err
 	}
 
-	wg := sync.WaitGroup{}
-
-	for _, v := range numbers {
-		wg.Add(1)
-		go func() {
-			k.searchClaim(v) //TODO: 에러 처리 구문 및 claim 가공
-
-			wg.Done()
-		}()
-	}
-	wg.Wait()
-
-	return nil, nil
+	return k.searchClaims(numbers)
 
 }
 
-func (k *kipris) searchNo(input string) ([]string, error) {
+func (k *kipris) searchNumbers(input string) (result []string, err error) {
+
+	rowSize := 20
 
 	request, err := http.NewRequest("GET", k.SearchURL, nil)
 	if err != nil {
@@ -55,72 +46,108 @@ func (k *kipris) searchNo(input string) ([]string, error) {
 	}
 
 	q := request.URL.Query()
-	q.Add("ServiceKey", k.key)
-	q.Add("inventionTitle", input)
-	q.Add("lastvalue", "R")
+	q.Add("ServiceKey", k.apiKey)
+	q.Add("word", input)
+	q.Add("numOfRows", strconv.Itoa(rowSize))
+
 	request.URL.RawQuery = q.Encode()
-
-	return k.solve(request, "applicationNumber")
-
-}
-
-func (k *kipris) searchClaim(patentNo string) ([]string, error) {
-
-	request, err := http.NewRequest("GET", k.ClaimURL, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	q := request.URL.Query()
-	q.Add("ServiceKey", k.key)
-	q.Add("applicationNumber", patentNo)
-	request.URL.RawQuery = q.Encode()
-
-	return k.solve(request, "claim")
-
-}
-
-func (k *kipris) solve(request *http.Request, parseTarget string) ([]string, error) {
 
 	response, err := k.Do(request)
 	if err != nil {
 		return nil, err
 	}
 
-	return parse(response.Body, parseTarget), nil
+	total, err := k.getTotal(response.Body)
+	lastPage := total/rowSize + 1
+
+	wg := sync.WaitGroup{}
+	wg.Add(lastPage)
+
+	for i := 1; i <= lastPage; i++ {
+		go func() {
+			q.Set("pageNo", strconv.Itoa(i))
+			request.URL.RawQuery = q.Encode()
+			response, _ = k.Do(request)
+			result = append(result, k.searchNumber(response.Body)...)
+			wg.Done()
+		}()
+	}
+	wg.Wait()
+
+	return result, err
 
 }
 
-func parse(reader io.Reader, element string) (result []string) {
+func (k *kipris) getTotal(body io.Reader) (int, error) {
 
-	result = make([]string, 0)
-	parser := xml.NewDecoder(reader)
+	var searchResult SearchResult
+	err := xml.NewDecoder(body).Decode(&searchResult)
 
-	for {
+	if err != nil {
+		return 0, err
+	}
 
-		token, err := parser.Token()
-		if err != nil {
-			break
-		}
+	return strconv.Atoi(searchResult.Count.TotalCount)
 
-		switch t := token.(type) {
-		case xml.StartElement:
-			if t.Name.Local == element {
-				token, err = parser.Token()
-				result = append(result, extractData(token))
-			}
-		}
+}
 
+func (k *kipris) searchNumber(body io.Reader) (result []string) {
+
+	var searchResult SearchResult
+	xml.NewDecoder(body).Decode(&searchResult)
+
+	items := searchResult.Body.Items.Item
+	result = make([]string, len(items))
+	for i, item := range items {
+		result[i] = item.ApplicationNumber
 	}
 
 	return
 
 }
 
-func extractData(token xml.Token) string {
-	switch t := token.(type) {
-	case xml.CharData:
-		return string(t)
+func (k *kipris) searchClaims(numbers []string) (result []model.CSVUnit, err error) {
+
+	request, err := http.NewRequest("GET", k.ClaimURL, nil)
+
+	if err != nil {
+		return nil, err
 	}
-	return ""
+
+	q := request.URL.Query()
+	q.Add("ServiceKey", k.apiKey)
+
+	wg := sync.WaitGroup{}
+	wg.Add(len(numbers))
+
+	for _, v := range numbers {
+		go func() {
+			q.Set("applicationNumber", v)
+			request.URL.RawQuery = q.Encode()
+			response, _ := k.Do(request)
+			claim := k.searchClaim(response.Body)
+			result = append(result, claim)
+
+			wg.Done()
+		}()
+	}
+	wg.Wait()
+
+	return
+
+}
+
+func (k *kipris) searchClaim(body io.Reader) model.CSVUnit {
+
+	var searchResult ClaimResult
+	xml.NewDecoder(body).Decode(&searchResult)
+
+	claims := searchResult.Body.Items.ClaimInfoArray.ClaimInfo
+	result := make([]string, len(claims))
+	for i, claim := range claims {
+		result[i] = claim.Claim
+	}
+
+	return claim{searchResult.Body.Items.BiblioSummaryInfoArray.BiblioSummaryInfo.InventionTitle, result}.Tokenize()
+
 }

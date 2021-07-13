@@ -1,7 +1,9 @@
 package main
 
-import "encoding/csv"
+import (
+	"github.com/simp7/patent-middle-server/model"
+)
 
 type ClaimDB interface {
-	GetClaims(input string) (*csv.Reader, error)
+	GetClaims(input string) ([]model.CSVUnit, error)
 }
