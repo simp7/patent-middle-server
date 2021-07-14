@@ -17,4 +17,5 @@ func TestKipris_GetClaims(t *testing.T) {
 	//	a, err := x.GetClaims()
 	//	assert.Equal(t, )
 	//}
+
 }

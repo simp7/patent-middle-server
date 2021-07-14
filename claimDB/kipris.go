@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"strconv"
+	"strings"
 	"sync"
 )
 
@@ -148,6 +149,10 @@ func (k *kipris) searchClaim(body io.Reader) model.CSVUnit {
 		result[i] = claim.Claim
 	}
 
-	return claim{searchResult.Body.Items.BiblioSummaryInfoArray.BiblioSummaryInfo.InventionTitle, result}.Tokenize()
+	return tokenize(searchResult.Body.Items.BiblioSummaryInfoArray.BiblioSummaryInfo.InventionTitle, result)
 
+}
+
+func tokenize(title string, claims []string) model.CSVUnit {
+	return model.CSVUnit{Key: title, Value: strings.Join(claims, "\n")}
 }
