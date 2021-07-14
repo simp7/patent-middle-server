@@ -2,85 +2,88 @@ package main
 
 import (
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/google/logger"
 	"github.com/simp7/patent-middle-server/customcsv"
 	"github.com/simp7/patent-middle-server/model"
 	"github.com/simp7/patent-middle-server/nlp"
-	"net/http"
 	"os"
 	"strings"
 )
 
 type server struct {
-	http.Server
+	*gin.Engine
 	ClaimDB
 	*logger.Logger
+	port string
 }
 
 func New(port int, claimDB ClaimDB) *server {
 
 	s := new(server)
-	s.Logger = logger.Init("server", true, false, os.Stdout)
-	s.Infof("Initialize logger")
 
-	address := fmt.Sprintf(":%d", port)
-	s.Server = http.Server{Addr: address}
+	s.Engine = gin.Default()
+
+	s.Logger = logger.Init("server", true, false, os.Stdout)
+	s.Infof("Finish Initializing logger")
 
 	s.ClaimDB = claimDB
+
+	s.port = fmt.Sprintf(":%d", port)
 
 	return s
 
 }
 
-func (s *server) Close() error {
-
-	err := s.Server.Close()
-	if err != nil {
-		s.Error(err)
-	}
-
+func (s *server) Close() {
 	s.Logger.Close()
-	return err
-
 }
 
 func (s *server) Start() error {
 
 	s.Info("Start Server")
 
-	http.HandleFunc("/", s.Welcome)
-	http.HandleFunc("/search", s.Search)
+	s.GET("/", s.Welcome)
+	s.GET("/search/:country/:formula", s.Search)
 
-	return s.ListenAndServe()
+	return s.Run(s.port)
 
 }
 
-func (s *server) Welcome(writer http.ResponseWriter, _ *http.Request) {
-	_, err := writer.Write([]byte("<h1>Hello, world!</h1>"))
+func (s *server) Welcome(c *gin.Context) {
+	_, err := c.Writer.Write([]byte("<h1>Hello, world!</h1>"))
 	if err != nil {
 		s.Error(err)
 	}
 }
 
-func (s *server) Search(writer http.ResponseWriter, request *http.Request) {
+func (s *server) Search(c *gin.Context) {
 
-	country := s.unwrap(request, "country")
-	input := s.unwrap(request, "formula")
+	country := c.Param("country")
+	input := c.Param("formula")
 
 	s.Infof("GET %s in NLP of %s", input, country)
 	selected := s.selectNLP(country)
 
 	s.Info("start search")
-	s.GetClaims(input)
-
-	s.Info("perform NLP")
-	_, err := s.processNLP(selected, input)
+	_, err := s.GetClaims(input)
 	if err != nil {
 		s.Error(err)
-		writer.WriteHeader(500)
+		c.Writer.WriteHeader(500)
+		return
 	}
 
-	_, err = writer.Write([]byte(input))
+	//TODO: 청구항 csv 파일을 NLP로 전달
+
+	s.Info("perform NLP")
+	_, err = s.processNLP(selected, input) //TODO: NLP를 통해 얻은 단어-유사도 클라이언트에게 전달
+	//if err != nil {
+	//	s.Error(err)
+	//	c.Writer.WriteHeader(500)
+	//	return
+	//}
+
+	_, err = c.Writer.Write([]byte(input))
 	if err != nil {
 		s.Error(err)
 	}
@@ -99,14 +102,6 @@ func (s *server) processNLP(instance NLP, input string) ([]model.CSVUnit, error)
 
 	return customcsv.Parser(reader).Parse()
 
-}
-
-func (s *server) unwrap(request *http.Request, key string) (result string) {
-	if value := request.URL.Query()[key]; len(value) != 0 {
-		result = value[0]
-	}
-	s.Infof("Find %s: %s", key, result)
-	return
 }
 
 func (s *server) selectNLP(country string) NLP {
