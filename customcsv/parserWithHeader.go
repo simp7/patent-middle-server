@@ -13,7 +13,7 @@ func ParserWithHeader(reader io.Reader) hasHeader {
 	return hasHeader{csvParser{reader}}
 }
 
-func (h *hasHeader) Parse() (result []model.CSVUnit, err error) {
+func (h hasHeader) Parse() (result []model.CSVUnit, err error) {
 
 	result, err = h.csvParser.Parse()
 	if len(result) > 0 {
