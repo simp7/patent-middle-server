@@ -65,14 +65,20 @@ func (k *kipris) searchNumbers(input string) (result []string, err error) {
 	wg.Add(lastPage)
 
 	for i := 1; i <= lastPage; i++ {
-		go func() {
-			q.Set("pageNo", strconv.Itoa(i))
+		go func(page int) {
+
+			q.Set("pageNo", strconv.Itoa(page))
 			request.URL.RawQuery = q.Encode()
+
 			response, _ = k.Do(request)
+			defer response.Body.Close()
 			result = append(result, k.searchNumber(response.Body)...)
+
 			wg.Done()
-		}()
+
+		}(i)
 	}
+
 	wg.Wait()
 
 	return result, err
@@ -122,16 +128,22 @@ func (k *kipris) searchClaims(numbers []string) (result []model.CSVUnit, err err
 	wg.Add(len(numbers))
 
 	for _, v := range numbers {
-		go func() {
-			q.Set("applicationNumber", v)
+		go func(number string) {
+
+			q.Set("applicationNumber", number)
 			request.URL.RawQuery = q.Encode()
+
 			response, _ := k.Do(request)
+			defer response.Body.Close()
 			claim := k.searchClaim(response.Body)
+
 			result = append(result, claim)
 
 			wg.Done()
-		}()
+
+		}(v)
 	}
+
 	wg.Wait()
 
 	return
