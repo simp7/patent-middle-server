@@ -4,11 +4,8 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/logger"
-	"github.com/simp7/patent-middle-server/customcsv"
-	"github.com/simp7/patent-middle-server/model"
 	"github.com/simp7/patent-middle-server/nlp"
 	"os"
-	"strings"
 )
 
 type server struct {
@@ -73,34 +70,31 @@ func (s *server) Search(c *gin.Context) {
 		return
 	}
 
-	//TODO: 청구항 csv 파일을 NLP로 전달
-
 	s.Info("perform NLP")
-	_, err = s.processNLP(selected, input) //TODO: NLP를 통해 얻은 단어-유사도 클라이언트에게 전달
-	//if err != nil {
-	//	s.Error(err)
-	//	c.Writer.WriteHeader(500)
-	//	return
-	//}
+	data, err := s.processNLP(selected, input)
+	if err != nil {
+		s.Error(err)
+		c.Writer.WriteHeader(500)
+		return
+	}
 
-	_, err = c.Writer.Write([]byte(input))
+	_, err = c.Writer.Write([]byte(data))
 	if err != nil {
 		s.Error(err)
 	}
 
 }
 
-func (s *server) processNLP(instance NLP, input string) ([]model.CSVUnit, error) {
+func (s *server) processNLP(instance NLP, fileName string) (string, error) {
 
-	s.Infof("Process %s in NLP", input)
-	result, err := instance.Process(input)
+	s.Infof("Give %s to NLP", fileName)
+	result, err := instance.Process(fileName)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
+	err = os.Remove(fileName)
 
-	reader := strings.NewReader(result)
-
-	return customcsv.Parser(reader).Parse()
+	return result, err
 
 }
 
@@ -108,13 +102,13 @@ func (s *server) selectNLP(country string) NLP {
 
 	switch country {
 	case "KR":
-		s.Info("Select Korean")
-		return nlp.Korean()
+		s.Info("Select Word2vec")
+		return nlp.Word2vec()
 	case "US":
 		fallthrough
 	default:
-		s.Info("Select English")
-		return nlp.English()
+		s.Info("Select LDP")
+		return nlp.LDP()
 	}
 
 }
