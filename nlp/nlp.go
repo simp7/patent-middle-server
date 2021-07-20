@@ -18,7 +18,7 @@ func LDP() nlp {
 	return nlp{"python ldp.py"}
 }
 
-func (n nlp) Process(tmpFile string) (string, error) {
+func (n nlp) Process(tmpFile string) ([]byte, error) {
 	result, err := exec.Command(n.cmd, tmpFile).Output()
-	return string(result), err
+	return result, err
 }

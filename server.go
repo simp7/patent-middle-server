@@ -78,19 +78,19 @@ func (s *server) Search(c *gin.Context) {
 		return
 	}
 
-	_, err = c.Writer.Write([]byte(data))
+	_, err = c.Writer.Write(data)
 	if err != nil {
 		s.Error(err)
 	}
 
 }
 
-func (s *server) processNLP(instance NLP, fileName string) (string, error) {
+func (s *server) processNLP(instance NLP, fileName string) ([]byte, error) {
 
 	s.Infof("Give %s to NLP", fileName)
 	result, err := instance.Process(fileName)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	err = os.Remove(fileName)
 
