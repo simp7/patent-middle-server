@@ -1,7 +1,6 @@
 package nlp
 
 import (
-	"encoding/csv"
 	"os/exec"
 )
 
@@ -9,18 +8,17 @@ type nlp struct {
 	cmd string
 }
 
-func Korean() nlp {
+func Word2vec() nlp {
 	//TODO: 국내 특허 자연어 처리 명령어 삽입
-	return nlp{""}
+	return nlp{"python word2vec.py"}
 }
 
-func English() nlp {
+func LDP() nlp {
 	//TODO: 해외 특허 자연어 처리 명령어 삽입
-	return nlp{""}
+	return nlp{"python ldp.py"}
 }
 
-func (n nlp) Process(s string) (string, error) {
-	result, err := exec.Command(n.cmd, s).Output()
-	csv.NewWriter(exec.Command(n.cmd, s).Stdout)
-	return string(result), err
+func (n nlp) Process(tmpFile string) ([]byte, error) {
+	result, err := exec.Command(n.cmd, tmpFile).Output()
+	return result, err
 }
