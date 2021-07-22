@@ -1,14 +1,18 @@
+import json
+import sys
+import warnings
+
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.decomposition import TruncatedSVD  # 토픽모델링
+from sklearn.decomposition import TruncatedSVD
 
 
-#데이터 전처리까지 같이 함 (원본데이터 필요)
+# 데이터 전처리까지 같이 함 (원본데이터 필요)
 def LSA(datapath, topicNum):
     data = pd.read_csv(datapath)
     name = list(data['name'])
     item = list(data['item'])
-    new_df = pd.DataFrame({'item':item}).fillna("")
+    new_df = pd.DataFrame({'item': item}).fillna("")
 
     # 알파벳 이외 문자 제거
     new_df['clean_doc'] = new_df['item'].str.replace("[^ㄱ-ㅎ|ㅏ-ㅣ|가-힣#]", " ")
@@ -16,7 +20,7 @@ def LSA(datapath, topicNum):
     # 길이 3 이하 문자 제거
     new_df['clean_doc'] = new_df['clean_doc'].apply(lambda x: ' '.join([w for w in x.split()]))
 
-    # tf-idf벡터로 변환
+    # tf-idf 벡터로 변환
     vectorizer = TfidfVectorizer(max_features=1000, max_df=0.5, smooth_idf=True)
     X = vectorizer.fit_transform(new_df['clean_doc'])
 
@@ -28,11 +32,32 @@ def LSA(datapath, topicNum):
     components = svd_model.components_
     return terms, components
 
-#사용법
-#1) 주요 단어만 출력
-#for index, topic in enumerate(components):
+
+def main():
+
+    data_path = sys.argv[1]
+    amount = int(sys.argv[2])
+
+    terms, components = LSA(data_path, amount)
+
+    json_data = [[""]*amount for i in range(amount)]
+    for index, topic in enumerate(components):
+        json_data[index] = [terms[i] for i in topic.argsort()[: -amount - 1: -1]]
+
+    print(json.dumps(json_data, ensure_ascii=False))
+
+    return
+
+
+if __name__ == '__main__':
+    warnings.filterwarnings(action='ignore')
+    main()
+
+# 사용법
+# 1) 주요 단어만 출력
+# for index, topic in enumerate(components):
 #    print('Topic %d: '%(index+1),[terms[i] for i in topic.argsort()[: -n -1:-1]])
 
-#2) 중요도와 함께 출력
-#for index, topic in enumerate(components):
+# 2) 중요도와 함께 출력
+# for index, topic in enumerate(components):
 #    print('Topic %d: '%(index+1),[(terms[i], topic[i].round(5)) for i in topic.argsort()[:-n - 1:-1]])

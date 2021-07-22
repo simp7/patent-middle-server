@@ -71,7 +71,7 @@ func (s *server) Search(c *gin.Context) {
 	}
 
 	s.Info("perform NLP")
-	data, err := s.processNLP(selected, input)
+	data, err := s.processNLP(selected, input+".csv")
 	if err != nil {
 		s.Error(err)
 		c.Writer.WriteHeader(500)
@@ -92,7 +92,6 @@ func (s *server) processNLP(instance NLP, fileName string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	err = os.Remove(fileName)
 
 	return result, err
 
@@ -107,8 +106,8 @@ func (s *server) selectNLP(country string) NLP {
 	case "US":
 		fallthrough
 	default:
-		s.Info("Select LDP")
-		return nlp.LDP()
+		s.Info("Select LDA")
+		return nlp.LDA()
 	}
 
 }
