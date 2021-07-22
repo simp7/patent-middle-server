@@ -107,8 +107,8 @@ func (s *server) selectNLP(country string) NLP {
 	case "US":
 		fallthrough
 	default:
-		s.Info("Select LDP")
-		return nlp.LDP()
+		s.Info("Select LDA")
+		return nlp.LDA()
 	}
 
 }
