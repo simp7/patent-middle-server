@@ -1,3 +1,4 @@
+import json
 import sys
 import warnings
 
@@ -38,9 +39,12 @@ def main():
     amount = int(sys.argv[2])
 
     terms, components = LSA(data_path, amount)
-    print("Hello")
+
+    json_data = [[""]*amount for i in range(amount)]
     for index, topic in enumerate(components):
-        print('Topic %d: ' % (index + 1), [terms[i] for i in topic.argsort()[: -amount - 1:-1]])
+        json_data[index] = [terms[i] for i in topic.argsort()[: -amount - 1: -1]]
+
+    print(json.dumps(json_data, ensure_ascii=False))
 
     return
 
