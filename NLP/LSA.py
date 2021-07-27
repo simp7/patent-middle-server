@@ -40,7 +40,7 @@ def main():
 
     terms, components = LSA(data_path, amount)
 
-    json_data = [[""]*amount for i in range(amount)]
+    json_data = [[""]*amount]*amount
     for index, topic in enumerate(components):
         json_data[index] = [terms[i] for i in topic.argsort()[: -amount - 1: -1]]
 

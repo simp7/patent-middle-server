@@ -10,7 +10,7 @@ type Group interface {
 }
 
 type Formula interface {
-	Group
+	String() string
 	Exclude(string)
 	Alias(int, string)
 	Verify() error
