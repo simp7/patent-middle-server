@@ -101,13 +101,13 @@ func (s *server) selectNLP(country string) NLP {
 
 	switch country {
 	case "KR":
-		s.Info("Select Word2vec")
-		return nlp.Word2vec()
+		s.Info("Select LDA")
+		return nlp.LDA()
 	case "US":
 		fallthrough
 	default:
-		s.Info("Select LDA")
-		return nlp.LDA()
+		s.Info("Select Word2vec")
+		return nlp.Word2vec()
 	}
 
 }

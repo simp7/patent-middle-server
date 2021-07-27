@@ -11,12 +11,12 @@ type nlp struct {
 
 func Word2vec() nlp {
 	//TODO: 국내 특허 자연어 처리 명령어 삽입
-	return nlp{"./LSA.sh"}
+	return nlp{"./word2vec.sh"}
 }
 
 func LDA() nlp {
 	//TODO: 해외 특허 자연어 처리 명령어 삽입
-	return nlp{"nlp/LSA.py"}
+	return nlp{"./LSA.sh"}
 }
 
 func (n nlp) Process(tmpFile string) ([]byte, error) {
