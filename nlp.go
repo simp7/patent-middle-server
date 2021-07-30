@@ -1,5 +1,5 @@
 package main
 
 type NLP interface {
-	Process(string) ([]byte, error)
+	Process(file string, args ...string) ([]byte, error)
 }

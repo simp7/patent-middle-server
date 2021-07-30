@@ -88,7 +88,7 @@ func (s *server) Search(c *gin.Context) {
 func (s *server) processNLP(instance NLP, fileName string) ([]byte, error) {
 
 	s.Infof("Give %s to NLP", fileName)
-	result, err := instance.Process(fileName)
+	result, err := instance.Process(fileName, "블록", "투표")
 	if err != nil {
 		return nil, err
 	}
