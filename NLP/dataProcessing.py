@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import pandas as pd
+import json
 from konlpy.tag import Okt
 
 
 # 데이터 전처리
-def dataPreprocessing(datapath):
+def do(datapath):
     # 데이터 업로드
     data = pd.read_csv(datapath)
 
@@ -26,10 +27,8 @@ def dataPreprocessing(datapath):
 
     # 불용어(쓸모없는 단어) 불러오기
     stopwords = list()
-    with open('data/stopwords.txt', encoding='utf-8') as file:
-        lines = file.readlines()
-        for i in lines:
-            stopwords.append(i.rstrip("\n"))
+    with open('nlp/stopwords.json', encoding='utf-8') as file:
+        stopwords = json.load(file)
 
     # 불용어 제거하는 함수
     def clear(word_tokenize):

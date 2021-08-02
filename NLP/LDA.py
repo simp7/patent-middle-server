@@ -1,4 +1,8 @@
 import gensim
+import warnings
+import sys
+import dataProcessing
+import json
 from gensim import corpora
 
 # word2vec 할 문서집합과 유사도를 검색할 단어, Topic 개수를 파라미터로 사용
@@ -10,3 +14,22 @@ def LDA(corpus, word, topicNum):
     # 단어를 벡터화해서 LDA 분석
     lda_model = gensim.models.ldamodel.LdaModel(text_corpus, num_topics=topicNum, id2word=dictionary, passes=15)
     return lda_model.print_topics(num_words=5)
+
+
+def main():
+
+    datapath = sys.argv[1]
+    topic_num = sys.argv[2]
+    words = sys.argv[3:]
+
+    clear_name, clear_item = dataProcessing.do(datapath)
+    topics = LDA(clear_item, "", topic_num)
+
+    print(json.dumps(topics, ensure_ascii=False))
+
+    return
+
+
+if __name__ == '__main__':
+    warnings.filterwarnings(action='ignore')
+    main()

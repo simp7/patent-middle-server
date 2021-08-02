@@ -1,6 +1,7 @@
 import json
 import sys
 import warnings
+import dataProcessing
 
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -9,9 +10,9 @@ from sklearn.decomposition import TruncatedSVD
 
 # 데이터 전처리까지 같이 함 (원본데이터 필요)
 def LSA(datapath, topicNum):
-    data = pd.read_csv(datapath)
-    name = list(data['name'])
-    item = list(data['item'])
+
+    name, item = dataProcessing.do(datapath)
+
     new_df = pd.DataFrame({'item': item}).fillna("")
 
     # 알파벳 이외 문자 제거

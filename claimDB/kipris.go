@@ -72,7 +72,6 @@ func (k *kipris) searchNumbers(input string) (result []string, err error) {
 
 			response, _ = k.Do(request)
 			defer response.Body.Close()
-			result = append(result, k.searchNumber(response.Body)...)
 
 			wg.Done()
 
