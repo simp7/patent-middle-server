@@ -2,7 +2,7 @@ package model
 
 type Binary interface {
 	Group
-	Append(Group) Group
+	Append(Group) Binary
 }
 
 type Group interface {

@@ -16,16 +16,9 @@ func New() *formula {
 
 	f := new(formula)
 	f.Included = make([]model.Binary, 0)
+	f.Excluded = AND()
 
 	return f
-}
-
-func Interpret(target string) *formula {
-
-	f := New()
-
-	return f
-
 }
 
 func binaryToGroup(binary []model.Binary) (group []model.Group) {
@@ -36,7 +29,7 @@ func binaryToGroup(binary []model.Binary) (group []model.Group) {
 	return
 }
 
-func (f formula) String() string {
+func (f *formula) String() string {
 
 	result := AND(binaryToGroup(f.Included)...)
 
@@ -48,15 +41,19 @@ func (f formula) String() string {
 
 }
 
-func (f formula) Exclude(target string) {
-	f.Excluded.Append(Element(target))
+func (f *formula) Exclude(target string) {
+	f.Excluded = f.Excluded.Append(Element(target))
 }
 
-func (f formula) Alias(idx int, target string) {
-	f.Included[idx].Append(Element(target))
+func (f *formula) Alias(idx int, target string) {
+	if len(f.Included) <= idx {
+		f.Included = append(f.Included, OR(Element(target)))
+		return
+	}
+	f.Included[idx] = f.Included[idx].Append(Element(target))
 }
 
-func (f formula) Verify() error {
+func (f *formula) Verify() error {
 	if len(f.Included) == 0 {
 		return shouldIncludeWord
 	}

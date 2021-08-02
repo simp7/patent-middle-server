@@ -10,15 +10,15 @@ type binary struct {
 	operator string
 }
 
-func OR(elements ...model.Group) binary {
+func OR(elements ...model.Group) model.Binary {
 	return binary{elements, "+"}
 }
 
-func AND(elements ...model.Group) binary {
+func AND(elements ...model.Group) model.Binary {
 	return binary{elements, "*"}
 }
 
-func (b binary) Append(target model.Group) model.Group {
+func (b binary) Append(target model.Group) model.Binary {
 	return binary{append(b.elements, target), b.operator}
 }
 
