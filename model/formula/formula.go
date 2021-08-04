@@ -59,3 +59,11 @@ func (f *formula) Verify() error {
 	}
 	return nil
 }
+
+func (f *formula) KeyWords() []string {
+	result := make([]string, len(f.Included))
+	for i := range f.Included {
+		result[i] = f.Included[i].First()
+	}
+	return result
+}

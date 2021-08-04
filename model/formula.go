@@ -3,6 +3,7 @@ package model
 type Binary interface {
 	Group
 	Append(Group) Binary
+	First() string
 }
 
 type Group interface {

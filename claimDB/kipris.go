@@ -1,16 +1,25 @@
 package claimDB
 
 import (
+	"context"
 	"encoding/xml"
 	"github.com/simp7/patent-middle-server/model"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"io"
 	"net/http"
 	"strconv"
-	"strings"
 	"sync"
+	"time"
 )
 
+var instance *kipris
+var once sync.Once
+var dbServer = "localhost" // DB 서버 위치 지정
+
 type kipris struct {
+	collection *mongo.Collection
 	*http.Client
 	apiKey    string
 	SearchURL string
@@ -18,12 +27,34 @@ type kipris struct {
 }
 
 func New(apiKey string) *kipris {
-	return &kipris{
-		&http.Client{},
-		apiKey,
-		"http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getWordSearch",
-		"http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getBibliographyDetailInfoSearch",
-	}
+
+	once.Do(func() {
+
+		var client *mongo.Client
+
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+
+		client, err := mongo.Connect(ctx, options.Client().ApplyURI(dbServer))
+		if err != nil {
+			return
+		}
+
+		db := client.Database("Patent")
+		collection := db.Collection("claim")
+
+		instance = &kipris{
+			collection,
+			&http.Client{},
+			apiKey,
+			"http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getWordSearch",
+			"http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getBibliographyDetailInfoSearch",
+		}
+
+	})
+
+	return instance
+
 }
 
 func (k *kipris) GetClaims(input string) ([]model.CSVUnit, error) {
@@ -129,12 +160,25 @@ func (k *kipris) searchClaims(numbers []string) (result []model.CSVUnit, err err
 	for _, v := range numbers {
 		go func(number string) {
 
-			q.Set("applicationNumber", number)
-			request.URL.RawQuery = q.Encode()
+			var claim model.CSVUnit
 
-			response, _ := k.Do(request)
-			defer response.Body.Close()
-			claim := k.searchClaim(response.Body)
+			dbResult := k.collection.FindOne(context.TODO(), bson.D{{"applicationNumber", number}})
+			if dbResult.Err() != nil {
+
+				var tuple ClaimTuple
+				dbResult.Decode(&tuple)
+				claim = tuple.Process()
+
+			} else {
+
+				q.Set("applicationNumber", number)
+				request.URL.RawQuery = q.Encode()
+
+				response, _ := k.Do(request)
+				defer response.Body.Close()
+				claim = k.searchClaim(response.Body)
+
+			}
 
 			result = append(result, claim)
 
@@ -154,16 +198,23 @@ func (k *kipris) searchClaim(body io.Reader) model.CSVUnit {
 	var searchResult ClaimResult
 	xml.NewDecoder(body).Decode(&searchResult)
 
+	applicationNumber := searchResult.Body.Items.BiblioSummaryInfoArray.BiblioSummaryInfo.ApplicationNumber
+	title := searchResult.Body.Items.BiblioSummaryInfoArray.BiblioSummaryInfo.InventionTitle
 	claims := searchResult.Body.Items.ClaimInfoArray.ClaimInfo
 	result := make([]string, len(claims))
+
 	for i, claim := range claims {
 		result[i] = claim.Claim
 	}
 
-	return tokenize(searchResult.Body.Items.BiblioSummaryInfoArray.BiblioSummaryInfo.InventionTitle, result)
+	tuple := ClaimTuple{applicationNumber, title, result}
+	k.putToDB(tuple)
+
+	return tuple.Process()
 
 }
 
-func tokenize(title string, claims []string) model.CSVUnit {
-	return model.CSVUnit{Key: title, Value: strings.Join(claims, "\n")}
+func (k *kipris) putToDB(tuple ClaimTuple) error {
+	_, err := k.collection.InsertOne(context.TODO(), tuple)
+	return err
 }
