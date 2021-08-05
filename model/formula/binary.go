@@ -33,3 +33,7 @@ func (b binary) String() (result string) {
 	return
 
 }
+
+func (b binary) First() string {
+	return b.elements[0].String()
+}

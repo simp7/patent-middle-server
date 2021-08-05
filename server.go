@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/logger"
+	"github.com/simp7/patent-middle-server/model/formula"
 	"github.com/simp7/patent-middle-server/nlp"
 	"os"
 )
@@ -71,7 +72,8 @@ func (s *server) Search(c *gin.Context) {
 	}
 
 	s.Info("perform NLP")
-	data, err := s.processNLP(selected, input+".csv")
+	data, err := selected.Process(input+".csv", formula.Interpret(input).KeyWords()...)
+
 	if err != nil {
 		s.Error(err)
 		c.Writer.WriteHeader(500)
@@ -82,18 +84,6 @@ func (s *server) Search(c *gin.Context) {
 	if err != nil {
 		s.Error(err)
 	}
-
-}
-
-func (s *server) processNLP(instance NLP, fileName string) ([]byte, error) {
-
-	s.Infof("Give %s to NLP", fileName)
-	result, err := instance.Process(fileName, "블록", "투표")
-	if err != nil {
-		return nil, err
-	}
-
-	return result, err
 
 }
 

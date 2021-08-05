@@ -23,5 +23,7 @@ func (n nlp) Process(tmpFile string, arg ...string) ([]byte, error) {
 
 	result, err := cmd.CombinedOutput()
 	result = []byte(strings.TrimSpace(string(result)))
+
 	return result, err
+
 }
