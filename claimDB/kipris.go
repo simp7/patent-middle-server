@@ -131,10 +131,15 @@ func (k *kipris) getTotal(body io.Reader) (int, error) {
 func (k *kipris) searchNumber(body io.Reader) (result []string) {
 
 	var searchResult SearchResult
-	xml.NewDecoder(body).Decode(&searchResult)
+
+	err := xml.NewDecoder(body).Decode(&searchResult)
+	if err != nil {
+		return nil
+	}
 
 	items := searchResult.Body.Items.Item
 	result = make([]string, len(items))
+
 	for i, item := range items {
 		result[i] = item.ApplicationNumber
 	}
@@ -160,23 +165,16 @@ func (k *kipris) searchClaims(numbers []string) (result []model.CSVUnit, err err
 	for _, v := range numbers {
 		go func(number string) {
 
-			var claim model.CSVUnit
+			claim, ok := k.dbClaim(number)
 
-			dbResult := k.collection.FindOne(context.TODO(), bson.D{{"applicationNumber", number}})
-			if dbResult.Err() != nil {
-
-				var tuple ClaimTuple
-				dbResult.Decode(&tuple)
-				claim = tuple.Process()
-
-			} else {
+			if !ok {
 
 				q.Set("applicationNumber", number)
 				request.URL.RawQuery = q.Encode()
 
 				response, _ := k.Do(request)
 				defer response.Body.Close()
-				claim = k.searchClaim(response.Body)
+				claim = k.restClaim(response.Body)
 
 			}
 
@@ -193,7 +191,30 @@ func (k *kipris) searchClaims(numbers []string) (result []model.CSVUnit, err err
 
 }
 
-func (k *kipris) searchClaim(body io.Reader) model.CSVUnit {
+func (k *kipris) dbClaim(applicationNumber string) (claim model.CSVUnit, ok bool) {
+
+	ok = false
+	dbResult := k.collection.FindOne(context.TODO(), bson.D{{"applicationNumber", applicationNumber}})
+
+	if dbResult.Err() != nil {
+
+		var tuple ClaimTuple
+
+		err := dbResult.Decode(&tuple)
+		if err != nil {
+			return model.CSVUnit{}, false
+		}
+
+		claim = tuple.Process()
+		ok = true
+
+	}
+
+	return
+
+}
+
+func (k *kipris) restClaim(body io.Reader) model.CSVUnit {
 
 	var searchResult ClaimResult
 	xml.NewDecoder(body).Decode(&searchResult)
@@ -201,6 +222,7 @@ func (k *kipris) searchClaim(body io.Reader) model.CSVUnit {
 	applicationNumber := searchResult.Body.Items.BiblioSummaryInfoArray.BiblioSummaryInfo.ApplicationNumber
 	title := searchResult.Body.Items.BiblioSummaryInfoArray.BiblioSummaryInfo.InventionTitle
 	claims := searchResult.Body.Items.ClaimInfoArray.ClaimInfo
+
 	result := make([]string, len(claims))
 
 	for i, claim := range claims {
