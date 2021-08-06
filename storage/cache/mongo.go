@@ -2,7 +2,7 @@ package cache
 
 import (
 	"context"
-	"github.com/simp7/patent-middle-server/claimStorage"
+	"github.com/simp7/patent-middle-server/storage"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -13,7 +13,7 @@ type mongoDB struct {
 	collection *mongo.Collection
 }
 
-func Mongo(url string) (claimStorage.Cache, error) {
+func Mongo(url string) (storage.Cache, error) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -30,7 +30,7 @@ func Mongo(url string) (claimStorage.Cache, error) {
 
 }
 
-func (m *mongoDB) Find(applicationNumber string) (tuple claimStorage.ClaimTuple, ok bool) {
+func (m *mongoDB) Find(applicationNumber string) (tuple storage.ClaimTuple, ok bool) {
 
 	ok = false
 	dbResult := m.collection.FindOne(context.TODO(), bson.D{{"applicationNumber", applicationNumber}})
@@ -46,7 +46,7 @@ func (m *mongoDB) Find(applicationNumber string) (tuple claimStorage.ClaimTuple,
 
 }
 
-func (m *mongoDB) Register(tuple claimStorage.ClaimTuple) error {
+func (m *mongoDB) Register(tuple storage.ClaimTuple) error {
 	_, err := m.collection.InsertOne(context.TODO(), tuple.BSON())
 	return err
 }

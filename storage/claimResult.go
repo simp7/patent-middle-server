@@ -1,4 +1,4 @@
-package claimStorage
+package storage
 
 import "encoding/xml"
 

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/simp7/patent-middle-server/claimStorage"
+	"github.com/simp7/patent-middle-server/storage"
 	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http"
@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	testServer = New(80, claimStorage.Test())
+	testServer = New(80, storage.Test())
 	testClient = &http.Client{}
 	once       = sync.Once{}
 )

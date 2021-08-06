@@ -4,21 +4,19 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/logger"
-	"github.com/simp7/patent-middle-server/model"
 	"github.com/simp7/patent-middle-server/model/formula"
 	"github.com/simp7/patent-middle-server/nlp"
 	"os"
-	"time"
 )
 
 type server struct {
 	*gin.Engine
-	ClaimStorage
+	Storage
 	*logger.Logger
 	port string
 }
 
-func New(port int, storage ClaimStorage) *server {
+func New(port int, storage Storage) *server {
 
 	s := new(server)
 
@@ -27,7 +25,7 @@ func New(port int, storage ClaimStorage) *server {
 	s.Logger = logger.Init("server", true, false, os.Stdout)
 	s.Infof("Finish Initializing Logger")
 
-	s.ClaimStorage = storage
+	s.Storage = storage
 
 	s.port = fmt.Sprintf(":%d", port)
 
@@ -66,15 +64,10 @@ func (s *server) Search(c *gin.Context) {
 	selected := s.selectNLP(country)
 
 	s.Info("start search")
-	claims, err := s.GetClaims(input)
-	if err != nil {
-		s.Error(err)
-		c.Writer.WriteHeader(500)
-		return
-	}
+	claims := s.GetClaims(input)
 
 	s.Info("create file")
-	file, err := model.NewCSV(time.Now().String()+"@"+input, claims).File()
+	file, err := claims.File()
 	if err != nil {
 		s.Fatal(err)
 	}

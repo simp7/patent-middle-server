@@ -1,4 +1,4 @@
-package claimStorage
+package storage
 
 import (
 	"github.com/simp7/patent-middle-server/model"
