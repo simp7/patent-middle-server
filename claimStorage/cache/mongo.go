@@ -13,7 +13,7 @@ type mongoDB struct {
 	collection *mongo.Collection
 }
 
-func Mongo(url string) (*mongoDB, error) {
+func Mongo(url string) (claimStorage.Cache, error) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()

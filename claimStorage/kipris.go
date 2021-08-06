@@ -12,7 +12,7 @@ import (
 )
 
 var instance *kipris
-var once sync.Once
+var globalOnce sync.Once
 
 type kipris struct {
 	*http.Client
@@ -23,12 +23,9 @@ type kipris struct {
 	ClaimURL  string
 }
 
-func New(searchURL string, claimURL string, apiKey string, cacheDB Cache) (*kipris, error) {
+func New(searchURL string, claimURL string, apiKey string, cacheDB Cache) *kipris {
 
-	var err error
-
-	once.Do(func() {
-
+	globalOnce.Do(func() {
 		instance = &kipris{
 			&http.Client{},
 			logger.Init("server", true, false, os.Stdout),
@@ -37,10 +34,9 @@ func New(searchURL string, claimURL string, apiKey string, cacheDB Cache) (*kipr
 			searchURL,
 			claimURL,
 		}
-
 	})
 
-	return instance, err
+	return instance
 
 }
 

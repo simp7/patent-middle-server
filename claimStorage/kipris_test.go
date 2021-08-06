@@ -11,8 +11,7 @@ func TestKipris_GetClaims(t *testing.T) {
 
 	mongo, err := cache.Mongo("mongodb://localhost")
 	assert.NoError(t, err)
-	x, err := New("http://localhost:8080/", "http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getBibliographyDetailInfoSearch", os.Getenv("KIPRIS"), mongo)
-	assert.NoError(t, err)
+	x := New("http://localhost:8080/", "http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getBibliographyDetailInfoSearch", os.Getenv("KIPRIS"), mongo)
 
 	scenario := []struct {
 		input  string
