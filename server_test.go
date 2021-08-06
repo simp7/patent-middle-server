@@ -28,7 +28,10 @@ func TestServer_Welcome(t *testing.T) {
 func testFunc(t *testing.T, urlSuffix string, expected string) {
 
 	once.Do(func() {
-		go testServer.Start()
+		go func() {
+			err := testServer.Start()
+			assert.NoError(t, err)
+		}()
 		time.Sleep(1 * time.Second)
 	})
 
@@ -43,7 +46,10 @@ func testFunc(t *testing.T, urlSuffix string, expected string) {
 
 func isValidURL(t *testing.T, urlSuffix string) {
 	once.Do(func() {
-		go testServer.Start()
+		go func() {
+			err := testServer.Start()
+			assert.NoError(t, err)
+		}()
 		time.Sleep(1 * time.Second)
 	})
 	result, err := testClient.Get("http://localhost:80" + urlSuffix)

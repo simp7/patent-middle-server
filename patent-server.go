@@ -20,5 +20,6 @@ func main() {
 	fmt.Println(db)
 	s := New(80, db)
 	defer s.Close()
-	s.Start()
+	err = s.Start()
+	log.Fatal(err)
 }

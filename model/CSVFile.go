@@ -19,7 +19,10 @@ func (c CSVGroup) File() (file *os.File, err error) {
 	file, err = os.Create(c.id + ".csv")
 	if err != nil {
 		for _, v := range c.data {
-			fmt.Fprintln(file, v.Serialize())
+			_, err := fmt.Fprintln(file, v.Serialize())
+			if err != nil {
+				continue
+			}
 		}
 	}
 
