@@ -5,50 +5,30 @@ import (
 )
 
 type expression struct {
-	wordCache  []rune
-	result     *formula
-	input      []rune
-	stringIdx  int
-	includeIdx int
+	result *formula
 }
 
 func Interpret(target string) *formula {
 
-	i := &expression{make([]rune, 0), New(), []rune(target), 0, 0}
-	strLen := len(i.input)
+	i := &expression{New()}
 	idx := 0
 
-	for idx < strLen && i.input[idx] != '-' {
-		char := i.input[idx]
-		idx++
-		switch char {
+	blocks := strings.Split(target, "*")
+	for _, block := range blocks {
+		switch []rune(block)[0] {
+		case '!':
+			i.result.Exclude(strings.TrimPrefix(block, "!"))
 		case '(':
-			continue
-		case ')':
-			continue
-		case '+':
-			i.result.Alias(i.includeIdx, string(i.wordCache))
-			i.wordCache = make([]rune, 0)
-		case '*':
-			i.result.Alias(i.includeIdx, string(i.wordCache))
-			i.wordCache = make([]rune, 0)
-			i.includeIdx++
+			block = strings.Trim(block, "()")
+			words := strings.Split(block, "+")
+			for _, word := range words {
+				i.result.Alias(idx, word)
+			}
+			idx++
 		default:
-			i.wordCache = append(i.wordCache, char)
+			i.result.Alias(idx, block)
+			idx++
 		}
-	}
-
-	i.result.Alias(i.includeIdx, string(i.wordCache))
-
-	if idx != strLen {
-
-		rest := string(i.input[idx+1:])
-		excluded := strings.Split(rest, "-")
-
-		for _, word := range excluded {
-			i.result.Exclude(word)
-		}
-
 	}
 
 	return i.result

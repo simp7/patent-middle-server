@@ -1,62 +1,41 @@
-package claimDB
+package claimStorage
 
 import (
-	"context"
 	"encoding/xml"
 	"github.com/google/logger"
 	"github.com/simp7/patent-middle-server/model"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"io"
 	"net/http"
 	"os"
 	"strconv"
 	"sync"
-	"time"
 )
 
 var instance *kipris
 var once sync.Once
-var dbServer = "mongodb://localhost" // DB 서버 위치 지정
 
 type kipris struct {
-	collection *mongo.Collection
 	*http.Client
 	*logger.Logger
+	cache     Cache
 	apiKey    string
 	SearchURL string
 	ClaimURL  string
-	dbLock    sync.Mutex
 }
 
-func New(searchURL string, claimURL string, apiKey string) (*kipris, error) {
+func New(searchURL string, claimURL string, apiKey string, cacheDB Cache) (*kipris, error) {
 
 	var err error
 
 	once.Do(func() {
 
-		var client *mongo.Client
-
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		defer cancel()
-
-		client, err = mongo.Connect(ctx, options.Client().ApplyURI(dbServer))
-		if err != nil {
-			return
-		}
-
-		db := client.Database("Patent")
-		collection := db.Collection("claim")
-
 		instance = &kipris{
-			collection,
 			&http.Client{},
 			logger.Init("server", true, false, os.Stdout),
+			cacheDB,
 			apiKey,
 			searchURL,
 			claimURL,
-			sync.Mutex{},
 		}
 
 	})
@@ -107,6 +86,8 @@ func (k *kipris) searchNumbers(input string) (result []string, err error) {
 	for i := 1; i <= lastPage; i++ {
 		go func(page int) {
 
+			defer wg.Done()
+
 			q.Set("pageNo", strconv.Itoa(page))
 			request.URL.RawQuery = q.Encode()
 
@@ -120,7 +101,6 @@ func (k *kipris) searchNumbers(input string) (result []string, err error) {
 			}()
 
 			result = append(result, k.searchNumber(response.Body)...)
-			wg.Done()
 
 		}(i)
 	}
@@ -183,10 +163,16 @@ func (k *kipris) searchClaims(numbers []string) (result []model.CSVUnit, err err
 	for _, v := range numbers {
 		go func(number string) {
 
-			claim, ok := k.dbClaim(number)
+			var claim model.CSVUnit
+
 			defer wg.Done()
 
-			if !ok {
+			tuple, ok := k.cache.Find(number)
+			if ok {
+
+				claim = tuple.Process()
+
+			} else {
 
 				q.Set("applicationNumber", number)
 				request.URL.RawQuery = q.Encode()
@@ -212,32 +198,6 @@ func (k *kipris) searchClaims(numbers []string) (result []model.CSVUnit, err err
 
 }
 
-func (k *kipris) dbClaim(applicationNumber string) (claim model.CSVUnit, ok bool) {
-
-	ok = false
-
-	k.dbLock.Lock()
-	dbResult := k.collection.FindOne(context.TODO(), bson.D{{"applicationNumber", applicationNumber}})
-	k.dbLock.Unlock()
-
-	if dbResult.Err() != nil {
-
-		var tuple ClaimTuple
-
-		err := dbResult.Decode(&tuple)
-		if err != nil {
-			return model.CSVUnit{}, false
-		}
-
-		claim = tuple.Process()
-		ok = true
-
-	}
-
-	return
-
-}
-
 func (k *kipris) restClaim(body io.Reader) model.CSVUnit {
 
 	var searchResult ClaimResult
@@ -254,15 +214,8 @@ func (k *kipris) restClaim(body io.Reader) model.CSVUnit {
 	}
 
 	tuple := ClaimTuple{applicationNumber, title, result}
-	k.Error(k.putToDB(tuple))
+	k.Error(k.cache.Register(tuple))
 
 	return tuple.Process()
 
-}
-
-func (k *kipris) putToDB(tuple ClaimTuple) error {
-	k.dbLock.Lock()
-	_, err := k.collection.InsertOne(context.TODO(), tuple.BSON())
-	k.dbLock.Unlock()
-	return err
 }

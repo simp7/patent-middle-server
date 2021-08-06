@@ -1,0 +1,523 @@
+<response>
+    <header>
+        <requestMsgID/>
+        <responseTime>2021-08-05 15:48:56.4856</responseTime>
+        <responseMsgID/>
+        <successYN>Y</successYN>
+        <resultCode>00</resultCode>
+        <resultMsg>NORMAL SERVICE.</resultMsg>
+    </header>
+    <body>
+        <items>
+            <item>
+                <applicantName>가부시끼가이샤 히다치 세이사꾸쇼|가부시기가이샤 히다치초엘에스아이시스템즈</applicantName>
+                <applicationDate>19981001</applicationDate>
+                <applicationNumber>1019980041321</applicationNumber>
+                <astrtCont>반도체집적회로장치에 관한 것으로서, 설계나 관리를 간소화하면서 다양한 구성으로 되는 RAM을 구비한 반도체집적회로장치를 제공하기 위해서, 여러개의 매트 및 여러개의 매트에 대해서 공통으로 마련된 제어회로를 포함하고, 여러개의 매트는 각각 메모리어레이, 입력어드레스신호에 대해서 소정값의 가산 또는 감산동작을 실행하고 출력어드레스신호를 형성하는 연산회로 및 입력어드레스신호 및 출력어드레스신호중 어느 한쪽과 상기 여러개의 매트에 대해서 공통으로 부여되는 매트선택신호의 일치/불일치를 판정하는 비교회로를 구비하고, 여러개의 매트에 대응하는 여러개의 연산회로는 종렬형태로 접속되고, 비교회로의 판정결과가 일치인 경우 이 판정을 한 비교회로에 대응하는 매트내의 메모리어레이가 활성화되어 있다. 이와 같은 구성으로 하는 것에 의해서, 어드레스신호와 메모리액세스시에 입력된 어드레스신호를 비교회로에 의해 일치비교해서 각 메모리매트에 있어서 상기 일치신호에 의해 어드레스선택동작을 활성화시키는 구성을 취하는 것에 의해서, 각 메모리매트로서 표준화된 것을 사용할 수 있고 RAM모듈의 설계관리를 간소화할 수 있다는 효과가 얻어진다.</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=452306798ef1fd035bfb5ff666db4c9c0d81ea1410c778cbc0ead690e2c66bcc37071e963ea3e1b7b029a92d30286f5b</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e2d625a3dcb0746fe4eb5d6d2c6e2df8a444e18622e99f94cf168b84f27a44e6d1944f78a10ca29fed</drawing>
+                <indexNo>1</indexNo>
+                <inventionTitle>반도체집적회로장치</inventionTitle>
+                <ipcNumber>G11C 8/12|G11C 8/10|G11C 8/08|G11C 11/408</ipcNumber>
+                <openDate>19990525</openDate>
+                <openNumber>1019990036749</openNumber>
+                <publicationDate>20051209</publicationDate>
+                <publicationNumber/>
+                <registerDate>20050915</registerDate>
+                <registerNumber>1005168640000</registerNumber>
+                <registerStatus>소멸</registerStatus>
+            </item>
+            <item>
+                <applicantName>펨토매트릭스, 인코포레이티드.</applicantName>
+                <applicationDate>20190426</applicationDate>
+                <applicationNumber>1020207034153</applicationNumber>
+                <astrtCont>제2 고조파 생성(SHG)은 반도체 웨이퍼 상의 층상 반도체 구조 표면과 같은 표면을 조사하는데 사용할 수 있다. 경우에 따라서, SHG는 금속과 산화물 사이와 같은 계면 영역을 평가하는데 사용된다. 입력 편광, 출력 편광 및 입사 빔의 방위각과 같은 다양한 파라미터들이 상기 SHG 신호에 영향을 미칠 수 있다. 따라서, 이러한 파라미터들은 상기 웨이퍼 상의 패턴들의 상이한 유형들에 따라 달라진다. 다양한 테스트 구조들에 대한 SHG 계측은 샘플을 특성화하는데 도움이 될 수 있다.</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=897a14712ddc521174317b68324cc7978006fff84299186524311d1f2d221445e2bb8341639d9e9c55cc9c949a015af3f84a50d49ab606eb5c48b1d0eff7025e12c30fc2f3a185aa</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e22d01c5c32ba711cffaa94bae013d11bfc475507c2271650dd0ea588a657fef9396098d25eb24a104a483f4750c9d7c488538849e33cee928608a4c702955db9f</drawing>
+                <indexNo>2</indexNo>
+                <inventionTitle>반도체 장치들의 특성들을 판단하는 시스템들 및 방법들</inventionTitle>
+                <ipcNumber>H01L 21/66|H01L 27/06</ipcNumber>
+                <openDate>20210225</openDate>
+                <openNumber>1020210021292</openNumber>
+                <publicationDate/>
+                <publicationNumber/>
+                <registerDate/>
+                <registerNumber/>
+                <registerStatus>공개</registerStatus>
+            </item>
+            <item>
+                <applicantName>가부시키가이샤 한도오따이 에네루기 켄큐쇼</applicantName>
+                <applicationDate>20150825</applicationDate>
+                <applicationNumber>1020177008004</applicationNumber>
+                <astrtCont>테스트 회로를 포함하는 반도체 장치를 소형화한다. 상기 반도체 장치는 r개의 제 1 입력 단자(r은 2 이상의 정수), 제 2 입력 단자, r개의 기능 회로, 디멀티플렉서, 및 스위치 회로를 포함한다. 디멀티플렉서는 패스 트랜지스터 로직 회로이다. 디멀티플렉서의 r개의 출력 단자는 각개의 기능 회로의 입력 단자와 전기적으로 접속되고, 상기 입력 단자는 제 2 입력 단자와 전기적으로 접속된다. r개의 기능 회로의 입력 단자는 스위치 회로를 통하여 각개의 제 1 입력 단자와 전기적으로 접속된다. 예를 들어, 기능 회로의 검증 시에 검증용 신호를 제 2 입력 단자에 입력하여 디멀티플렉서를 동작시킨다. 디멀티플렉서에 의하여 하나의 검증용 신호를 r개의 기능 회로에 입력한다.</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=2ba38663aa11ff0f6ca91af6061a2e00a2f98aad61aa01f69ff67bd94cc9e8ee750f3932660efd268090d28d5063925f32b57bc7a66061047d87de0bae959746584c714fa96e6534</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e22d01c5c32ba711cf2830d673a028251d7aff68523c5fcf4af62e3cdd86b6eb7f396fb16eb78a017dbc586e72ae7a2e99ae2fc5585e66e9f4fdcaac0c466f90bb</drawing>
+                <indexNo>3</indexNo>
+                <inventionTitle>반도체 장치, 드라이버 IC, 표시 장치, 및 전자 장치</inventionTitle>
+                <ipcNumber>G09G 3/3225|G09G 3/3275|G09G 3/3291|H03K 17/00|H01L 27/32|H01L 29/786</ipcNumber>
+                <openDate>20170504</openDate>
+                <openNumber>1020170047314</openNumber>
+                <publicationDate/>
+                <publicationNumber/>
+                <registerDate/>
+                <registerNumber/>
+                <registerStatus>공개</registerStatus>
+            </item>
+            <item>
+                <applicantName>가부시키가이샤 한도오따이 에네루기 켄큐쇼</applicantName>
+                <applicationDate>20161107</applicationDate>
+                <applicationNumber>1020187013206</applicationNumber>
+                <astrtCont>반도체 장치는 컨피규레이션 데이터를 유지하고 컨피규레이션 데이터를 바탕으로 한 신호를 생성하는 기능을 가지는 컨피규레이션 메모리, 컨텍스트 전환을 제어하는 신호를 생성하는 기능을 가지는 컨텍스트 생성기, 컨피규레이션 메모리에서 생성된 신호에 따라 제 1 모드 또는 제 2 모드에서 동작하는 기능을 가지는 클록 생성기, 및 PLD를 포함한다. 클록 신호는 컨텍스트 생성기 및 클록 생성기에 입력된다. 클록 생성기는 제 1 모드에서 PLD에 클록 신호를 출력하고, 제 2 모드에서 PLD에 클록 신호를 출력하는 것을 정지한다.</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=2ba38663aa11ff0f6ca91af6061a2e009e006adf9ee48f370b6d77cc95f78f9d306c9b276ac24a412c3031ded6b54d115c5f129f3c3419bae9ebe1427e142fbecd1d79e1724109e5</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e22d01c5c32ba711cf3c810659df6dab42b48b1e5c62d9c9c4c0605cfb80deb1d6a877b75695e9bf073be0f60620b0bb5347ee9768a645851f4742f7ea9d60ee16</drawing>
+                <indexNo>4</indexNo>
+                <inventionTitle>반도체 장치, 전자 부품, 및 전자 기기</inventionTitle>
+                <ipcNumber>H03K 19/177</ipcNumber>
+                <openDate>20180717</openDate>
+                <openNumber>1020180081732</openNumber>
+                <publicationDate/>
+                <publicationNumber/>
+                <registerDate/>
+                <registerNumber/>
+                <registerStatus>공개</registerStatus>
+            </item>
+            <item>
+                <applicantName>가부시끼가이샤 히다치 세이사꾸쇼</applicantName>
+                <applicationDate>19841224</applicationDate>
+                <applicationNumber>1019840008298</applicationNumber>
+                <astrtCont>내용 없음</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=452306798ef1fd035bfb5ff666db4c9cb1d563beadf9493bb0e1351d4f6208553498c91565f5ff23697a11e26a9c2bda</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e2d625a3dcb0746fe49e3cdfb9399cead621ddd6a35e071255c2df091788d19e625f87ce56bf8e61ef</drawing>
+                <indexNo>5</indexNo>
+                <inventionTitle>반도체기억장치</inventionTitle>
+                <ipcNumber>G11C 11/56|G11C 11/4091|G11C 7/06|G11C 29/30|G06F 11/10</ipcNumber>
+                <openDate>19850821</openDate>
+                <openNumber>1019850005121</openNumber>
+                <publicationDate>19921226</publicationDate>
+                <publicationNumber>1019920011043</publicationNumber>
+                <registerDate>19930331</registerDate>
+                <registerNumber>1000610430000</registerNumber>
+                <registerStatus>소멸</registerStatus>
+            </item>
+            <item>
+                <applicantName>가부시끼가이샤 히다치 세이사꾸쇼</applicantName>
+                <applicationDate>19900202</applicationDate>
+                <applicationNumber>1019900001236</applicationNumber>
+                <astrtCont>내용없음.</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=452306798ef1fd035bfb5ff666db4c9cd9adbf94146f6a50c839d4a49c4b42a1701b9d952d05b0e35437d694ead353c9</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e2d625a3dcb0746fe409e531ec752930ddc617c174f7c9845cfcb885c5e7df8e41ca46c50c78ccc75f</drawing>
+                <indexNo>6</indexNo>
+                <inventionTitle>대규모반도체집적회로장치와그결함구제방법</inventionTitle>
+                <ipcNumber>G11C 11/411</ipcNumber>
+                <openDate>19901026</openDate>
+                <openNumber>1019900015161</openNumber>
+                <publicationDate>19990201</publicationDate>
+                <publicationNumber/>
+                <registerDate>19980807</registerDate>
+                <registerNumber>1001588810000</registerNumber>
+                <registerStatus>소멸</registerStatus>
+            </item>
+            <item>
+                <applicantName>미쓰비시덴키 가부시키가이샤</applicantName>
+                <applicationDate>19911017</applicationDate>
+                <applicationNumber>1019910018341</applicationNumber>
+                <astrtCont>내용 없음</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=452306798ef1fd035bfb5ff666db4c9c300a8d24ba002902e0e5309c485ae8e9629976a56cde9c5f65b5fda604028e8a</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e2d625a3dcb0746fe47ffb885893ce8d76a265ab3756d68470485ec0b8b9c84f6d0ce17c205770b78c</drawing>
+                <indexNo>7</indexNo>
+                <inventionTitle>다층콘덴서유전체막이있는반도체장치및그제어방법</inventionTitle>
+                <ipcNumber>H01L 27/108|G11C 11/4074|G11C 11/404</ipcNumber>
+                <openDate>19920528</openDate>
+                <openNumber>1019920008939</openNumber>
+                <publicationDate>19960619</publicationDate>
+                <publicationNumber>1019960008027</publicationNumber>
+                <registerDate>19960907</registerDate>
+                <registerNumber>1001045550000</registerNumber>
+                <registerStatus>소멸</registerStatus>
+            </item>
+            <item>
+                <applicantName>바이올린 메모리 인코포레이티드</applicantName>
+                <applicationDate>20080828</applicationDate>
+                <applicationNumber>1020167005693</applicationNumber>
+                <astrtCont>복수의 메모리 모듈이 메모리 제어기에 연결되어 있는, 메모리 시스템이 설명되어 있다. 각각의 메모리 모듈의 전력 상태는, 메모리 모듈에 의해 수행되는 기능에 따라, 제어된다. 어떠한 판독 또는 기록 동작이 특정 메모리 모둘 상에 수행되지 않는 경우, 회로소자의 적어도 일부는 저전력 모드로 동작될 수 있다. 메모리 모듈에 결합된 메모리 회로는 클록을 불활성함으로써 저전력 모드에 있을 수 있다. 메모리 회로 데이터 무결성은 리프레시 명령을 발행함으로써 보장될 수 있는 반면 메모리 회로가 저전력 모드에 있는 경우, 클록을 활성하고, 리프레시 명령을 발행하고, 리프레시 동작 완료 후에 클록을 불활성함으로써 보장될 수 있다.</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=2ba38663aa11ff0f6ca91af6061a2e006ddaf164acbafd488b9804bed03f607df730e54f88947722f62baa25b28f8083bdd59ef17b61eef05643f0d468fef57bc144cd719b016eaa</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e22d01c5c32ba711cf951cb4729b7c8c406e9c7bb5fc71eabb7b549533f29096422a2807272f5c606511fa71623205a2f22c3af8298cba06156c8abd2ce860b04c</drawing>
+                <indexNo>8</indexNo>
+                <inventionTitle>메모리 전력 관리</inventionTitle>
+                <ipcNumber>G11C 11/4074|G11C 11/406|G11C 11/4076|G11C 5/04|G06F 1/32|G06F 3/06</ipcNumber>
+                <openDate>20160321</openDate>
+                <openNumber>1020160031048</openNumber>
+                <publicationDate>20170227</publicationDate>
+                <publicationNumber/>
+                <registerDate>20170221</registerDate>
+                <registerNumber>1017105460000</registerNumber>
+                <registerStatus>소멸</registerStatus>
+            </item>
+            <item>
+                <applicantName>가부시키가이샤 한도오따이 에네루기 켄큐쇼</applicantName>
+                <applicationDate>20120516</applicationDate>
+                <applicationNumber>1020120051923</applicationNumber>
+                <astrtCont>본 발명은 새로운 로직 인 메모리 구조를 제공한다. 또한, 소비 전력이 더 낮은 신호 처리 회로를 제공한다. 또한, 소비 전력이 더 낮은 전자 기기를 제공한다. 오프 전류가 낮은 트랜지스터를 사용하여 기억 소자를 구성함으로써 기억 기능과 연산 기능을 조합한 회로를 제공한다. 오프 전류가 낮은 트랜지스터를 사용함으로써 오프 전류가 낮은 트랜지스터의 소스 및 드레인 중 하나와 다른 트랜지스터의 게이트 사이 등에 전하를 유지할 수 있다. 따라서, 오프 전류가 매우 낮은 트랜지스터의 소스 및 드레인 중 하나와 다른 트랜지스터의 게이트 사이의 노드 등을 기억 소자로서 사용할 수 있다. 또한, 가산기의 동작에 따른 누설 전류를 현저히 저감시킬 수 있다. 이로써, 소비 전력이 낮은 신호 처리 회로를 구축할 수 있다.</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=2ba38663aa11ff0f6ca91af6061a2e003f5b64a11a399b965b311a76eed821f45a6523505434f7c64d0ad7c2e4956334a267b67d021b3103158fbe2bfc7bf0906193de031acbfd1a</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e22d01c5c32ba711cf74ce25b368ca829bb7ab35746bb60388e7a3f0dfb802b82b5343018f052fc188b51ef470c8d9a2d89311bc7d379f67f5a482d8f35db0eba4</drawing>
+                <indexNo>9</indexNo>
+                <inventionTitle>전자 기기</inventionTitle>
+                <ipcNumber>G11C 7/00|G11C 5/14|H01L 29/786</ipcNumber>
+                <openDate>20121128</openDate>
+                <openNumber>1020120130054</openNumber>
+                <publicationDate>20190426</publicationDate>
+                <publicationNumber/>
+                <registerDate>20190422</registerDate>
+                <registerNumber>1019732100000</registerNumber>
+                <registerStatus>등록</registerStatus>
+            </item>
+            <item>
+                <applicantName>(주)한국에센에스</applicantName>
+                <applicationDate>20130513</applicationDate>
+                <applicationNumber>1020130053561</applicationNumber>
+                <astrtCont>매질통신 및 이동통신망 또는 인터넷을 이용하여 원격자동검침 및 생활보안감시 복합서비스를 제공하는 방법과 시스템이 개시된다. 원격검침단말기는 계량기의 계량값을 자동으로 검침하여 그 검침된 계량값을 포함하는 검침정보를 매질파동신호에 실어 송신한다. 생활보안감시단말기는 생활보안감시센서들이 제공하는 생활보안관련 이벤트 검출신호를 포함하는 생활보안정보를 매질파동신호에 실어 송신한다. 중계기는 하나 이상의 원격검침단말기 및 하나 이상의 생활보안감시단말기가 송출한 매질파동신호를 수신하고 디코딩하여 검침정보와 생활보안정보를 추출한 다음, 유무선 통신망을 통해 외부의 지정된 원격정보공유장치에게 전송한다.</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=2ba38663aa11ff0f6ca91af6061a2e00d028c82f922fa5ec9fec383be194ab4060ee94f750a3df069bbd045b623a2d4979a185d75badbf61f26a7418e98e146d7ef76568b4763723</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e22d01c5c32ba711cfadb55247409793fd0b7cc6de67ea55446494add9b75b934e5ce9856b6a2f4dd332edfd9bb87d91f6a1efdc3fe9359b99c4e9de8a94eb62dd</drawing>
+                <indexNo>10</indexNo>
+                <inventionTitle>매질통신 및 이동통신 또는 인터넷을 이용한 원격자동검침 및 생활보안감시 복합서비스 제공방법 및 이를 위한 시스템</inventionTitle>
+                <ipcNumber>G08C 23/00|G08B 13/00|G08B 17/00</ipcNumber>
+                <openDate>20141125</openDate>
+                <openNumber>1020140134752</openNumber>
+                <publicationDate/>
+                <publicationNumber/>
+                <registerDate/>
+                <registerNumber/>
+                <registerStatus>포기</registerStatus>
+            </item>
+            <item>
+                <applicantName>이정연</applicantName>
+                <applicationDate>20131217</applicationDate>
+                <applicationNumber>1020130157001</applicationNumber>
+                <astrtCont>광파통신 및 인터넷을 이용하여 원격자동검침 및 생활보안감시 복합서비스를 제공하는 방법과 시스템이 개시된다. 원격검침단말기는 계량기의 계량값을 자동으로 검침하여 그 검침된 계량값을 포함하는 검침정보를 광파신호에 실어 송신한다. 생활보안감시단말기는 생활보안감시센서들이 제공하는 생활보안관련 이벤트 검출신호를 포함하는 생활보안정보를 광파신호에 실어 송신한다. 중계기는 하나 이상의 원격검침단말기 및 하나 이상의 생활보안감시단말기가 송출한 신호를 수신하고 디코딩하여 검침정보와 생활보안정보를 추출한 다음, 유무선 통신망을 통해 외부의 지정된 원격정보공유장치에게 전송한다.</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=2ba38663aa11ff0f6ca91af6061a2e0088ae6db7798c3cdbb53b973945aed50ff2349bc5590bdbf959b04d6796683a8c736c9a6ff43a3f976ade66ece773ee5d74ee206cfdbd927d</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e22d01c5c32ba711cf4fa88cf14a8878761a01e8a3480aac9d9edc0513e583e1ed8f84353cc540bc956fb2def289e201cd6b24b99e62936f9c00d149a0001deb28</drawing>
+                <indexNo>11</indexNo>
+                <inventionTitle>광파통신 및 이동통신 또는 인터넷을 이용한 원격자동검침 및 생활보안감시 복합서비스 제공방법 및 이를 위한 시스템</inventionTitle>
+                <ipcNumber>G06Q 50/06|G06Q 50/10</ipcNumber>
+                <openDate>20150626</openDate>
+                <openNumber>1020150071050</openNumber>
+                <publicationDate/>
+                <publicationNumber/>
+                <registerDate/>
+                <registerNumber/>
+                <registerStatus>거절</registerStatus>
+            </item>
+            <item>
+                <applicantName>가부시키가이샤 히타치세이사쿠쇼</applicantName>
+                <applicationDate>19990312</applicationDate>
+                <applicationNumber>1020007008889</applicationNumber>
+                <astrtCont>입력신호에 대응하여 스위칭수단을 스위치 제어하고, 복수로 이루어지는 정전류원 트랜지스터에서 형성된 정전류를 선택적으로 부하저항에 공급하여 아날로그 출력전압을 형성하는 DA변환회로에 있어서, 상기 정전류원 트랜지스터를 상기 출력전압이 절대치적으로 크게 됨에 따라 포화영역에서 비포화영역까지의 동작범위에서 동작시킴과 동시에, 상기 복수의 정전류원 트랜지스터중, 상기 비포화영역에서의 동작에 의한 전류가 상기 스위칭수단에 의해 선택되는 것은, 이러한 비포화영역에서의 동작에 의한 전류감소분을 보충하도록 그 사이즈를 크게 형성한다.</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=452306798ef1fd035bfb5ff666db4c9c58f3b5fd592ecaa9820ae878fd26e8f10f30091e8fa88f0821101102e52bac68</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e2d625a3dcb0746fe4fc72e94ad3dae8076711b340e5a865b1c2e149ff29c463f7a57785558a65e894</drawing>
+                <indexNo>12</indexNo>
+                <inventionTitle>DA변환회로</inventionTitle>
+                <ipcNumber>H03M 1/66</ipcNumber>
+                <openDate>20010910</openDate>
+                <openNumber>1020010086237</openNumber>
+                <publicationDate/>
+                <publicationNumber/>
+                <registerDate/>
+                <registerNumber/>
+                <registerStatus>취하</registerStatus>
+            </item>
+            <item>
+                <applicantName>인텔 코포레이션</applicantName>
+                <applicationDate>20180917</applicationDate>
+                <applicationNumber>1020207007638</applicationNumber>
+                <astrtCont>데이터 신호를 생성하기 위한 장치는 데이터 신호를 생성하도록 구성된 처리 회로를 포함하고, 데이터 신호는 제 1 타입의 제 1 신호 에지, 제 2 타입의 제 2 신호 에지 및 제 1 타입의 제 3 신호 에지의 시퀀스를 포함하고, 제 1 신호 에지 및 제 2 신호 에지는 송신될 제 1 데이터에 대응하는 제 1 기간에 의해 분리되고, 제 2 신호 에지 및 제 3 신호 에지는 송신될 제 2 데이터에 대응하는 제 2 기간에 의해 분리된다. 출력 인터페이스 회로는 데이터 신호를 출력하도록 구성된다.</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=2ba38663aa11ff0f6ca91af6061a2e00a90c8b47e792ea0a6db5e0d7a8e5133429c488da1e02c23de7d6d92924459aa04e1b370be495a611004a251860ca9ec2d1081e70a73e0700</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e22d01c5c32ba711cf506d9d8184437a9906e826a9f1ef3e67211a750a858c6f1110daf53592d86e20435bc630041fe9db63bfedfd3a33061dfe8af95f774e17c8</drawing>
+                <indexNo>13</indexNo>
+                <inventionTitle>시간 인코딩된 데이터 통신 프로토콜, 데이터 신호를 생성 및 수신하기 위한 장치 및 방법</inventionTitle>
+                <ipcNumber>H04L 25/02|H04L 25/49|H04L 7/00|H04L 1/00|H04L 1/20</ipcNumber>
+                <openDate>20200504</openDate>
+                <openNumber>1020200045507</openNumber>
+                <publicationDate/>
+                <publicationNumber/>
+                <registerDate/>
+                <registerNumber/>
+                <registerStatus>공개</registerStatus>
+            </item>
+            <item>
+                <applicantName>캐논 가부시끼가이샤</applicantName>
+                <applicationDate>19980311</applicationDate>
+                <applicationNumber>1019980008038</applicationNumber>
+                <astrtCont>본 발명은 정전 잠상의 가시화에 사용되는 정전 잠상 현상용 토너 및 상기 토너를 사용하는 화상 형성 방법에 관한 것이다. 본 발명 토너의 테트라히드로푸란 가용성 물질은 겔 투과 크로마토그래피로 측정한 분자량 분포에서 분자량 1,000 내지 2,000 미만의 영역에서 적어도 하나의 피크를 갖고, 분자량 2,000 내지 300,000의 영역에서 적어도 하나의 피크를 갖고, 90,000 내지 2,000,000의 중량 평균 분자량 (Mw)을 갖는다. 분자량 800 이상의 영역의 분자량 적분치(T), 분자량 2,000 내지 5,000의 영역의 분자량 적분치(L) 및 분자량 300,000 이상의 영역의 분자량 적분치(H)는 관계식 1 ≤ (L/T) x 100 ≤ 15, 및 3 ≤ (H/T) x 100 ≤ 30을 만족시킨다. 또한, 이러한 토너를 사용하는 화상 형성 방법도 제공된다.</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=452306798ef1fd035bfb5ff666db4c9c0d81ea1410c778cb8e8d4c1cabf3709a9ce11a27232a8f2fb980239eae45e01e</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e2d625a3dcb0746fe4eb5d6d2c6e2df8a4da057d310de947d782a8d94c57c241e9241bddb9375f86d8</drawing>
+                <indexNo>14</indexNo>
+                <inventionTitle>정전 화상 현상용 토너 및 화상 형성 방법</inventionTitle>
+                <ipcNumber>G03G 9/00</ipcNumber>
+                <openDate>19981125</openDate>
+                <openNumber>1019980080114</openNumber>
+                <publicationDate>20000701</publicationDate>
+                <publicationNumber/>
+                <registerDate>20000415</registerDate>
+                <registerNumber>1002610540000</registerNumber>
+                <registerStatus>소멸</registerStatus>
+            </item>
+            <item>
+                <applicantName>미쯔비시 케미컬 주식회사</applicantName>
+                <applicationDate>20140227</applicationDate>
+                <applicationNumber>1020157021521</applicationNumber>
+                <astrtCont>내구성과 용량, 저항, 출력 특성 등의 성능에 관해, 종합적인 성능의 밸런스가 좋은 전지를 얻을 수 있는 비수계 전해액과, 이 비수계 전해액을 이용한 비수계 전해액 이차 전지를 제공하는 것을 과제로 한다. 금속 이온을 흡장ㆍ방출할 수 있는 정극 및 부극을 구비하는 비수계 전해액 전지용의 비수계 전해액으로서, 그 비수계 전해액이 전해질 및 비수계 용매와 함께, 하기 일반식(A)로 표시되는 구조를 포함하는 화합물에 더하여, (1) 하기 일반식(B)로 표시되는 화합물 등, 또는 (2) 비수계 전해액의 전량에 대하여 0.01〜50.0 질량%의 불소 원자를 갖는 고리형 카르보네이트 화합물을 함유한다. (식(A) 중, R 1 〜R 3 은, 각각 독립적으로 유기기이다.) (식(B) 중, R 4 , R 5 및 R 6 은, 각각 독립적으로, 할로겐 원자로 치환되어 있어도 좋은 탄소수 1〜12의 알킬기, 알케닐기 또는 알키닐기이고, n은 0〜6의 정수.)</astrtCont>
+                <bigDrawing/>
+                <drawing/>
+                <indexNo>15</indexNo>
+                <inventionTitle>비수계 전해액 및 그것을 이용한 비수계 전해액 전지</inventionTitle>
+                <ipcNumber>H01M 10/0567|H01M 10/0525|H01M 4/38|H01M 4/587</ipcNumber>
+                <openDate>20151110</openDate>
+                <openNumber>1020150125928</openNumber>
+                <publicationDate>20201019</publicationDate>
+                <publicationNumber/>
+                <registerDate>20201013</registerDate>
+                <registerNumber>1021675790000</registerNumber>
+                <registerStatus>등록</registerStatus>
+            </item>
+            <item>
+                <applicantName>인터실 아메리카스 엘엘씨</applicantName>
+                <applicationDate>20011221</applicationDate>
+                <applicationNumber>1020037009059</applicationNumber>
+                <astrtCont>DC 귀환 제어루프와 이득 귀환 제어루프를 포함하고 제로 중간주파수 구조에서 형성된 무선 통신 장치의 제어작동방법. 그 방법은 대응하는 수신신호 R을 생성하기 위해 무선 매체의 에너지를 처리하는 단계, 소정의 측정창을 통해 수신신호를 감시하는 단계, 채널의 변화된 조건을 검출하는 단계, 일정한 이득 수준으로 이득 귀환 제어루프를 유지하는 단계 그리고 이득 루프가 일정하게 유지되는 동안에 수신신호 R D 를 위한 안정한 DC값을 찾기 위한 시도로서 DC 루프를 실행하는 단계를 포함한다. 제 1 상태는, DC가 제어되는 동안 이득이 일정하게 유지되는, DC 포화상태이다. 제 2 상태는, 패킷의 종료를 검출한 후에 이전에 저장된 이득의 설정을 이득 루프에 적용하는, 빈 채널 측정이다. 제 3 상태는, 패킷의 전송 후에 예측된 확인 패킷의 수신을 대비한 것으로, 다시 이전의 저장된 이득 설정이 이득 루프에 적용되고 DC가 찾아지는 것이다. 제어, 귀환, 패킷, 우선, 획득, 중간, 주파수, 제로, 이득, 루프</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=452306798ef1fd035bfb5ff666db4c9cc65478d250ecc07420d0ec7ca4aeef38f03d37d29f298140f7571b925b9f28cd</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e2d625a3dcb0746fe48a5b4c0b52d0e8096b0735aa8a4f9f495d29db50c513f33335645f3a49aa8e3f</drawing>
+                <indexNo>16</indexNo>
+                <inventionTitle>패킷 획득 및 채널 추적을 사용한 제로 중간주파수 수신기</inventionTitle>
+                <ipcNumber>H04B 1/30</ipcNumber>
+                <openDate>20030806</openDate>
+                <openNumber>1020030065590</openNumber>
+                <publicationDate/>
+                <publicationNumber/>
+                <registerDate/>
+                <registerNumber/>
+                <registerStatus>취하</registerStatus>
+            </item>
+            <item>
+                <applicantName>가부시키가이샤 히타치세이사쿠쇼</applicantName>
+                <applicationDate>19990929</applicationDate>
+                <applicationNumber>1020007009164</applicationNumber>
+                <astrtCont>내부에 보존한 비밀 정보를 추정하기 위한 공격 방법인 TA(Timing Attack), DPA(Differential Power Analysis), SPA(Simple Power Analysis) 등에 견딜 수 있는 IC 카드 등의 secure cryptographic device를 제공하기 위해서, 내부에 유지된 비밀 정보나 그 비밀 정보를 사용한 연산을 행할 때, 그 비밀 정보나 연산 중에 이용되는 다른 정보를 복수의 표현 방법으로 나타내어 연산함으로써, 연산을 행할 때마다 연산 처리 방법이 다르도록 하고 연산 시간이나 발생하는 전자파의 세기나 소비 전류가 다르도록 한다. IC 카드, 비밀 키, 복호용 공통키, TA, DPA, SPA, 타원 곡선 암호, 리더 기록기</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=452306798ef1fd035bfb5ff666db4c9c58f3b5fd592ecaa93d11c1f5537c44f504ccb69a5e9b6fda7b962be75b2fa356</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e2d625a3dcb0746fe4fc72e94ad3dae8078ff3d8d4a9cf274a58dd4ed37c5a59b3b04d47da5da2cadf</drawing>
+                <indexNo>17</indexNo>
+                <inventionTitle>비밀 정보의 처리 장치, 비밀 정보의 처리 프로그램을 기록한 기록 매체 및 처리 시스템</inventionTitle>
+                <ipcNumber>G06F 21/72|G06F 21/75|G06F 21/77|H04L 9/00|H04L 9/30|H04L 9/32|G06F 7/72</ipcNumber>
+                <openDate>20020404</openDate>
+                <openNumber>1020020025630</openNumber>
+                <publicationDate>20030226</publicationDate>
+                <publicationNumber/>
+                <registerDate>20030212</registerDate>
+                <registerNumber>1003736690000</registerNumber>
+                <registerStatus>소멸</registerStatus>
+            </item>
+            <item>
+                <applicantName>삼성디스플레이 주식회사</applicantName>
+                <applicationDate>20070611</applicationDate>
+                <applicationNumber>1020070056451</applicationNumber>
+                <astrtCont>X-ray 검출기용 박막 트랜지스터 어레이 기판은 절연 기판 위에 형성되어 있으며 게이트선 및 게이트 전극을 포함하는 게이트 배선, 게이트 절연막 상부에 형성되어 있으며 데이터선, 소스 전극 및 드레인 전극을 포함하는 데이터 배선, 드레인 전극과 연결되어 있는 하부 전극, 하부 전극 상부에 형성되어 있는 광 도전체층 및 광 도전체층 상부에 형성되어 있는 상부 전극을 포함하는 광 다이오드, 데이터 배선 및 광 다이오드를 덮고 있는 유기절연막, 및 유기절연막 상부에 형성되어 있으며 상부 전극과 연결되어 있는 바이어스 배선을 포함한다. 바이어스 배선은 데이터선과 평행한 방향으로 형성되며, 적어도 일부가 데이터선과 중첩되도록 근접하게 형성될 수 있다. 또한, 바이어스 배선과 수직으로 교차하는 보조 바이어스 배선이 추가로 형성될 수 있다. 따라서, 개구율을 증가시키고, 신뢰성을 향상시킬 수 있다.</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=2ba38663aa11ff0f6ca91af6061a2e00cd504185948a4017889805a14240349cfeec3026a8836c00ca768f0c48458777baa4e0936cec65c05f51cad10f7ed867e65a14492896cfa1</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e22d01c5c32ba711cfd2c83bf00c53528c46b4dd5c1878e7655eb3a537d6955c68e9983aa0aecf70ce7840a8367d60598a5879a3fb7fe0e6a6e3c8bd1280f36f79</drawing>
+                <indexNo>18</indexNo>
+                <inventionTitle>엑스레이 검출기용 박막 트랜지스터 어레이</inventionTitle>
+                <ipcNumber>H01L 29/786</ipcNumber>
+                <openDate>20081216</openDate>
+                <openNumber>1020080108642</openNumber>
+                <publicationDate>20140110</publicationDate>
+                <publicationNumber/>
+                <registerDate>20140106</registerDate>
+                <registerNumber>1013507950000</registerNumber>
+                <registerStatus>등록</registerStatus>
+            </item>
+            <item>
+                <applicantName>테스트 어드밴티지 인코포레이티드</applicantName>
+                <applicationDate>20050207</applicationDate>
+                <applicationNumber>1020067018204</applicationNumber>
+                <astrtCont>본 발명의 다양한 양태에 따른 데이터 분석 방법 및 장치는 컴포넌트들에 대한 테스트 데이터의 특성에 의해 안내되는 컴포넌트 제조 프로세스의 특성을 자동으로 식별하도록 구성되어 있다. 데이터 분석, 컴포넌트, 진화적 알고리즘</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=452306798ef1fd035bfb5ff666db4c9c151eb63b151c16385f9fa737ffe6847563ec9fda56a369d3512e794692b963f7</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e2d625a3dcb0746fe46df673402656bcf2b11e7ae9b7870346e0c451d33ed823cec3f7a6029e69ba69</drawing>
+                <indexNo>19</indexNo>
+                <inventionTitle>데이터 분석을 위한 방법 및 장치</inventionTitle>
+                <ipcNumber>G06F 17/00|G06F 11/22|G06F 11/28</ipcNumber>
+                <openDate>20070214</openDate>
+                <openNumber>1020070018880</openNumber>
+                <publicationDate/>
+                <publicationNumber/>
+                <registerDate/>
+                <registerNumber/>
+                <registerStatus>거절</registerStatus>
+            </item>
+            <item>
+                <applicantName>마이크론 테크놀로지, 인크</applicantName>
+                <applicationDate>20170601</applicationDate>
+                <applicationNumber>1020197035657</applicationNumber>
+                <astrtCont>피로상태의 강유전성 메모리 셀을 복구하기 위한 방법, 시스템 및 디바이스가 설명된다. 복구 전압은 반복된 액세스(판독 또는 기입) 작동에 기인하여 피로되는 강유전성 메모리 셀에 인가될 수도 있다. 복구 전압은 액세스 전압보다 더 큰 진폭을 가질 수도 있고 그리고 다수의 전압 펄스 또는 일정한 전압을 포함할 수도 있다. 복구 작동은 메모리 어레이가 작동될 때 백그라운드에서 수행될 수도 있거나 또는 복구 작동은 호스트 디바이스가 메모리 어레이를 활발히 사용하지 않을 때 수행될 수도 있다. 복구 작동은 수개의 사례 간에 분산된 펄스의 이산 열을 포함할 수도 있다.</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=2ba38663aa11ff0f6ca91af6061a2e00e1bfea54f1881f702d2733382da0f3b187ae87ea769789e32df9fc57931096e6b35e0b1d0c6fb6724bf1eb4485c23dd0d0b4c822bbb8faea</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e22d01c5c32ba711cf794d1f3fc183733bad081da65c7488e13b944edae939f18bd085502533e6a40bfbfdf0652201d64384875cecbde9fccefadbc89dc3d3854c</drawing>
+                <indexNo>20</indexNo>
+                <inventionTitle>강유전성 메모리 셀 복구</inventionTitle>
+                <ipcNumber>G11C 11/22</ipcNumber>
+                <openDate>20191209</openDate>
+                <openNumber>1020190136138</openNumber>
+                <publicationDate/>
+                <publicationNumber/>
+                <registerDate/>
+                <registerNumber/>
+                <registerStatus>공개</registerStatus>
+            </item>
+            <item>
+                <applicantName>미쯔비시 케미컬 주식회사|엠유 아이오닉 솔류션즈 주식회사</applicantName>
+                <applicationDate>20130808</applicationDate>
+                <applicationNumber>1020157002235</applicationNumber>
+                <astrtCont>본 발명에서는, 사이클 특성・부하 특성을 향상시키고, 가스 발생을 억제하는 비수계 전해액과, 이 비수계 전해액을 사용한 비수계 전해액 이차 전지를 제공하는 것을 과제로 한다. 본 발명은 금속 이온을 흡장・방출할 수 있는 활성 물질을 갖는 정극 및 부극을 구비하는 비수계 전해액 이차 전지에 사용되는 비수계 전해액이며, 하기 화학식 (1)로 표시되는 화합물을 함유하며, 불포화 결합을 갖는 환상 카르보네이트 화합물 등의 특정한 화합물군으로부터 선택되는 적어도 1종 또는 특정량의 카르복실산을 더 함유하는 비수계 전해액에 관한 것이다.</astrtCont>
+                <bigDrawing/>
+                <drawing/>
+                <indexNo>21</indexNo>
+                <inventionTitle>비수계 전해액 및 그것을 사용한 비수계 전해액 이차 전지</inventionTitle>
+                <ipcNumber>H01M 10/0567|H01M 10/0569|H01M 4/36|H01M 4/587|H01M 4/13|H01M 4/133|H01M 10/0525</ipcNumber>
+                <openDate>20150422</openDate>
+                <openNumber>1020150043298</openNumber>
+                <publicationDate>20210114</publicationDate>
+                <publicationNumber/>
+                <registerDate>20210107</registerDate>
+                <registerNumber>1022022210000</registerNumber>
+                <registerStatus>등록</registerStatus>
+            </item>
+            <item>
+                <applicantName>마이크론 테크놀로지, 인크</applicantName>
+                <applicationDate>20170601</applicationDate>
+                <applicationNumber>1020197000205</applicationNumber>
+                <astrtCont>피로상태의 강유전성 메모리 셀을 복구하기 위한 방법, 시스템 및 디바이스가 설명된다. 복구 전압은 반복된 액세스(판독 또는 기입) 작동에 기인하여 피로되는 강유전성 메모리 셀에 인가될 수도 있다. 복구 전압은 액세스 전압보다 더 큰 진폭을 가질 수도 있고 그리고 다수의 전압 펄스 또는 일정한 전압을 포함할 수도 있다. 복구 작동은 메모리 어레이가 작동될 때 백그라운드에서 수행될 수도 있거나 또는 복구 작동은 호스트 디바이스가 메모리 어레이를 활발히 사용하지 않을 때 수행될 수도 있다. 복구 작동은 수개의 사례 간에 분산된 펄스의 이산 열을 포함할 수도 있다.</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=2ba38663aa11ff0f6ca91af6061a2e002f02a94676d49738458aa6732fbd6e2943c1dc4d1cc827b9065ebf5298b172eeb317f9c15315f5140f681c661e16138c965a3b7a7e56b0e3</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e22d01c5c32ba711cfd902d10decc1b840283695e6cf0b2090959240e1b3f07ae33977eebc31b14cab5f01d6da04e894992edfad0c6288f7b4a47c44e6f25f0abf</drawing>
+                <indexNo>22</indexNo>
+                <inventionTitle>강유전성 메모리 셀 복구</inventionTitle>
+                <ipcNumber>G11C 11/22</ipcNumber>
+                <openDate>20190115</openDate>
+                <openNumber>1020190005254</openNumber>
+                <publicationDate>20191210</publicationDate>
+                <publicationNumber/>
+                <registerDate>20191204</registerDate>
+                <registerNumber>1020546310000</registerNumber>
+                <registerStatus>등록</registerStatus>
+            </item>
+            <item>
+                <applicantName>캐논 가부시끼가이샤</applicantName>
+                <applicationDate>19980904</applicationDate>
+                <applicationNumber>1019980036448</applicationNumber>
+                <astrtCont>토너는 결착 수지, 착색제 및 왁스로 구성된다. 결착 수지는 결착 수지의 중량을 기준으로 0.1 중량% 내지 50.0 중량%의 폴리카르보네이트 수지 및 50.0 중량% 내지 99.9 중량%의 폴리카르보네이트 이외 수지를 갖는다. 토너는, 테트라히드로푸란 용해성 물질의 겔 투과 크로마토그래피에 의해 측정한 분자량 분포에서 분자량이 1,000 이하인 성분들 중에 포함된, 폴리카르보네이트 수지의 반복 단위를 그 구조 중에 갖는 성분을 토너의 중량을 기준으로 15.0 중량% 이하의 양으로 포함한다.</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=452306798ef1fd035bfb5ff666db4c9c0d81ea1410c778cb5b39401b3d21d4b5407bdfdc2741d1de32729d20804626c8</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e2d625a3dcb0746fe4eb5d6d2c6e2df8a4d2ac3f328e0d1c0978bce097f722b7a5a66c1bb3e75b1e28</drawing>
+                <indexNo>23</indexNo>
+                <inventionTitle>토너 및 화상 형성 방법</inventionTitle>
+                <ipcNumber>G03G 9/087|G03G 9/09|G03G 15/20</ipcNumber>
+                <openDate>19990426</openDate>
+                <openNumber>1019990029534</openNumber>
+                <publicationDate>20010315</publicationDate>
+                <publicationNumber/>
+                <registerDate>20001229</registerDate>
+                <registerNumber>1002851820000</registerNumber>
+                <registerStatus>소멸</registerStatus>
+            </item>
+            <item>
+                <applicantName>도요타 지도샤(주)</applicantName>
+                <applicationDate>20070222</applicationDate>
+                <applicationNumber>1020087030281</applicationNumber>
+                <astrtCont>샘플링 커패시터 (CS11, CS12, CS21, CS22), 적분기 (Amp1, Amp2), 및 양자화기 (Cmp1,...Cmp5) 를 갖는 복수의 시그마-델타 변조기 (M1, M2) 의 각각은 병렬로 서로 접속되어 있다. 각각의 시그마-델타 변조기는, 아날로그 입력 신호 (Vin) 가 샘플링 커패시터에 의해 샘플링된 병렬 오버샘플링을 수행하고, 샘플링 결과는 적분기 및 양자화기에 의해 양자화된다. 다음으로, 시그마-델타 변조기의 양자화된 값이 가산되어 MSB 를 획득하고, 각각의 시그마-델타 변조기에서 양자화 이후의 적분기들의 나머지 값이 가산되며, 나머지 값의 가산 결과는 아날로그-투-디지털 변환되어 LSB 를 획득한다. 샘플링 커패시터, 적분기, 양자화기, 시그마-델타 변조기, 제어 유닛</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=452306798ef1fd03bf8e5ba4e1dbf7261c1a641cde88e6ae99cac2f414694a21a2972a5de4ea112cd812a5828a6481c9dceb289310790a17df893a37a3d080b62b881a4223c53846</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e22d01c5c32ba711cf064fb519261caf58192b3ba6a104ddc35431520a10ede085c450470c60640064792f1207f67a9bb55817e910b5674d981bb6f2b2350fed2c</drawing>
+                <indexNo>24</indexNo>
+                <inventionTitle>A/D 변환기 및 A/D 변환 방법</inventionTitle>
+                <ipcNumber>H03M 1/14|H03M 3/02</ipcNumber>
+                <openDate>20090318</openDate>
+                <openNumber>1020090028520</openNumber>
+                <publicationDate>20110928</publicationDate>
+                <publicationNumber/>
+                <registerDate>20110921</registerDate>
+                <registerNumber>1010680700000</registerNumber>
+                <registerStatus>등록</registerStatus>
+            </item>
+            <item>
+                <applicantName>가부시끼가이샤 도시바</applicantName>
+                <applicationDate>20040806</applicationDate>
+                <applicationNumber>1020040062195</applicationNumber>
+                <astrtCont>본 발명은 한쪽 면에서 2 기록층에 대하여 정보의 기록 및 재생이 가능한 정보 기록 매체에 있어서 안정적으로 정보의 기록 및 재생을 가능하게 하여, 크로스토크의 영향을 제거할 수 있는 정보 기록 매체 및 그 기록 방법을 제공한다. 본 발명은 타원형의 레이저 스폿(33)을 이용하여 정보 기록 매체(1)의 제1 기록층 및 제2 기록층의 각각에 각 기록층의 초기화와 동시에 프리마크(초기화와는 다름)를 형성한다. 이러한 조작으로 정보는 2 이상의 기록층을 갖는 정보 기록 매체로부터 안정적으로 재생될 수 있다.</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=452306798ef1fd035bfb5ff666db4c9ccf2ab65a398793489ef2dd3deda4aee2a05ed9eb36b61cbfe9d7757f25d58b58</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e2d625a3dcb0746fe4598c4c077876d4f976f647d4569c7bbc605ae8ef2f5a4e68c79b9057715f02f0</drawing>
+                <indexNo>25</indexNo>
+                <inventionTitle>정보 기록 매체와 정보 기록 매체에의 기록 방법 및 정보기록 재생 장치</inventionTitle>
+                <ipcNumber>G11B 7/24038|G11B 7/007|G11B 7/004|G11B 7/135</ipcNumber>
+                <openDate>20050228</openDate>
+                <openNumber>1020050019027</openNumber>
+                <publicationDate/>
+                <publicationNumber/>
+                <registerDate/>
+                <registerNumber/>
+                <registerStatus>거절</registerStatus>
+            </item>
+            <item>
+                <applicantName>컴퓨메딕스 메디컬 이노베이션 피티와이 엘티디</applicantName>
+                <applicationDate>20061016</applicationDate>
+                <applicationNumber>1020087008279</applicationNumber>
+                <astrtCont>본 발명은, 가습 및 가압된 기체를 도관을 통하여 객체로 공급하기 위한 기체 공급 장치, 시스템 및 방법을 제공한다. 상기 기체 공급 장치의 구성요소의 구조에 따라, 상기 장치는 사용자의 요구를 수용하도록 수평위치에서 수직 위치로 편리하게 배향될 수 있다. 상기 기체 공급 장치는, 모터의 사운드를 감쇄시키기 위하여, 헬름홀쯔 공명기를 포함할 수 있다. 상기 도관은 동심 튜브들을 포함함으로써 그가 상기 가습기와 단일 구멍에서 편리하게 연결될 수 있도록 한다. 본 발명은, 단일의 홀 센서를 이용하여 기체 공급 장치의 송풍모터를 작동시키기 위한 방법을 포함한다. 기체, 공급, 가습, 공기, 환자, 방향, 단일 구멍, 공명, 소음, 사운드, 감쇄, 모터, 임펠러</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=2ba38663aa11ff0f6ca91af6061a2e00a6e1761c626e7ff113f0e671ea1ff771fce338d2ffe882868863de10b9f128b9f81280ec534c79246e25ffcbd70aad9c1090916c861422fa</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e22d01c5c32ba711cfc787e9c12649c614b7c686c521b659d000f49f249685d8dfcbc7442b8d09e9b660ba38c1e6ab6943e157cfe19c4e47342c2d46247ee58540</drawing>
+                <indexNo>26</indexNo>
+                <inventionTitle>가압 기체 공급 장치</inventionTitle>
+                <ipcNumber>A61M 16/00|A61M 16/10|A61M 16/16|A61M 16/06</ipcNumber>
+                <openDate>20080624</openDate>
+                <openNumber>1020080057261</openNumber>
+                <publicationDate>20131211</publicationDate>
+                <publicationNumber/>
+                <registerDate>20131205</registerDate>
+                <registerNumber>1013408120000</registerNumber>
+                <registerStatus>등록</registerStatus>
+            </item>
+            <item>
+                <applicantName>컴퓨메딕스 메디컬 이노베이션 피티와이 엘티디</applicantName>
+                <applicationDate>20061016</applicationDate>
+                <applicationNumber>1020137004564</applicationNumber>
+                <astrtCont>본 발명은, 가습 및 가압된 기체를 도관을 통하여 객체로 공급하기 위한 기체 공급 장치, 시스템 및 방법을 제공한다. 상기 기체 공급 장치의 구성요소의 구조에 따라, 상기 장치는 사용자의 요구를 수용하도록 수평위치에서 수직 위치로 편리하게 배향될 수 있다. 상기 기체 공급 장치는, 모터의 사운드를 감쇄시키기 위하여, 헬름홀쯔 공명기를 포함할 수 있다. 상기 도관은 동심 튜브들을 포함함으로써 그가 상기 가습기와 단일 구멍에서 편리하게 연결될 수 있도록 한다. 본 발명은, 단일의 홀 센서를 이용하여 기체 공급 장치의 송풍모터를 작동시키기 위한 방법을 포함한다.</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=2ba38663aa11ff0f6ca91af6061a2e0051af594bda45114991568083583679672d0644bc05e9aab5375c2bdc6c6bcbbbdd0068d7bd6f422f4b87985c4bc40e5d032afae948756e73</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e22d01c5c32ba711cf03bb66976a93722587eb84939807fcf286c98bc3d6b2a6aabd056526a6458cf7545313e3e94d70060652fe726a96a3705da9401ce4b23f1c</drawing>
+                <indexNo>27</indexNo>
+                <inventionTitle>가압 기체 공급 장치</inventionTitle>
+                <ipcNumber>A61M 16/16|A61M 16/06</ipcNumber>
+                <openDate>20130307</openDate>
+                <openNumber>1020130023408</openNumber>
+                <publicationDate>20131111</publicationDate>
+                <publicationNumber/>
+                <registerDate>20131101</registerDate>
+                <registerNumber>1013269360000</registerNumber>
+                <registerStatus>등록</registerStatus>
+            </item>
+            <item>
+                <applicantName>파나소닉 주식회사</applicantName>
+                <applicationDate>20050831</applicationDate>
+                <applicationNumber>1020077007029</applicationNumber>
+                <astrtCont>본 발명은 데이터 송신 장치, 데이터 수신 장치 및 데이터 통신 장치에 관한 것으로서, 도청자의 암호문의 해독에 필요한 시간을 현저히 증대시켜 비익성이 높은 데이터 통신 장치를 제공하며, 데이터 통신 장치는 데이터 송신 장치(10101)와 데이터 수신 장치(10201)가 전송로(110)에 의해 접속되어 구성된다. 데이터 송신 장치(10101)는 미리 정해진 소정의 제 1 초기값(키 정보)과 정보 데이터를 입력하고, 레벨이 대략 난수적으로 변화하는 다치 신호를 발생하고, 다치 신호를 소정의 변조 형식의 변조 신호로 변환하여 송신한다. 데이터 수신 장치(10201)는 변조 신호를 복조하여 다치 신호를 출력하고, 미리 정해진 소정의 제 2 초기값(키 정보)과 다치 신호를 입력하여 정보 데이터를 재생하는 것을 특징으로 한다.</astrtCont>
+                <bigDrawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=452306798ef1fd03bf8e5ba4e1dbf72671ab16d114d4aa24cc040f2d68373ca531ac255b89edadabe92cf8a9487a708888082b12e3dfbd62b82618bbb9cb26f428fe8e1f0a22cbcd</bigDrawing>
+                <drawing>http://plus.kipris.or.kr/kiprisplusws/fileToss.jsp?arg=ed43a0609e94d6e22d01c5c32ba711cfa13e305bd8cb2d9ee147870f53aca53c9d730f42720a45fb78355c86a3751ba7f7556c81dcbe71f2d9b010c6274f7dc057048eb7b808241f</drawing>
+                <indexNo>28</indexNo>
+                <inventionTitle>데이터 통신 장치</inventionTitle>
+                <ipcNumber>H04K 1/02</ipcNumber>
+                <openDate>20070530</openDate>
+                <openNumber>1020070055574</openNumber>
+                <publicationDate>20111129</publicationDate>
+                <publicationNumber/>
+                <registerDate>20111118</registerDate>
+                <registerNumber>1010869490000</registerNumber>
+                <registerStatus>소멸</registerStatus>
+            </item>
+        </items>
+    </body>
+    <count>
+        <numOfRows>500</numOfRows>
+        <pageNo>1</pageNo>
+        <totalCount>28</totalCount>
+    </count>
+</response>

@@ -1,6 +1,7 @@
-package claimDB
+package claimStorage
 
 import (
+	"github.com/simp7/patent-middle-server/claimStorage/cache"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
@@ -8,7 +9,9 @@ import (
 
 func TestKipris_GetClaims(t *testing.T) {
 
-	x, err := New("http://localhost:8080/", "http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getBibliographyDetailInfoSearch", os.Getenv("KIPRIS"))
+	mongo, err := cache.Mongo("mongodb://localhost")
+	assert.NoError(t, err)
+	x, err := New("http://localhost:8080/", "http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getBibliographyDetailInfoSearch", os.Getenv("KIPRIS"), mongo)
 	assert.NoError(t, err)
 
 	scenario := []struct {

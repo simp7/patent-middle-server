@@ -4,28 +4,30 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/logger"
+	"github.com/simp7/patent-middle-server/model"
 	"github.com/simp7/patent-middle-server/model/formula"
 	"github.com/simp7/patent-middle-server/nlp"
 	"os"
+	"time"
 )
 
 type server struct {
 	*gin.Engine
-	ClaimDB
+	ClaimStorage
 	*logger.Logger
 	port string
 }
 
-func New(port int, claimDB ClaimDB) *server {
+func New(port int, storage ClaimStorage) *server {
 
 	s := new(server)
 
 	s.Engine = gin.Default()
 
 	s.Logger = logger.Init("server", true, false, os.Stdout)
-	s.Infof("Finish Initializing logger")
+	s.Infof("Finish Initializing Logger")
 
-	s.ClaimDB = claimDB
+	s.ClaimStorage = storage
 
 	s.port = fmt.Sprintf(":%d", port)
 
@@ -39,7 +41,7 @@ func (s *server) Close() {
 
 func (s *server) Start() error {
 
-	s.Info("Start Server")
+	s.Info("start server")
 
 	s.GET("/", s.Welcome)
 	s.GET("/search/:country/:formula", s.Search)
@@ -64,15 +66,26 @@ func (s *server) Search(c *gin.Context) {
 	selected := s.selectNLP(country)
 
 	s.Info("start search")
-	_, err := s.GetClaims(input)
+	claims, err := s.GetClaims(input)
 	if err != nil {
 		s.Error(err)
 		c.Writer.WriteHeader(500)
 		return
 	}
 
+	s.Info("create file")
+	file, err := model.NewCSV(time.Now().String()+"@"+input, claims).File()
+	if err != nil {
+		s.Fatal(err)
+	}
+
+	defer func() {
+		err = os.Remove(file.Name())
+		s.Error(err)
+	}()
+
 	s.Info("perform NLP")
-	data, err := selected.Process(input+".csv", formula.Interpret(input).KeyWords()...)
+	data, err := selected.Process("블록체인*전자투표.csv", formula.Interpret(input).KeyWords()...)
 
 	if err != nil {
 		s.Error(err)
@@ -91,12 +104,12 @@ func (s *server) selectNLP(country string) NLP {
 
 	switch country {
 	case "KR":
-		s.Info("Select LDA")
+		s.Info("select LDA")
 		return nlp.LDA()
 	case "US":
 		fallthrough
 	default:
-		s.Info("Select Word2vec")
+		s.Info("select Word2vec")
 		return nlp.Word2vec()
 	}
 
