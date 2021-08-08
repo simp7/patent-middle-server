@@ -5,5 +5,5 @@ import (
 )
 
 type Storage interface {
-	GetClaims(input string) model.CSVGroup
+	GetClaims(input string) *model.CSVGroup
 }

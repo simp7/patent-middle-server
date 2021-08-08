@@ -12,7 +12,7 @@ func Test() *testDB {
 	return &testDB{}
 }
 
-func (t *testDB) GetClaims(input string) model.CSVGroup {
+func (t *testDB) GetClaims(input string) *model.CSVGroup {
 	os.Open(input + ".csv")
-	return model.CSVGroup{}
+	return &model.CSVGroup{}
 }

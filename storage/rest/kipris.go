@@ -31,6 +31,8 @@ func New(searchURL string, claimURL string, apiKey string) *kipris {
 
 func (k *kipris) GetClaims(number string) storage.ClaimTuple {
 
+	k.Info("getting claims of patent : " + number)
+
 	request, err := http.NewRequest("GET", k.ClaimURL, nil)
 	k.check(err)
 
@@ -50,6 +52,7 @@ func (k *kipris) GetClaims(number string) storage.ClaimTuple {
 
 func (k *kipris) GetNumbers(input string) chan string {
 
+	k.Info("getting application numbers by searching " + input)
 	outCh := make(chan string)
 	defer close(outCh)
 

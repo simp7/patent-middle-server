@@ -35,7 +35,7 @@ func (m *mongoDB) Find(applicationNumber string) (tuple storage.ClaimTuple, ok b
 	ok = false
 	dbResult := m.collection.FindOne(context.TODO(), bson.D{{"applicationNumber", applicationNumber}})
 
-	if dbResult.Err() != nil {
+	if dbResult.Err() == nil {
 		err := dbResult.Decode(&tuple)
 		if err == nil {
 			ok = true

@@ -27,9 +27,9 @@ func New(source Rest, cacheDB Cache) *kipris {
 
 }
 
-func (k *kipris) GetClaims(input string) model.CSVGroup {
+func (k *kipris) GetClaims(input string) *model.CSVGroup {
 
-	data := make([]model.CSVUnit, 0)
+	result := model.NewCSV(time.Now().String() + "@" + input)
 
 	for number := range k.source.GetNumbers(input) {
 
@@ -43,10 +43,10 @@ func (k *kipris) GetClaims(input string) model.CSVGroup {
 			}
 		}
 
-		data = append(data, tuple.Process())
+		result.Append(tuple.Process())
 
 	}
 
-	return model.NewCSV(time.Now().String()+"@"+input, data)
+	return result
 
 }

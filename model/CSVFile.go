@@ -10,11 +10,15 @@ type CSVGroup struct {
 	data []CSVUnit
 }
 
-func NewCSV(id string, data []CSVUnit) CSVGroup {
-	return CSVGroup{id, data}
+func NewCSV(id string) *CSVGroup {
+	return &CSVGroup{id, make([]CSVUnit, 0)}
 }
 
-func (c CSVGroup) File() (file *os.File, err error) {
+func (c *CSVGroup) Append(unit CSVUnit) {
+	c.data = append(c.data, unit)
+}
+
+func (c *CSVGroup) File() (file *os.File, err error) {
 
 	file, err = os.Create(c.id + ".csv")
 	if err != nil {
