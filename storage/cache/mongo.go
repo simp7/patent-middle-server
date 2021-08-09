@@ -33,7 +33,7 @@ func Mongo(url string) (storage.Cache, error) {
 func (m *mongoDB) Find(applicationNumber string) (tuple storage.ClaimTuple, ok bool) {
 
 	ok = false
-	dbResult := m.collection.FindOne(context.TODO(), bson.D{{"applicationNumber", applicationNumber}})
+	dbResult := m.collection.FindOne(context.TODO(), bson.D{{"_id", applicationNumber}})
 
 	if dbResult.Err() == nil {
 		err := dbResult.Decode(&tuple)

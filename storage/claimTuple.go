@@ -18,5 +18,6 @@ func (c ClaimTuple) Process() model.CSVUnit {
 }
 
 func (c ClaimTuple) BSON() bson.D {
-	return bson.D{{"_id", c.ApplicationNumber}, {"name", c.Name}, {"claim", bson.A{c.Claims}}}
+	number := strings.Join(strings.Split(c.ApplicationNumber, "-"), "")
+	return bson.D{{"_id", number}, {"name", c.Name}, {"claim", bson.A{c.Claims}}}
 }

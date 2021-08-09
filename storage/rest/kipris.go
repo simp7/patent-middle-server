@@ -14,6 +14,7 @@ import (
 type kipris struct {
 	*http.Client
 	*logger.Logger
+	pageRow   int
 	apiKey    string
 	SearchURL string
 	ClaimURL  string
@@ -23,6 +24,7 @@ func New(searchURL string, claimURL string, apiKey string) *kipris {
 	return &kipris{
 		&http.Client{},
 		logger.Init("server", true, false, os.Stdout),
+		500,
 		apiKey,
 		searchURL,
 		claimURL,
@@ -41,6 +43,7 @@ func (k *kipris) GetClaims(number string) storage.ClaimTuple {
 	q.Add("applicationNumber", number)
 	request.URL.RawQuery = q.Encode()
 
+	k.Info("send" + request.URL.RawQuery)
 	response, err := k.Do(request)
 	if err != nil {
 		k.Error(err)
@@ -50,13 +53,10 @@ func (k *kipris) GetClaims(number string) storage.ClaimTuple {
 
 }
 
-func (k *kipris) GetNumbers(input string) chan string {
+func (k *kipris) GetNumbers(input string) chan chan string {
 
 	k.Info("getting application numbers by searching " + input)
-	outCh := make(chan string)
-	defer close(outCh)
-
-	rowSize := 500
+	outCh := make(chan chan string)
 
 	request, err := http.NewRequest("GET", k.SearchURL, nil)
 	k.check(err)
@@ -64,7 +64,7 @@ func (k *kipris) GetNumbers(input string) chan string {
 	q := request.URL.Query()
 	q.Add("ServiceKey", k.apiKey)
 	q.Add("word", input)
-	q.Add("numOfRows", strconv.Itoa(rowSize))
+	q.Add("numOfRows", strconv.Itoa(k.pageRow))
 
 	request.URL.RawQuery = q.Encode()
 
@@ -72,8 +72,14 @@ func (k *kipris) GetNumbers(input string) chan string {
 	k.check(err)
 
 	total, err := k.getTotal(response.Body)
-	k.check(err)
-	lastPage := total/rowSize + 1
+	if err != nil {
+		return outCh
+	}
+
+	lastPage := (total-1)/k.pageRow + 1
+	k.Infof("last page is %d", lastPage)
+
+	outCh = make(chan chan string, lastPage)
 
 	wg := sync.WaitGroup{}
 	wg.Add(lastPage)
@@ -81,19 +87,21 @@ func (k *kipris) GetNumbers(input string) chan string {
 	for i := 1; i <= lastPage; i++ {
 		go func(page int) {
 
-			defer wg.Done()
-
 			q.Set("pageNo", strconv.Itoa(page))
 			request.URL.RawQuery = q.Encode()
 
 			response, _ = k.Do(request)
 
-			outCh <- <-k.getNumberByPage(response.Body)
+			outCh <- k.getNumberByPage(response.Body)
+
+			wg.Done()
 
 		}(i)
 	}
 
 	wg.Wait()
+	k.Info("close channel in GetNumbers")
+	close(outCh)
 
 	defer func() {
 		k.check(response.Body.Close())
@@ -105,6 +113,7 @@ func (k *kipris) GetNumbers(input string) chan string {
 
 func (k *kipris) getTotal(body io.Reader) (int, error) {
 
+	k.Info("get total number of patents")
 	var searchResult storage.SearchResult
 	err := xml.NewDecoder(body).Decode(&searchResult)
 
@@ -118,7 +127,7 @@ func (k *kipris) getTotal(body io.Reader) (int, error) {
 
 func (k *kipris) getNumberByPage(body io.Reader) chan string {
 
-	outCh := make(chan string)
+	outCh := make(chan string, k.pageRow)
 	var searchResult storage.SearchResult
 
 	err := xml.NewDecoder(body).Decode(&searchResult)
@@ -127,12 +136,25 @@ func (k *kipris) getNumberByPage(body io.Reader) chan string {
 	}
 
 	items := searchResult.Body.Items.Item
+	var wg sync.WaitGroup
 
+	wg.Add(len(items))
+	a := len(items)
 	for _, item := range items {
 		go func(number string) {
+			k.Info("number " + number + " founded")
 			outCh <- number
+			wg.Done()
+			a--
+			k.Infof("rest numbers : %d", a)
 		}(item.ApplicationNumber)
 	}
+
+	go func() {
+		wg.Wait()
+		k.Info("close channel in getNumberByPage")
+		close(outCh)
+	}()
 
 	return outCh
 
@@ -141,7 +163,7 @@ func (k *kipris) getNumberByPage(body io.Reader) chan string {
 func (k *kipris) processClaim(body io.Reader) storage.ClaimTuple {
 
 	var searchResult storage.ClaimResult
-	k.Error(xml.NewDecoder(body).Decode(&searchResult))
+	k.check(xml.NewDecoder(body).Decode(&searchResult))
 
 	applicationNumber := searchResult.Body.Item.BiblioSummaryInfoArray.BiblioSummaryInfo.ApplicationNumber
 	title := searchResult.Body.Item.BiblioSummaryInfoArray.BiblioSummaryInfo.InventionTitle

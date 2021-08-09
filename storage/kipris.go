@@ -31,22 +31,34 @@ func (k *kipris) GetClaims(input string) *model.CSVGroup {
 
 	result := model.NewCSV(time.Now().String() + "@" + input)
 
-	for number := range k.source.GetNumbers(input) {
+	for numbers := range k.source.GetNumbers(input) {
+		a := 1
+		for number := range numbers {
 
-		tuple, ok := k.cache.Find(number)
-
-		if !ok {
-			tuple = k.source.GetClaims(number)
-			err := k.cache.Register(tuple)
+			data, err := k.getClaimsEach(number)
 			if err != nil {
-				continue
+				result.Append(data)
 			}
-		}
+			a++
 
-		result.Append(tuple.Process())
+		}
 
 	}
 
 	return result
+
+}
+
+func (k *kipris) getClaimsEach(number string) (result model.CSVUnit, err error) {
+
+	tuple, ok := k.cache.Find(number)
+	if !ok {
+		tuple = k.source.GetClaims(number)
+		err = k.cache.Register(tuple)
+	}
+
+	result = tuple.Process()
+
+	return
 
 }

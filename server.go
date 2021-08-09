@@ -74,7 +74,9 @@ func (s *server) Search(c *gin.Context) {
 
 	defer func() {
 		err = os.Remove(file.Name())
-		s.Error(err)
+		if err != nil {
+			s.Error(err)
+		}
 	}()
 
 	s.Info("perform NLP")
