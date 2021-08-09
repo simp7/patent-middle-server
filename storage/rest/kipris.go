@@ -43,7 +43,7 @@ func (k *kipris) GetClaims(number string) storage.ClaimTuple {
 	q.Add("applicationNumber", number)
 	request.URL.RawQuery = q.Encode()
 
-	k.Info("send" + request.URL.RawQuery)
+	k.Info("send " + request.URL.RawQuery)
 	response, err := k.Do(request)
 	if err != nil {
 		k.Error(err)
@@ -77,7 +77,6 @@ func (k *kipris) GetNumbers(input string) chan chan string {
 	}
 
 	lastPage := (total-1)/k.pageRow + 1
-	k.Infof("last page is %d", lastPage)
 
 	outCh = make(chan chan string, lastPage)
 
@@ -113,7 +112,6 @@ func (k *kipris) GetNumbers(input string) chan chan string {
 
 func (k *kipris) getTotal(body io.Reader) (int, error) {
 
-	k.Info("get total number of patents")
 	var searchResult storage.SearchResult
 	err := xml.NewDecoder(body).Decode(&searchResult)
 
@@ -146,7 +144,6 @@ func (k *kipris) getNumberByPage(body io.Reader) chan string {
 			outCh <- number
 			wg.Done()
 			a--
-			k.Infof("rest numbers : %d", a)
 		}(item.ApplicationNumber)
 	}
 

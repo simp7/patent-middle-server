@@ -7,9 +7,9 @@ import (
 )
 
 type ClaimTuple struct {
-	ApplicationNumber string
-	Name              string
-	Claims            []string
+	ApplicationNumber string   `bson:"_id"`
+	Name              string   `bson:"name"`
+	Claims            []string `bson:"claims"`
 }
 
 func (c ClaimTuple) Process() model.CSVUnit {
@@ -19,5 +19,5 @@ func (c ClaimTuple) Process() model.CSVUnit {
 
 func (c ClaimTuple) BSON() bson.D {
 	number := strings.Join(strings.Split(c.ApplicationNumber, "-"), "")
-	return bson.D{{"_id", number}, {"name", c.Name}, {"claim", bson.A{c.Claims}}}
+	return bson.D{{"_id", number}, {"name", c.Name}, {"claims", c.Claims}}
 }
