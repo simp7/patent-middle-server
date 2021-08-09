@@ -1,4 +1,4 @@
-package claimDB
+package storage
 
 import "encoding/xml"
 

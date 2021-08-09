@@ -4,6 +4,6 @@ import (
 	"github.com/simp7/patent-middle-server/model"
 )
 
-type ClaimDB interface {
-	GetClaims(input string) ([]model.CSVUnit, error)
+type Storage interface {
+	GetClaims(input string) *model.CSVGroup
 }
