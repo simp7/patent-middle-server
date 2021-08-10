@@ -1,0 +1,12 @@
+rest-server:
+  word-search: http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getWordSearch
+  claim-search: http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getBibliographyDetailInfoSearch
+  api-key:  #api-key가 없는 경우, 환경변수 $KIPRIS를 참조합니다.
+  row: 500
+
+database:
+  address: mongodb://localhost
+  database: Patent
+  collection: claim
+
+port: 80
