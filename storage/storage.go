@@ -32,7 +32,6 @@ func (s *storage) GetClaims(input string) *model.CSVGroup {
 	result := model.NewCSV(time.Now().String() + "@" + input)
 
 	for numbers := range s.source.GetNumbers(input) {
-
 		for number := range numbers {
 
 			data, err := s.getClaimsEach(number)
@@ -41,7 +40,6 @@ func (s *storage) GetClaims(input string) *model.CSVGroup {
 			}
 
 		}
-
 	}
 
 	return result
