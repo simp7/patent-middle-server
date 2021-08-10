@@ -13,18 +13,18 @@ type mongoDB struct {
 	collection *mongo.Collection
 }
 
-func Mongo(url string) (storage.Cache, error) {
+func Mongo(config Config) (storage.Cache, error) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI(url))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(config.URL))
 	if err != nil {
 		return nil, err
 	}
 
-	db := client.Database("Patent")
-	collection := db.Collection("claim")
+	db := client.Database(config.DBName)
+	collection := db.Collection(config.CollectionName)
 
 	return &mongoDB{collection}, err
 

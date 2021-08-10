@@ -11,9 +11,10 @@ import (
 
 func TestKipris_GetClaims(t *testing.T) {
 
-	mongodb, err := cache.Mongo("mongodb://localhost")
+	cacheDB, err := cache.Mongo(cache.Config{URL: "mongodb://localhost", DBName: "Patent", CollectionName: "claim"})
 	assert.NoError(t, err)
-	server := storage.New(rest.New("http://localhost:8080/", "http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getBibliographyDetailInfoSearch", os.Getenv("KIPRIS")), mongodb)
+	restServer := rest.New(rest.Config{WordURL: "http://localhost:8080/", ClaimURL: "http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getBibliographyDetailInfoSearch", Key: os.Getenv("KIPRIS"), Row: 500})
+	server := storage.New(restServer, cacheDB)
 
 	scenario := []struct {
 		input  string

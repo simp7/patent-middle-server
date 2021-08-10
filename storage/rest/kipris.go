@@ -20,14 +20,18 @@ type kipris struct {
 	ClaimURL  string
 }
 
-func New(searchURL string, claimURL string, apiKey string) *kipris {
+func New(config Config) *kipris {
+	key := config.Key
+	if key == "" {
+		key = os.Getenv("KIPRIS")
+	}
 	return &kipris{
 		&http.Client{},
 		logger.Init("server", true, false, os.Stdout),
 		500,
-		apiKey,
-		searchURL,
-		claimURL,
+		key,
+		config.WordURL,
+		config.ClaimURL,
 	}
 }
 
