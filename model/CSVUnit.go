@@ -5,6 +5,6 @@ type CSVUnit struct {
 	Value string
 }
 
-func (c CSVUnit) Serialize() string {
-	return c.Key + ",\"" + c.Value + "\""
+func (c CSVUnit) Serialize(sep string) string {
+	return c.Key + sep + "\"" + c.Value + "\""
 }
