@@ -31,16 +31,21 @@ func (t *testServer) Start() error {
 	t.GET("/", t.Search)
 
 	return t.Run(":8080")
+
 }
 
 func (t *testServer) Search(ctx *gin.Context) {
+
 	fileName := t.fileDict[ctx.Query("word")]
+
 	result, err := fs.Open("xmlData/" + fileName)
 	if err != nil {
 		fmt.Println(err)
-	} else {
-		io.Copy(ctx.Writer, result)
+		return
 	}
+
+	io.Copy(ctx.Writer, result)
+
 }
 
 func main() {
