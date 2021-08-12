@@ -25,6 +25,7 @@ func (c *CSVGroup) File() (file *os.File, err error) {
 	if err != nil {
 		return
 	}
+
 	_, err = fmt.Fprintln(file, "name"+"\t"+"item")
 
 	for _, v := range c.data {
