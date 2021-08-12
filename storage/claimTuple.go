@@ -12,12 +12,11 @@ type ClaimTuple struct {
 	Claims            []string `bson:"claims"`
 }
 
-func (c ClaimTuple) Process() model.CSVUnit {
+func (c ClaimTuple) CSVRow() model.CSVUnit {
 	claims := strings.Join(c.Claims, "\n")
 	return model.CSVUnit{Key: c.Name, Value: claims}
 }
 
 func (c ClaimTuple) BSON() bson.D {
-	number := strings.Join(strings.Split(c.ApplicationNumber, "-"), "")
-	return bson.D{{"_id", number}, {"name", c.Name}, {"claims", c.Claims}}
+	return bson.D{{"_id", c.ApplicationNumber}, {"name", c.Name}, {"claims", c.Claims}}
 }

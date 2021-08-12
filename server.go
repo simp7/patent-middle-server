@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/logger"
 	"github.com/simp7/patent-middle-server/model/formula"
-	"github.com/simp7/patent-middle-server/nlp"
 	"os"
 )
 
@@ -80,7 +79,7 @@ func (s *server) Search(c *gin.Context) {
 	}()
 
 	s.Info("perform NLP")
-	data, err := selected.Process("블록체인*전자투표.csv", formula.Interpret(input).KeyWords()...)
+	data, err := selected.Process(file.Name(), formula.Interpret(input).KeyWords()...)
 
 	if err != nil {
 		s.Error(err)
@@ -100,12 +99,12 @@ func (s *server) selectNLP(country string) NLP {
 	switch country {
 	case "KR":
 		s.Info("select LDA")
-		return nlp.LDA()
+		return LDA()
 	case "US":
 		fallthrough
 	default:
 		s.Info("select Word2vec")
-		return nlp.Word2vec()
+		return Word2vec()
 	}
 
 }

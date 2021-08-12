@@ -54,7 +54,7 @@ func (s *storage) getClaimsEach(number string) (result model.CSVUnit, err error)
 		err = s.cache.Register(tuple)
 	}
 
-	result = tuple.Process()
+	result = tuple.CSVRow()
 
 	return
 

@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"sync"
 )
 
@@ -170,13 +171,23 @@ func (k *kipris) processClaim(body io.Reader) storage.ClaimTuple {
 	title := searchResult.Body.Item.BiblioSummaryInfoArray.BiblioSummaryInfo.InventionTitle
 	claims := searchResult.Body.Item.ClaimInfoArray.ClaimInfo
 
-	result := make([]string, len(claims))
+	title = strings.TrimSpace(title)
 
+	result := make([]string, len(claims))
 	for i, claim := range claims {
-		result[i] = claim.Claim
+		result[i] = strings.TrimSpace(claim.Claim)
 	}
 
-	return storage.ClaimTuple{ApplicationNumber: applicationNumber, Name: title, Claims: result}
+	return k.trim(applicationNumber, title, result)
+
+}
+
+func (k *kipris) trim(applicationNumber string, name string, claims []string) storage.ClaimTuple {
+
+	resultNumber := strings.Join(strings.Split(applicationNumber, "-"), "")
+	resultName := strings.TrimSpace(name)
+
+	return storage.ClaimTuple{ApplicationNumber: resultNumber, Name: resultName, Claims: claims}
 
 }
 
