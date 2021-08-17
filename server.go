@@ -41,7 +41,7 @@ func (s *server) Start() error {
 	s.Info("start server")
 
 	s.GET("/", s.Welcome)
-	s.GET("/search/:country/:formula", s.Search)
+	s.GET("/claims/:country/:formula", s.Search)
 
 	return s.Run(s.port)
 
