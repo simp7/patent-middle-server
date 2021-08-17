@@ -37,21 +37,9 @@ func (s *server) Close() {
 }
 
 func (s *server) Start() error {
-
+	s.GET("/:country/:formula", s.Search)
 	s.Info("start server")
-
-	s.GET("/", s.Welcome)
-	s.GET("/search/:country/:formula", s.Search)
-
 	return s.Run(s.port)
-
-}
-
-func (s *server) Welcome(c *gin.Context) {
-	_, err := c.Writer.Write([]byte("<h1>Hello, world!</h1>"))
-	if err != nil {
-		s.Error(err)
-	}
 }
 
 func (s *server) Search(c *gin.Context) {
