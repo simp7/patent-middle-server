@@ -2,6 +2,7 @@ package rest
 
 import (
 	"encoding/xml"
+	"errors"
 	"github.com/google/logger"
 	"github.com/simp7/patent-middle-server/storage"
 	"io"
@@ -78,6 +79,8 @@ func (k *kipris) GetNumbers(input string) chan chan string {
 
 	total, err := k.getTotal(response.Body)
 	if err != nil {
+		k.Error(err)
+		close(outCh)
 		return outCh
 	}
 
@@ -120,8 +123,14 @@ func (k *kipris) getTotal(body io.Reader) (int, error) {
 	var searchResult storage.SearchResult
 	err := xml.NewDecoder(body).Decode(&searchResult)
 
+	k.Info("getting total pages of application numbers")
+
 	if err != nil {
 		return 0, err
+	}
+
+	if searchResult.Header.ResultCode != "00" {
+		return 0, errors.New("failed getting data from kipris -- check your api key")
 	}
 
 	return strconv.Atoi(searchResult.Count.TotalCount)
