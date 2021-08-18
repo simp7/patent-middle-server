@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 # shellcheck disable=SC2164
 cd "$HOME"/patent-server/
