@@ -19,13 +19,14 @@
 1. 깃허브에서 다운로드
 2. 터미널에서 프로젝트를 다운로드한 폴더로 이동
 3. `go build`
-4. `sudo mv ./patent-middle-server /usr/local/bin/` 
+4. `sudo mv ./patent-middle-server /usr/local/bin/` (만약 해당 경로가 없는 경우 $PATH 내의 경로 중 아무 경로에 넣으면 됨)
 
 ## 실행
 
 ---
 
-터미널에서 `patent-middle-server` 실행
+1. mongoDB 실행
+2. 터미널에서 `patent-middle-server` 실행
 
 ## 설정
 
