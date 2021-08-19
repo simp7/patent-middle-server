@@ -20,6 +20,11 @@
 1. mongod 실행
 2. 터미널에서 `patent-middle-server` 실행
 
+### 클라이언트
+
+- 주소/KR/`검색어` : LDA 방식 검색
+- 주소/EN/`검색어` : word2vec 방식 검색
+
 ## 설정
 
 설정 파일: $HOME/patent-server/conf.yaml (첫 실행시 자동으로 생성)
