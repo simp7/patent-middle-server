@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"fmt"
 	"io"
 	"io/fs"
 	"os"
@@ -27,7 +28,11 @@ func initialize() (err error) {
 		if err != nil {
 			return
 		}
+		fmt.Println("It is first time to run server.")
+		fmt.Println("It will take few minutes, so BE PATIENT.")
+		fmt.Println("You should put password for sudo command to install required environment.")
 		err = exec.Command(rootTo("initialize.sh")).Run()
+		fmt.Println("Initializing process has been done! Good luck!")
 	}
 
 	if err != nil {
@@ -79,11 +84,13 @@ func copyFile(fileName string) (err error) {
 	if err != nil {
 		return
 	}
+	defer skelFile.Close()
 
 	created, err = os.Create(rootTo(fileName))
 	if err != nil {
 		return
 	}
+	defer created.Close()
 
 	err = os.Chmod(rootTo(fileName), 0755)
 	if err != nil {
@@ -95,7 +102,6 @@ func copyFile(fileName string) (err error) {
 		return
 	}
 
-	err = nil
 	return
 
 }
