@@ -9,8 +9,6 @@
 - 리눅스(bash 쉘)
 - go 1.6 이상(최신 버전을 다운받으면 이상 없음) -> `wget -q -O - https://git.io/vQhTU`
 - mongoDB 4.0.1 이상(최신 버전을 다운받으면 이상 없음) -> https://docs.mongodb.com/manual/administration/install-on-linux/ 참조
-- pip3 -> `sudo apt install pip3`
-- python3 (리눅스에는 기본적으로 설치되어 있음)
 
 ## 설치
 
@@ -53,6 +51,7 @@
     collection: 특허를 저장할 MongoDB 콜렉션 이름
 
 ### port
+
 해당 서버에서 열 포트 번호
 
 ## 기타
@@ -61,5 +60,5 @@
 
 ### 기본 쉘로 bash 쉘이 아닌 다른 쉘 사용시
 
-$HOME/patent-server의 .sh 파일의 첫 줄을 `#!/{사용자 쉘 절대경로}`로 변경
+$HOME/patent-server 내 .sh 파일들의 첫 줄을 `#!/{사용자 쉘 절대경로}`로 변경
 ex) #!/bin/zsh
