@@ -1,18 +1,12 @@
 # patent-middle-server
 
----
-
 ## 사양
-
----
 
 - 리눅스(bash 쉘)
 - go 1.6 이상(최신 버전을 다운받으면 이상 없음) -> `wget -q -O - https://git.io/vQhTU`
 - mongoDB 4.0.1 이상(최신 버전을 다운받으면 이상 없음) -> https://docs.mongodb.com/manual/administration/install-on-linux/ 참조
 
 ## 설치
-
----
 
 1. 깃허브에서 다운로드
 2. 터미널에서 프로젝트를 다운로드한 폴더로 이동
@@ -21,11 +15,7 @@
 
 ## 실행
 
----
-
-### 서버
-
-1. mongoDB 실행
+1. mongod 실행
 2. 터미널에서 `patent-middle-server` 실행
 
 ### 클라이언트
@@ -34,8 +24,6 @@
 - 주소/EN/`검색어` : word2vec 방식 검색
 
 ## 설정
-
----
 
 설정 파일: $HOME/patent-server/conf.yaml (첫 실행시 자동으로 생성)
 
@@ -56,9 +44,8 @@
 
 ## 기타
 
----
-
 ### 기본 쉘로 bash 쉘이 아닌 다른 쉘 사용시
 
 $HOME/patent-server 내 .sh 파일들의 첫 줄을 `#!/{사용자 쉘 절대경로}`로 변경
 ex) #!/bin/zsh
+
