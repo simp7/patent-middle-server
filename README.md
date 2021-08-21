@@ -3,7 +3,7 @@
 ## 사양
 
 - 리눅스(bash 쉘)
-- go 1.6 이상(최신 버전을 다운받으면 이상 없음) -> `wget -q -O - https://git.io/vQhTU`
+- go 1.6 이상(최신 버전을 다운받으면 이상 없음) -> `wget -q -O - https://git.io/vQhTU | bash`
 - mongoDB 4.0.1 이상(최신 버전을 다운받으면 이상 없음) -> https://docs.mongodb.com/manual/administration/install-on-linux/ 참조
 
 ## 설치
