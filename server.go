@@ -38,6 +38,7 @@ func (s *server) Close() {
 
 func (s *server) Start() error {
 	s.GET("/:country/:formula", s.Search)
+	s.GET("/", s.Hello)
 	s.Info("start server")
 	return s.Run(s.port)
 }
@@ -80,6 +81,13 @@ func (s *server) Search(c *gin.Context) {
 		s.Error(err)
 	}
 
+}
+
+func (s *server) Hello(c *gin.Context) {
+	_, err := c.Writer.WriteString("<h1>Server is Available</h1>")
+	if err != nil {
+		s.Error(err)
+	}
 }
 
 func (s *server) selectNLP(country string) NLP {
