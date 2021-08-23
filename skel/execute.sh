@@ -1,4 +1,4 @@
 #!/bin/bash
 
 source "$HOME"/patent-server/venv/bin/activate
-python3 "$@"
+python3.8 "$@"
