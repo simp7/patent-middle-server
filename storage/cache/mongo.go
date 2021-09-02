@@ -2,12 +2,18 @@ package cache
 
 import (
 	"context"
+	"errors"
 	"github.com/simp7/patent-middle-server/storage"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"sync"
 	"time"
 )
+
+var once sync.Once
+var instance *mongoDB
+var connectionError error = errors.New("could not connect to MongoDB")
 
 type mongoDB struct {
 	collection *mongo.Collection
@@ -15,18 +21,31 @@ type mongoDB struct {
 
 func Mongo(config Config) (storage.Cache, error) {
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
+	var err error
+	once.Do(func() {
 
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI(config.URL))
-	if err != nil {
-		return nil, err
+		var client *mongo.Client
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+
+		client, err = mongo.Connect(ctx, options.Client().ApplyURI(config.URL))
+		if err != nil {
+			err = connectionError
+			return
+		}
+
+		db := client.Database(config.DBName)
+		collection := db.Collection(config.CollectionName)
+
+		instance = &mongoDB{collection: collection}
+
+	})
+
+	if instance == nil {
+		return nil, connectionError
 	}
 
-	db := client.Database(config.DBName)
-	collection := db.Collection(config.CollectionName)
-
-	return &mongoDB{collection}, err
+	return instance, err
 
 }
 
