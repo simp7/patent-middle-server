@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/simp7/patent-middle-server/storage/cache"
 	"github.com/simp7/patent-middle-server/storage/rest"
 	"gopkg.in/yaml.v3"
@@ -14,17 +15,56 @@ type Config struct {
 	Version string       `yaml:"version"`
 }
 
-func getConfig() (conf Config, err error) {
+func getSkelConfig() (Config, error) {
+	return getConfigFrom(skelTo("config.yaml"))
+}
+
+func GetConfig() (Config, error) {
+	return getConfigFrom(rootTo("config.yaml"))
+}
+
+func SetConfig(config Config) (err error) {
+
+	var data []byte
+
+	if data, err = yaml.Marshal(config); err == nil {
+		err = os.WriteFile(rootTo("config.yaml"), data, 0644)
+		fmt.Println(string(data))
+		fmt.Println(err)
+	}
+
+	return
+
+}
+
+func getConfigFrom(path string) (conf Config, err error) {
 
 	var file *os.File
 
-	file, err = os.Open(rootTo("config.yaml"))
-	if err != nil {
-		return
+	if file, err = os.Open(path); err == nil {
+		defer file.Close()
+		err = yaml.NewDecoder(file).Decode(&conf)
 	}
 
-	err = yaml.NewDecoder(file).Decode(&conf)
-
 	return
+
+}
+
+func IsLatest() bool {
+
+	realConf, _ := GetConfig()
+	skelConf, _ := getSkelConfig()
+
+	return realConf.Version == skelConf.Version
+
+}
+
+func UpdateVersion() error {
+
+	realConf, _ := GetConfig()
+	skelConf, _ := getSkelConfig()
+
+	realConf.Version = skelConf.Version
+	return SetConfig(realConf)
 
 }

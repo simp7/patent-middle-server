@@ -10,12 +10,11 @@ import (
 
 func main() {
 
-	err := initialize()
-	if err != nil {
+	if err := initialize(); err != nil {
 		log.Fatal(err)
 	}
 
-	conf, err := getConfig()
+	conf, err := GetConfig()
 	if err != nil {
 		log.Fatal(err)
 	}

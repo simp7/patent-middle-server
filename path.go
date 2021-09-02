@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"strings"
 )
 
 //go:embed skel
@@ -23,8 +24,8 @@ func skelTo(file string) string {
 
 func initialize() (err error) {
 
-	if isFirstTime() {
-		err = initFiles()
+	if IsFirstTime() {
+		err = InitFiles()
 		if err != nil {
 			return
 		}
@@ -35,25 +36,22 @@ func initialize() (err error) {
 		fmt.Println("Initializing process has been done! Good luck!")
 	}
 
-	if err != nil {
-		return
+	if !IsLatest() {
+		err = Update()
 	}
 
 	return
 
 }
 
-func isFirstTime() bool {
+func IsFirstTime() bool {
 	_, err := os.Open(rootTo(""))
 	return err != nil
 }
 
-func initFiles() (err error) {
+func InitFiles() (err error) {
 
-	err = os.Mkdir(rootTo(""), 0700)
-	if err != nil {
-		return
-	}
+	_ = os.Mkdir(rootTo(""), 0700)
 
 	files, err := skel.ReadDir(skelTo(""))
 	if err != nil {
@@ -61,14 +59,10 @@ func initFiles() (err error) {
 	}
 
 	for _, file := range files {
-
 		fileName := file.Name()
-
-		err = copyFile(fileName)
-		if err != nil {
+		if err = copyFile(fileName); err != nil {
 			return
 		}
-
 	}
 
 	return
@@ -80,26 +74,70 @@ func copyFile(fileName string) (err error) {
 	var skelFile fs.File
 	var created *os.File
 
-	skelFile, err = skel.Open(skelTo(fileName))
-	if err != nil {
+	if _, err = os.Stat(rootTo(fileName)); err == nil {
+		err = nil
+		return
+	}
+
+	if skelFile, err = skel.Open(skelTo(fileName)); err != nil {
 		return
 	}
 	defer skelFile.Close()
 
-	created, err = os.Create(rootTo(fileName))
-	if err != nil {
+	if created, err = os.Create(rootTo(fileName)); err != nil {
 		return
 	}
 	defer created.Close()
 
-	err = os.Chmod(rootTo(fileName), 0755)
-	if err != nil {
+	if err = os.Chmod(rootTo(fileName), 0755); err != nil {
 		return
 	}
 
-	_, err = io.Copy(created, skelFile)
-	if err != nil && err != io.EOF {
+	if _, err = io.Copy(created, skelFile); err != nil && err != io.EOF {
 		return
+	}
+
+	return
+
+}
+
+func Update() (err error) {
+
+	if err = UpdateVersion(); err != nil {
+		return
+	}
+
+	err = updateFiles()
+	return
+
+}
+
+func updateFiles() (err error) {
+
+	var list []string
+
+	if list, err = getUpdateList(); err != nil {
+		return
+	}
+
+	for _, file := range list {
+		if err = exec.Command("rm", "-rf", file).Run(); err != nil {
+			return
+		}
+	}
+
+	err = InitFiles()
+	return
+
+}
+
+func getUpdateList() (result []string, err error) {
+
+	var data []byte
+
+	findCmd := exec.Command("find", "/Users/simp7/patent-server", "-type", "directory", "-name", "venv", "-prune", "-and", "!", "-name", "venv", "-o", "-type", "file", "-and", "!", "-name", "*.log", "-and", "!", "-name", "config.*")
+	if data, err = findCmd.Output(); err == nil {
+		result = strings.Split(string(data), "\n")
 	}
 
 	return
