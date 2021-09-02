@@ -5,16 +5,16 @@ import (
 	"github.com/simp7/patent-middle-server/storage/cache"
 	"github.com/simp7/patent-middle-server/storage/rest"
 	"log"
+	"os"
 )
 
 func main() {
 
-	err := initialize()
-	if err != nil {
+	if err := initialize(); err != nil {
 		log.Fatal(err)
 	}
 
-	conf, err := getConfig()
+	conf, err := GetConfig()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -22,7 +22,14 @@ func main() {
 	cacheDB := newCacheDB(conf.Cache)
 	source := rest.New(conf.Rest)
 
-	middleServer := New(conf.Port, storage.New(source, cacheDB))
+	logFile, err := os.OpenFile(rootTo("server.log"), os.O_RDWR|os.O_CREATE, 0755)
+	if err != nil {
+		log.Println(err)
+		log.Println("Switch to stdout.")
+		logFile = os.Stdout
+	}
+
+	middleServer := New(conf.Port, storage.New(source, cacheDB), logFile)
 	defer middleServer.Close()
 
 	err = middleServer.Start()
@@ -34,7 +41,8 @@ func newCacheDB(conf cache.Config) storage.Cache {
 
 	cacheDB, err := cache.Mongo(conf)
 	if err != nil {
-		log.Println("Can't connect Database. Change server to No-Cache-mode.")
+		log.Println(err)
+		log.Println("Change server to No-Cache-mode.")
 		cacheDB = cache.Nocache()
 	}
 

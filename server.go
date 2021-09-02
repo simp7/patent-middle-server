@@ -15,13 +15,13 @@ type server struct {
 	port string
 }
 
-func New(port int, storage Storage) *server {
+func New(port int, storage Storage, logFile *os.File) *server {
 
 	s := new(server)
 
 	s.Engine = gin.Default()
 
-	s.Logger = logger.Init("server", true, false, os.Stdout)
+	s.Logger = logger.Init("server", true, false, logFile)
 	s.Infof("Finish Initializing Logger")
 
 	s.Storage = storage

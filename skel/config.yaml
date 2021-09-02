@@ -1,7 +1,7 @@
 rest-server:
   word-search: http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getWordSearch
   claim-search: http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getBibliographyDetailInfoSearch
-  api-key:
+  api-key: ""
   row: 500
 
 database:
@@ -10,3 +10,4 @@ database:
   collection: claim
 
 port: 12354
+version: "1.0"

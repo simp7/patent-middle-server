@@ -49,7 +49,7 @@ func (k *kipris) GetClaims(number string) storage.ClaimTuple {
 	q.Add("applicationNumber", number)
 	request.URL.RawQuery = q.Encode()
 
-	k.Info("send " + request.URL.RawQuery)
+	k.Info("send " + request.URL.String())
 	response, err := k.Do(request)
 	if err != nil {
 		k.Error(err)
@@ -74,6 +74,7 @@ func (k *kipris) GetNumbers(input string) chan chan string {
 
 	request.URL.RawQuery = q.Encode()
 
+	k.Info("send " + request.URL.RawQuery)
 	response, err := k.Do(request)
 	k.check(err)
 
