@@ -10,3 +10,4 @@ database:
   collection: claim
 
 port: 12354
+version: 1.0

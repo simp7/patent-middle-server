@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	testServer = New(80, storage.Test())
+	testServer = New(80, storage.Test(), nil)
 	testClient = &http.Client{}
 	once       = sync.Once{}
 )

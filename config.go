@@ -8,9 +8,10 @@ import (
 )
 
 type Config struct {
-	Rest  rest.Config  `yaml:"rest-server"`
-	Cache cache.Config `yaml:"database"`
-	Port  int          `yaml:"port"`
+	Rest    rest.Config  `yaml:"rest-server"`
+	Cache   cache.Config `yaml:"database"`
+	Port    int          `yaml:"port"`
+	Version string       `yaml:"version"`
 }
 
 func getConfig() (conf Config, err error) {
