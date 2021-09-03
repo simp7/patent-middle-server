@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/simp7/patent-middle-server/storage/cache"
 	"github.com/simp7/patent-middle-server/storage/rest"
 	"gopkg.in/yaml.v3"
@@ -29,8 +28,6 @@ func SetConfig(config Config) (err error) {
 
 	if data, err = yaml.Marshal(config); err == nil {
 		err = os.WriteFile(rootTo("config.yaml"), data, 0644)
-		fmt.Println(string(data))
-		fmt.Println(err)
 	}
 
 	return

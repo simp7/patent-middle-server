@@ -1,6 +1,8 @@
 package main
 
 import (
+	"github.com/google/logger"
+	"github.com/simp7/patent-middle-server/logWriter"
 	"github.com/simp7/patent-middle-server/storage"
 	"github.com/simp7/patent-middle-server/storage/cache"
 	"github.com/simp7/patent-middle-server/storage/rest"
@@ -22,14 +24,14 @@ func main() {
 	cacheDB := newCacheDB(conf.Cache)
 	source := rest.New(conf.Rest)
 
-	logFile, err := os.OpenFile(rootTo("server.log"), os.O_RDWR|os.O_CREATE, 0755)
+	logFile, err := os.OpenFile(rootTo("server.log"), os.O_RDWR|os.O_CREATE|os.O_APPEND, 0755)
 	if err != nil {
-		log.Println(err)
-		log.Println("Switch to stdout.")
-		logFile = os.Stdout
+		logFile = nil
 	}
 
-	middleServer := New(conf.Port, storage.New(source, cacheDB), logFile)
+	lg := logger.Init("server", true, false, logWriter.New(logFile))
+
+	middleServer := New(conf.Port, storage.New(source, cacheDB), lg)
 	defer middleServer.Close()
 
 	err = middleServer.Start()

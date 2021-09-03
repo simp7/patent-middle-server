@@ -9,9 +9,9 @@ from sklearn.decomposition import TruncatedSVD
 
 
 # 데이터 전처리까지 같이 함 (원본데이터 필요)
-def LSA(datapath, topicNum):
+def lsa(data_path, topic_num):
 
-    name, item = dataProcessing.do(datapath)
+    name, item = dataProcessing.do(data_path)
 
     new_df = pd.DataFrame({'item': item}).fillna("")
 
@@ -26,7 +26,7 @@ def LSA(datapath, topicNum):
     X = vectorizer.fit_transform(new_df['clean_doc'])
 
     # SVD 차원축소
-    svd_model = TruncatedSVD(n_components=topicNum, algorithm='randomized', n_iter=100, random_state=12)
+    svd_model = TruncatedSVD(n_components=topic_num, algorithm='randomized', n_iter=100, random_state=12)
     svd_model.fit(X)
 
     terms = vectorizer.get_feature_names()
@@ -39,7 +39,7 @@ def main():
     data_path = sys.argv[1]
     amount = int(sys.argv[2])
 
-    terms, components = LSA(data_path, amount)
+    terms, components = lsa(data_path, amount)
 
     json_data = [[""]*amount]*amount
     for index, topic in enumerate(components):

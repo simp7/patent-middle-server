@@ -25,20 +25,31 @@ func skelTo(file string) string {
 func initialize() (err error) {
 
 	if IsFirstTime() {
-		err = InitFiles()
-		if err != nil {
-			return
-		}
 		fmt.Println("It is first time to run server.")
 		fmt.Println("It will take few minutes, so BE PATIENT.")
-		fmt.Println("You should put password for sudo command to install required environment.")
-		err = exec.Command(rootTo("initialize.sh")).Run()
-		fmt.Println("Initializing process has been done! Good luck!")
+		if err = InstallEssentials(); err != nil {
+			return
+		}
 	}
 
 	if !IsLatest() {
 		err = Update()
 	}
+
+	return
+
+}
+
+func InstallEssentials() (err error) {
+
+	err = InitFiles()
+	if err != nil {
+		return
+	}
+
+	fmt.Println("You should put password for sudo command to install/upgrade essential environment.")
+	err = exec.Command(rootTo("initialize.sh")).Run()
+	fmt.Println("Installing/Upgrading process has been done! Good luck!")
 
 	return
 
@@ -126,7 +137,7 @@ func updateFiles() (err error) {
 		}
 	}
 
-	err = InitFiles()
+	err = InstallEssentials()
 	return
 
 }
