@@ -12,7 +12,7 @@ import (
 
 func main() {
 
-	if err := initialize(); err != nil {
+	if err := Initialize(); err != nil {
 		log.Fatal(err)
 	}
 

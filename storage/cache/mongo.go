@@ -28,9 +28,8 @@ func Mongo(config Config) (storage.Cache, error) {
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 
-		client, err = mongo.Connect(ctx, options.Client().ApplyURI(config.URL))
-		if err != nil {
-			err = connectionError
+		if client, err = mongo.Connect(ctx, options.Client().ApplyURI(config.URL)); err != nil {
+			instance = nil
 			return
 		}
 
@@ -55,8 +54,7 @@ func (m *mongoDB) Find(applicationNumber string) (tuple storage.ClaimTuple, ok b
 	dbResult := m.collection.FindOne(context.TODO(), bson.D{{"_id", applicationNumber}})
 
 	if dbResult.Err() == nil {
-		err := dbResult.Decode(&tuple)
-		if err == nil {
+		if err := dbResult.Decode(&tuple); err == nil {
 			ok = true
 		}
 	}

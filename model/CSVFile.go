@@ -21,18 +21,14 @@ func (c *CSVGroup) Append(unit CSVUnit) {
 
 func (c *CSVGroup) File() (file *os.File, err error) {
 
-	file, err = os.Create(c.id + ".csv")
-	if err != nil {
+	if file, err = os.Create(c.id + ".csv"); err != nil {
 		return
 	}
 
 	_, err = fmt.Fprintln(file, "name"+"\t"+"item")
 
 	for _, v := range c.data {
-		_, err := fmt.Fprintln(file, v.Serialize(c.separator))
-		if err != nil {
-			continue
-		}
+		_, err = fmt.Fprintln(file, v.Serialize(c.separator))
 	}
 
 	return

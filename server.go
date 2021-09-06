@@ -61,8 +61,7 @@ func (s *server) Search(c *gin.Context) {
 	}
 
 	defer func() {
-		err = os.Remove(file.Name())
-		if err != nil {
+		if err = os.Remove(file.Name()); err != nil {
 			s.Error(err)
 		}
 	}()
@@ -76,16 +75,14 @@ func (s *server) Search(c *gin.Context) {
 		return
 	}
 
-	_, err = c.Writer.Write(data)
-	if err != nil {
+	if _, err = c.Writer.Write(data); err != nil {
 		s.Error(err)
 	}
 
 }
 
 func (s *server) Hello(c *gin.Context) {
-	_, err := c.Writer.WriteString("<h1>Server is Available</h1>")
-	if err != nil {
+	if _, err := c.Writer.WriteString("<h1>Server is Available</h1>"); err != nil {
 		s.Error(err)
 	}
 }

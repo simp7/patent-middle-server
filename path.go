@@ -22,9 +22,9 @@ func skelTo(file string) string {
 	return path.Join("skel", file)
 }
 
-func initialize() (err error) {
+func Initialize() (err error) {
 
-	if IsFirstTime() {
+	if isFirstTime() {
 		fmt.Println("It is first time to run server.")
 		fmt.Println("It will take few minutes, so BE PATIENT.")
 		if err = InstallEssentials(); err != nil {
@@ -42,8 +42,7 @@ func initialize() (err error) {
 
 func InstallEssentials() (err error) {
 
-	err = InitFiles()
-	if err != nil {
+	if err = InitFiles(); err != nil {
 		return
 	}
 
@@ -55,9 +54,9 @@ func InstallEssentials() (err error) {
 
 }
 
-func IsFirstTime() bool {
-	_, err := os.Open(rootTo(""))
-	return err != nil
+func isFirstTime() bool {
+	_, err := os.Stat(rootTo(""))
+	return !os.IsNotExist(err)
 }
 
 func InitFiles() (err error) {

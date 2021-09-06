@@ -51,15 +51,15 @@ func (k *kipris) GetClaims(number string) storage.ClaimTuple {
 
 	k.Info("send " + request.URL.String())
 	response, err := k.Do(request)
-	if err != nil {
-		k.Error(err)
-	}
+	k.check(err)
 
 	return k.processClaim(response.Body)
 
 }
 
 func (k *kipris) GetNumbers(input string) chan chan string {
+
+	var totalPage int
 
 	k.Info("getting application numbers by searching " + input)
 	outCh := make(chan chan string)
@@ -78,14 +78,13 @@ func (k *kipris) GetNumbers(input string) chan chan string {
 	response, err := k.Do(request)
 	k.check(err)
 
-	total, err := k.getTotal(response.Body)
-	if err != nil {
+	if totalPage, err = k.getTotal(response.Body); err != nil {
 		k.Error(err)
 		close(outCh)
 		return outCh
 	}
 
-	lastPage := (total-1)/k.pageRow + 1
+	lastPage := (totalPage-1)/k.pageRow + 1
 
 	outCh = make(chan chan string, lastPage)
 
@@ -111,9 +110,7 @@ func (k *kipris) GetNumbers(input string) chan chan string {
 	k.Info("close channel in GetNumbers")
 	close(outCh)
 
-	defer func() {
-		k.check(response.Body.Close())
-	}()
+	defer k.check(response.Body.Close())
 
 	return outCh
 
@@ -122,18 +119,11 @@ func (k *kipris) GetNumbers(input string) chan chan string {
 func (k *kipris) getTotal(body io.Reader) (int, error) {
 
 	var searchResult storage.SearchResult
-	err := xml.NewDecoder(body).Decode(&searchResult)
-
-	k.Info("getting total pages of application numbers")
-
-	if err != nil {
-		return 0, err
-	}
-
-	if searchResult.Header.ResultCode != "00" {
+	if err := xml.NewDecoder(body).Decode(&searchResult); err != nil {
 		return 0, errors.New("failed getting data from kipris -- check your api key")
 	}
 
+	k.Info("getting total pages of application numbers")
 	return strconv.Atoi(searchResult.Count.TotalCount)
 
 }
@@ -143,8 +133,8 @@ func (k *kipris) getNumberByPage(body io.Reader) chan string {
 	outCh := make(chan string, k.pageRow)
 	var searchResult storage.SearchResult
 
-	err := xml.NewDecoder(body).Decode(&searchResult)
-	if err != nil {
+	if err := xml.NewDecoder(body).Decode(&searchResult); err != nil {
+		k.Error(err)
 		return nil
 	}
 
