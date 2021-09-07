@@ -6,5 +6,5 @@ type CSVUnit struct {
 }
 
 func (c CSVUnit) Serialize(sep string) string {
-	return c.Key + sep + "\"" + c.Value + "\""
+	return c.Key + sep + "\"" + c.Value + "\"" + "\n"
 }

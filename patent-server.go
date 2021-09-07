@@ -2,21 +2,23 @@ package main
 
 import (
 	"github.com/google/logger"
+	"github.com/simp7/patent-middle-server/files"
+	"github.com/simp7/patent-middle-server/files/subsystem"
 	"github.com/simp7/patent-middle-server/logWriter"
 	"github.com/simp7/patent-middle-server/storage"
 	"github.com/simp7/patent-middle-server/storage/cache"
 	"github.com/simp7/patent-middle-server/storage/rest"
 	"log"
-	"os"
 )
 
 func main() {
 
-	if err := Initialize(); err != nil {
+	sys, err := files.System(subsystem.Real(), subsystem.Skel())
+	if err != nil {
 		log.Fatal(err)
 	}
 
-	conf, err := GetConfig()
+	conf, err := sys.LoadConfig()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -24,14 +26,14 @@ func main() {
 	cacheDB := newCacheDB(conf.Cache)
 	source := rest.New(conf.Rest)
 
-	logFile, err := os.OpenFile(rootTo("server.log"), os.O_RDWR|os.O_CREATE|os.O_APPEND, 0755)
+	logFile, err := sys.OpenLogfile()
 	if err != nil {
 		logFile = nil
 	}
 
 	lg := logger.Init("server", true, false, logWriter.New(logFile))
 
-	middleServer := New(conf.Port, storage.New(source, cacheDB), lg)
+	middleServer := New(conf.Port, storage.New(source, cacheDB), lg, sys)
 	defer middleServer.Close()
 
 	err = middleServer.Start()

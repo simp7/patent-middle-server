@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/logger"
 	"github.com/simp7/patent-middle-server/model/formula"
-	"os"
 )
 
 type server struct {
@@ -13,9 +12,10 @@ type server struct {
 	Storage
 	*logger.Logger
 	port string
+	fs   FileSystem
 }
 
-func New(port int, storage Storage, lg *logger.Logger) *server {
+func New(port int, storage Storage, lg *logger.Logger, fs FileSystem) *server {
 
 	s := new(server)
 
@@ -27,6 +27,7 @@ func New(port int, storage Storage, lg *logger.Logger) *server {
 	s.Storage = storage
 
 	s.port = fmt.Sprintf(":%d", port)
+	s.fs = fs
 
 	return s
 
@@ -55,13 +56,13 @@ func (s *server) Search(c *gin.Context) {
 	claims := s.GetClaims(input)
 
 	s.Info("create file")
-	file, err := claims.File()
+	file, err := s.fs.SaveCSVFile(claims)
 	if err != nil {
 		s.Fatal(err)
 	}
 
 	defer func() {
-		if err = os.Remove(file.Name()); err != nil {
+		if err = s.fs.RemoveCSVFile(claims); err != nil {
 			s.Error(err)
 		}
 	}()
@@ -92,12 +93,12 @@ func (s *server) selectNLP(country string) NLP {
 	switch country {
 	case "KR":
 		s.Info("select LDA")
-		return LDA()
+		return s.fs.LDA
 	case "US":
 		fallthrough
 	default:
 		s.Info("select Word2vec")
-		return Word2vec()
+		return s.fs.Word2vec
 	}
 
 }
