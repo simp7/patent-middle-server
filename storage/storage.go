@@ -33,12 +33,9 @@ func (s *storage) GetClaims(input string) *model.CSVGroup {
 
 	for numbers := range s.source.GetNumbers(input) {
 		for number := range numbers {
-
-			data, err := s.getClaimsEach(number)
-			if err == nil {
+			if data, err := s.getClaimsEach(number); err == nil {
 				result.Append(data)
 			}
-
 		}
 	}
 

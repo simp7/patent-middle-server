@@ -8,9 +8,9 @@ from konlpy.tag import Okt
 
 
 # 데이터 전처리
-def do(datapath):
+def do(data_path):
     # 데이터 업로드
-    data = pd.read_csv(datapath, sep='\t', error_bad_lines=False)
+    data = pd.read_csv(data_path, sep='\t', error_bad_lines=False)
 
     # 출원명과 청구항 데이터
     name = list(data['name'])
