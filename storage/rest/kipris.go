@@ -22,14 +22,14 @@ type kipris struct {
 	ClaimURL  string
 }
 
-func New(config Config) *kipris {
+func New(config Config, lg *logger.Logger) *kipris {
 	key := config.Key
 	if key == "" {
 		key = os.Getenv("KIPRIS")
 	}
 	return &kipris{
 		&http.Client{},
-		logger.Init("server", true, false, os.Stdout),
+		lg,
 		500,
 		key,
 		config.WordURL,
@@ -145,7 +145,7 @@ func (k *kipris) getNumberByPage(body io.Reader) chan string {
 	a := len(items)
 	for _, item := range items {
 		go func(number string) {
-			k.Info("number " + number + " founded")
+			k.Info("getting " + number)
 			outCh <- number
 			wg.Done()
 			a--

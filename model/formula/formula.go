@@ -3,6 +3,7 @@ package formula
 import (
 	"errors"
 	"github.com/simp7/patent-middle-server/model"
+	"strings"
 )
 
 var shouldIncludeWord = errors.New("formula should include at least one word")
@@ -12,13 +13,41 @@ type formula struct {
 	Excluded model.Binary
 }
 
-func New() *formula {
+func Interpret(target string) model.Formula {
+
+	i := newFormula()
+	idx := 0
+
+	blocks := strings.Split(target, "*")
+	for _, block := range blocks {
+		switch []rune(block)[0] {
+		case '!':
+			i.Exclude(strings.TrimPrefix(block, "!"))
+		case '(':
+			block = strings.Trim(block, "()")
+			words := strings.Split(block, "+")
+			for _, word := range words {
+				i.Alias(idx, word)
+			}
+			idx++
+		default:
+			i.Alias(idx, block)
+			idx++
+		}
+	}
+
+	return i
+
+}
+
+func newFormula() *formula {
 
 	f := new(formula)
 	f.Included = make([]model.Binary, 0)
 	f.Excluded = AND()
 
 	return f
+
 }
 
 func binaryToGroup(binary []model.Binary) (group []model.Group) {
@@ -60,7 +89,7 @@ func (f *formula) Verify() error {
 	return nil
 }
 
-func (f *formula) KeyWords() []string {
+func (f *formula) Keywords() []string {
 	result := make([]string, len(f.Included))
 	for i := range f.Included {
 		result[i] = f.Included[i].First()

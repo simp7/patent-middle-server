@@ -4,7 +4,6 @@ import (
 	"github.com/google/logger"
 	"github.com/simp7/patent-middle-server/files"
 	"github.com/simp7/patent-middle-server/files/subsystem"
-	"github.com/simp7/patent-middle-server/logWriter"
 	"github.com/simp7/patent-middle-server/storage"
 	"github.com/simp7/patent-middle-server/storage/cache"
 	"github.com/simp7/patent-middle-server/storage/rest"
@@ -13,37 +12,33 @@ import (
 
 func main() {
 
-	sys, err := files.System(subsystem.Real(), subsystem.Skel())
+	fs, err := files.System(subsystem.Real(), subsystem.Skel())
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	conf, err := sys.LoadConfig()
+	conf, err := fs.LoadConfig()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	cacheDB := newCacheDB(conf.Cache)
-	source := rest.New(conf.Rest)
+	logWriter, _ := fs.BindLogFiles()
+	serverLogger := logger.Init("server", true, false, logWriter)
+	restLogger := logger.Init("rest", true, false, logWriter)
+	cacheLogger := logger.Init("rest", true, false, logWriter)
 
-	logFile, err := sys.OpenLogfile()
-	if err != nil {
-		logFile = nil
-	}
+	cacheDB := newCacheDB(conf.Cache, cacheLogger)
+	source := rest.New(conf.Rest, restLogger)
 
-	lg := logger.Init("server", true, false, logWriter.New(logFile))
-
-	middleServer := New(conf.Port, storage.New(source, cacheDB), lg, sys)
-	defer middleServer.Close()
-
+	middleServer := New(conf.Port, storage.New(source, cacheDB), fs, serverLogger)
 	err = middleServer.Start()
-	log.Fatal(err)
+	defer middleServer.Close()
 
 }
 
-func newCacheDB(conf cache.Config) storage.Cache {
+func newCacheDB(conf cache.Config, cacheLogger *logger.Logger) storage.Cache {
 
-	cacheDB, err := cache.Mongo(conf)
+	cacheDB, err := cache.Mongo(conf, cacheLogger)
 	if err != nil {
 		log.Println(err)
 		log.Println("Change server to No-Cache-mode.")

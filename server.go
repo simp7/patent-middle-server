@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/logger"
+	"github.com/simp7/patent-middle-server/model"
 	"github.com/simp7/patent-middle-server/model/formula"
 )
 
@@ -15,19 +16,17 @@ type server struct {
 	fs   FileSystem
 }
 
-func New(port int, storage Storage, lg *logger.Logger, fs FileSystem) *server {
+func New(port int, storage Storage, fs FileSystem, lg *logger.Logger) *server {
 
 	s := new(server)
 
 	s.Engine = gin.Default()
 	s.Logger = lg
-
-	s.Infof("Finish Initializing Logger")
-
 	s.Storage = storage
-
 	s.port = fmt.Sprintf(":%d", port)
 	s.fs = fs
+
+	s.Info("server has been initialized")
 
 	return s
 
@@ -49,27 +48,22 @@ func (s *server) Search(c *gin.Context) {
 	country := c.Param("country")
 	input := c.Param("formula")
 
-	s.Infof("GET %s in NLP of %s", input, country)
-	selected := s.selectNLP(country)
-
 	s.Info("start search")
 	claims := s.GetClaims(input)
 
 	s.Info("create file")
-	file, err := s.fs.SaveCSVFile(claims)
-	if err != nil {
+	if err := s.fs.SaveCSVFile(claims); err != nil {
 		s.Fatal(err)
 	}
 
 	defer func() {
-		if err = s.fs.RemoveCSVFile(claims); err != nil {
+		if err := s.fs.RemoveCSVFile(claims); err != nil {
 			s.Error(err)
 		}
 	}()
 
 	s.Info("perform NLP")
-	data, err := selected.Process(file.Name(), formula.Interpret(input).KeyWords()...)
-
+	data, err := s.performNLP(country, claims)
 	if err != nil {
 		s.Error(err)
 		c.Writer.WriteHeader(500)
@@ -78,7 +72,10 @@ func (s *server) Search(c *gin.Context) {
 
 	if _, err = c.Writer.Write(data); err != nil {
 		s.Error(err)
+		return
 	}
+
+	s.Info("search finished successfully")
 
 }
 
@@ -88,17 +85,23 @@ func (s *server) Hello(c *gin.Context) {
 	}
 }
 
-func (s *server) selectNLP(country string) NLP {
+func (s *server) performNLP(country string, group *model.CSVGroup) ([]byte, error) {
+
+	args := make([]string, 2)
+	args[0] = group.FileName
+	args[1] = "10"
 
 	switch country {
 	case "KR":
 		s.Info("select LDA")
-		return s.fs.LDA
+		return s.fs.LDA(args...)
 	case "US":
 		fallthrough
 	default:
 		s.Info("select Word2vec")
-		return s.fs.Word2vec
+		keywords := formula.Interpret(group.SearchWord).Keywords()
+		args = append(args, keywords...)
+		return s.fs.Word2vec(args...)
 	}
 
 }

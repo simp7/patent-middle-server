@@ -1,15 +1,29 @@
 package model
 
+import (
+	"time"
+)
+
 type CSVGroup struct {
-	ID        string
-	Data      []CSVUnit
-	Separator string
+	SearchWord string
+	FileName   string
+	Data       []CSVUnit
+	Separator  string
 }
 
-func NewCSV(id string) *CSVGroup {
-	return &CSVGroup{id, make([]CSVUnit, 0), "\t"}
+func NewCSV(input string) *CSVGroup {
+
+	fileName := time.Now().String() + "@" + input + ".csv"
+	data := make([]CSVUnit, 0)
+
+	return &CSVGroup{input, fileName, data, "\t"}
+
 }
 
 func (c *CSVGroup) Append(unit CSVUnit) {
 	c.Data = append(c.Data, unit)
+}
+
+func (c *CSVGroup) Header() string {
+	return "name" + c.Separator + "item" + "\n"
 }
