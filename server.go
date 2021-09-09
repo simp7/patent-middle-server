@@ -22,13 +22,11 @@ func New(port int, storage Storage, fs FileSystem, lg *logger.Logger) *server {
 
 	s.Engine = gin.Default()
 	s.Logger = lg
-
-	s.Infof("Finish Initializing Logger")
-
 	s.Storage = storage
-
 	s.port = fmt.Sprintf(":%d", port)
 	s.fs = fs
+
+	s.Info("server has been initialized")
 
 	return s
 
