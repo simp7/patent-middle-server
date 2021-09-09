@@ -3,7 +3,6 @@ package storage
 import (
 	"github.com/simp7/patent-middle-server/model"
 	"sync"
-	"time"
 )
 
 var instance *storage
@@ -29,7 +28,7 @@ func New(source Rest, cacheDB Cache) *storage {
 
 func (s *storage) GetClaims(input string) *model.CSVGroup {
 
-	result := model.NewCSV(time.Now().String() + "@" + input)
+	result := model.NewCSV(input)
 
 	for numbers := range s.source.GetNumbers(input) {
 		for number := range numbers {

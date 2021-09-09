@@ -3,6 +3,7 @@ package cache
 import (
 	"context"
 	"errors"
+	"github.com/google/logger"
 	"github.com/simp7/patent-middle-server/storage"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -13,13 +14,14 @@ import (
 
 var once sync.Once
 var instance *mongoDB
-var connectionError error = errors.New("could not connect to MongoDB")
+var connectionError = errors.New("could not connect to MongoDB")
 
 type mongoDB struct {
 	collection *mongo.Collection
+	*logger.Logger
 }
 
-func Mongo(config Config) (storage.Cache, error) {
+func Mongo(config Config, lg *logger.Logger) (storage.Cache, error) {
 
 	var err error
 	once.Do(func() {
@@ -29,6 +31,7 @@ func Mongo(config Config) (storage.Cache, error) {
 		defer cancel()
 
 		if client, err = mongo.Connect(ctx, options.Client().ApplyURI(config.URL)); err != nil {
+			lg.Error(err)
 			instance = nil
 			return
 		}
@@ -36,7 +39,8 @@ func Mongo(config Config) (storage.Cache, error) {
 		db := client.Database(config.DBName)
 		collection := db.Collection(config.CollectionName)
 
-		instance = &mongoDB{collection: collection}
+		instance = &mongoDB{collection: collection, Logger: lg}
+		lg.Info("mongoDB has been loaded")
 
 	})
 
@@ -53,9 +57,10 @@ func (m *mongoDB) Find(applicationNumber string) (tuple storage.ClaimTuple, ok b
 	ok = false
 	dbResult := m.collection.FindOne(context.TODO(), bson.D{{"_id", applicationNumber}})
 
-	if dbResult.Err() == nil {
-		if err := dbResult.Decode(&tuple); err == nil {
+	if err := dbResult.Err(); err == nil {
+		if err = dbResult.Decode(&tuple); err == nil {
 			ok = true
+			m.Info("cache has " + applicationNumber)
 		}
 	}
 
@@ -63,7 +68,11 @@ func (m *mongoDB) Find(applicationNumber string) (tuple storage.ClaimTuple, ok b
 
 }
 
-func (m *mongoDB) Register(tuple storage.ClaimTuple) error {
-	_, err := m.collection.InsertOne(context.TODO(), tuple.BSON())
-	return err
+func (m *mongoDB) Register(tuple storage.ClaimTuple) (err error) {
+	if _, err = m.collection.InsertOne(context.TODO(), tuple.BSON()); err != nil {
+		m.Error(err)
+		return
+	}
+	m.Info("register " + tuple.ApplicationNumber + " successfully")
+	return
 }

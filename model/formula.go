@@ -15,4 +15,5 @@ type Formula interface {
 	Exclude(string)
 	Alias(int, string)
 	Verify() error
+	Keywords() []string
 }

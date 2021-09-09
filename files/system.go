@@ -7,18 +7,27 @@ import (
 	"gopkg.in/yaml.v3"
 	"io"
 	"io/fs"
+	"log"
 	"os"
 	"os/exec"
+	"sync"
 )
+
+var once sync.Once
 
 type system struct {
 	ReadWrite
 	skelFS ReadOnly
+	config config.Config
 }
 
 func System(main ReadWrite, sub ReadOnly) (sys *system, err error) {
 
 	sys = &system{ReadWrite: main, skelFS: sub}
+	_, err = sys.LoadConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	if sys.isFirstTime() {
 
@@ -31,84 +40,126 @@ func System(main ReadWrite, sub ReadOnly) (sys *system, err error) {
 
 	}
 
-	if !sys.isLatest() {
-		err = sys.update()
-	}
+	err = sys.update()
 
 	return
 
 }
 
-func (s *system) OpenLogfile() (*os.File, error) {
-	return s.Open(LOG)
+func (s *system) BindLogFiles(logPath ...string) (io.WriteCloser, error) {
+
+	result := make([]io.WriteCloser, 0)
+
+	if file, err := s.Open(LOG, true); err == nil {
+		result = append(result, file)
+	}
+
+	for _, logFile := range logPath {
+
+		file, err := s.Open(New(logFile), true)
+		if err != nil {
+			return nil, err
+		}
+
+		result = append(result, file)
+
+	}
+
+	return s.bindLogger(result...), nil
+
 }
 
-func (s *system) SaveCSVFile(group *model.CSVGroup) (file *os.File, err error) {
+func (s *system) SaveCSVFile(group *model.CSVGroup) (err error) {
 
-	filePath := New(group.ID + ".csv")
+	filePath := New(group.FileName)
+	stream := make(chan string)
 
-	if file, err = s.Open(filePath); err != nil {
+	go func() {
+		if err = s.WriteWithChan(filePath, stream); err != nil {
+			return
+		}
+	}()
+
+	if err != nil {
 		return
 	}
-	defer file.Close()
 
-	if _, err = file.WriteString("name" + group.Separator + "item" + "\n"); err != nil {
-		return
+	stream <- group.Header()
+	wg := sync.WaitGroup{}
+
+	for _, data := range group.Data {
+		wg.Add(1)
+		go func(line string) {
+			stream <- line
+			wg.Done()
+		}(data.Serialize(group.Separator))
 	}
+	wg.Wait()
 
-	for _, v := range group.Data {
-		_, _ = file.WriteString(v.Serialize(group.Separator))
-	}
-
+	close(stream)
 	return
 
 }
 
 func (s *system) RemoveCSVFile(group *model.CSVGroup) error {
-	filePath := New(group.ID + ".csv")
+	filePath := New(group.FileName)
 	return s.Remove(filePath)
 }
 
 func (s *system) LoadConfig() (conf config.Config, err error) {
 
-	file, err := s.Open(CONFIG)
-	if err != nil {
-		return config.Config{}, err
+	once.Do(func() {
+
+		var file *os.File
+
+		file, err = s.Open(CONFIG, false)
+		if err != nil {
+			return
+		}
+
+		if s.config, err = s.decodeConfig(file); err != nil {
+			return
+		}
+
+		err = file.Close()
+
+	})
+
+	conf = s.config
+	return
+
+}
+
+func (s *system) Word2vec(args ...string) ([]byte, error) {
+	return s.Command(WORD2VEC, args...).CombinedOutput()
+}
+
+func (s *system) LDA(args ...string) ([]byte, error) {
+	return s.Command(LDA, args...).CombinedOutput()
+}
+
+func (s *system) LSA(args ...string) ([]byte, error) {
+	return s.Command(LSA, args...).CombinedOutput()
+}
+
+func (s *system) update() (err error) {
+
+	skelConf, _ := s.skelConfig()
+	if s.config.Version == skelConf.Version {
+		return
 	}
 
-	return s.decodeConfig(file)
+	if err = s.updateVersion(skelConf.Version); err == nil {
+		err = s.updateFiles()
+	}
+
+	return
 
 }
 
-func (s *system) Word2vec(args ...string) *exec.Cmd {
-	return s.Command(WORD2VEC, args...)
-}
-
-func (s *system) LDA(args ...string) *exec.Cmd {
-	return s.Command(LDA, args...)
-}
-
-func (s *system) LSA(args ...string) *exec.Cmd {
-	return s.Command(LSA, args...)
-}
-
-func (s *system) isLatest() bool {
-
-	realConf, _ := s.LoadConfig()
-	skelConf, _ := s.skelConfig()
-
-	return realConf.Version == skelConf.Version
-
-}
-
-func (s *system) updateVersion() error {
-
-	realConf, _ := s.LoadConfig()
-	skelConf, _ := s.skelConfig()
-
-	realConf.Version = skelConf.Version
-	return s.saveConfig(realConf)
-
+func (s *system) updateVersion(target string) error {
+	s.config.Version = target
+	return s.saveConfig()
 }
 
 func (s *system) skelConfig() (config.Config, error) {
@@ -123,19 +174,15 @@ func (s *system) skelConfig() (config.Config, error) {
 }
 
 func (s *system) decodeConfig(file io.ReadCloser) (config config.Config, err error) {
-
-	defer file.Close()
 	err = yaml.NewDecoder(file).Decode(&config)
-
 	return
-
 }
 
-func (s *system) saveConfig(conf config.Config) (err error) {
+func (s *system) saveConfig() (err error) {
 
 	var data []byte
 
-	if data, err = yaml.Marshal(conf); err == nil {
+	if data, err = yaml.Marshal(s.config); err == nil {
 		err = s.Write(CONFIG, data)
 	}
 
@@ -156,19 +203,10 @@ func (s *system) initialize() (err error) {
 
 	}
 
-	if !s.isLatest() {
-		err = s.update()
-	}
+	err = s.update()
 
 	return
 
-}
-
-func (s *system) update() (err error) {
-	if err = s.updateVersion(); err == nil {
-		err = s.updateFiles()
-	}
-	return
 }
 
 func (s *system) installEssentials() (err error) {
@@ -212,7 +250,6 @@ func (s *system) initFiles() (err error) {
 func (s *system) copy(file Path) (err error) {
 
 	var skelFile fs.File
-	var created *os.File
 
 	if s.IsExist(file) {
 		return
@@ -223,14 +260,7 @@ func (s *system) copy(file Path) (err error) {
 	}
 	defer skelFile.Close()
 
-	if created, err = s.Create(file); err != nil {
-		return
-	}
-	defer created.Close()
-
-	if _, err = io.Copy(created, skelFile); err != nil && err != io.EOF {
-		return
-	}
+	err = s.Copy(file, skelFile)
 
 	return
 
@@ -252,5 +282,14 @@ func (s *system) updateFiles() (err error) {
 
 	err = s.installEssentials()
 	return
+
+}
+
+func (s *system) bindLogger(logFiles ...io.WriteCloser) io.WriteCloser {
+
+	var files logWriteCloser = make([]io.WriteCloser, 0)
+	files = append(files, logFiles...)
+
+	return files
 
 }
