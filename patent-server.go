@@ -25,7 +25,7 @@ func main() {
 	logWriter, _ := fs.BindLogFiles()
 	serverLogger := logger.Init("server", true, false, logWriter)
 	restLogger := logger.Init("rest", true, false, logWriter)
-	cacheLogger := logger.Init("rest", true, false, logWriter)
+	cacheLogger := logger.Init("cache", true, false, logWriter)
 
 	cacheDB := newCacheDB(conf.Cache, cacheLogger)
 	source := rest.New(conf.Rest, restLogger)
@@ -40,8 +40,8 @@ func newCacheDB(conf cache.Config, cacheLogger *logger.Logger) storage.Cache {
 
 	cacheDB, err := cache.Mongo(conf, cacheLogger)
 	if err != nil {
-		log.Println(err)
-		log.Println("Change server to No-Cache-mode.")
+		cacheLogger.Error(err)
+		cacheLogger.Info("change server to No-Cache-mode")
 		cacheDB = cache.Nocache()
 	}
 

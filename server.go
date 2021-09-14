@@ -51,6 +51,11 @@ func (s *server) Search(c *gin.Context) {
 	s.Info("start search")
 	claims := s.GetClaims(input)
 
+	if claims.IsEmpty() {
+		_, _ = c.Writer.WriteString("<h1>Cannot find matching patent.</h1>")
+		return
+	}
+
 	s.Info("create file")
 	if err := s.fs.SaveCSVFile(claims); err != nil {
 		s.Fatal(err)
