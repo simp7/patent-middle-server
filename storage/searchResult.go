@@ -1,6 +1,10 @@
 package storage
 
-import "encoding/xml"
+import (
+	"encoding/xml"
+	"strconv"
+	"sync"
+)
 
 type SearchResult struct {
 	XMLName xml.Name `xml:"response"`
@@ -45,4 +49,26 @@ type SearchResult struct {
 		PageNo     string `xml:"pageNo"`
 		TotalCount string `xml:"totalCount"`
 	} `xml:"count"`
+}
+
+func (s SearchResult) TotalPage() int {
+	result, _ := strconv.Atoi(s.Count.TotalCount)
+	return result
+}
+
+func (s SearchResult) ApplicationNumbers(outCh chan<- string) {
+
+	items := s.Body.Items.Item
+
+	var wg sync.WaitGroup
+	wg.Add(len(items))
+
+	for _, item := range items {
+		go func(number string) {
+			outCh <- number
+			wg.Done()
+		}(item.ApplicationNumber)
+	}
+	wg.Wait()
+
 }
