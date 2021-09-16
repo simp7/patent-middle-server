@@ -30,28 +30,38 @@ func (s *storage) GetClaims(input string) *model.CSVGroup {
 
 	result := model.NewCSV(input)
 
-	for numbers := range s.source.GetNumbers(input) {
-		for number := range numbers {
-			if data, err := s.getClaimsEach(number); err == nil {
-				result.Append(data)
-			}
-		}
-	}
+	numberChan := make(chan string)
+	dataChan := make(chan Data)
+
+	go s.source.GetNumbers(input, numberChan)
+	go s.searchClaims(numberChan, dataChan)
+	s.processCSV(result, dataChan)
 
 	return result
 
 }
 
-func (s *storage) getClaimsEach(number string) (result model.CSVUnit, err error) {
+func (s *storage) searchClaims(inCh <-chan string, outCh chan<- Data) {
 
-	tuple, ok := s.cache.Find(number)
-	if !ok {
-		tuple = s.source.GetClaims(number)
-		err = s.cache.Register(tuple)
+	for number := range inCh {
+
+		data, ok := s.cache.Find(number)
+		if !ok {
+			data = s.source.GetClaims(number)
+			s.cache.Register(data)
+		}
+
+		outCh <- data
+
 	}
 
-	result = tuple.CSVRow()
+	close(outCh)
 
-	return
+}
 
+func (s *storage) processCSV(group *model.CSVGroup, inCh <-chan Data) {
+	for data := range inCh {
+		row := data.CSVRow()
+		group.Append(row)
+	}
 }

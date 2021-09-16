@@ -1,6 +1,6 @@
 package storage
 
 type Rest interface {
-	GetNumbers(formula string) chan chan string
-	GetClaims(applicationNumber string) ClaimTuple
+	GetNumbers(formula string, outCh chan<- string)
+	GetClaims(string) Data
 }

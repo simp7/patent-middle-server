@@ -1,6 +1,9 @@
 package storage
 
-import "encoding/xml"
+import (
+	"encoding/xml"
+	"strings"
+)
 
 type ClaimResult struct {
 	XMLName xml.Name `xml:"response"`
@@ -154,4 +157,25 @@ type ClaimResult struct {
 		PageNo     string `xml:"pageNo"`
 		TotalCount string `xml:"totalCount"`
 	} `xml:"count"`
+}
+
+func (c ClaimResult) ApplicationNumber() string {
+	applicationNumber := c.Body.Item.BiblioSummaryInfoArray.BiblioSummaryInfo.ApplicationNumber
+	return strings.Join(strings.Split(applicationNumber, "-"), "")
+}
+
+func (c ClaimResult) Title() string {
+	return strings.TrimSpace(c.Body.Item.BiblioSummaryInfoArray.BiblioSummaryInfo.InventionTitle)
+}
+
+func (c ClaimResult) Claims() (result []string) {
+
+	claims := c.Body.Item.ClaimInfoArray.ClaimInfo
+	result = make([]string, len(claims))
+	for i, v := range claims {
+		result[i] = strings.TrimSpace(v.Claim)
+	}
+
+	return
+
 }
