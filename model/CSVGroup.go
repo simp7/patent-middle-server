@@ -27,3 +27,7 @@ func (c *CSVGroup) Append(unit CSVUnit) {
 func (c *CSVGroup) Header() string {
 	return "name" + c.Separator + "item" + "\n"
 }
+
+func (c *CSVGroup) IsEmpty() bool {
+	return len(c.Data) == 0
+}
