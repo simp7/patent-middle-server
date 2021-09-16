@@ -35,7 +35,7 @@ func New(config Config, lg *logger.Logger) *kipris {
 	}
 }
 
-func (k *kipris) GetClaims(number string) storage.ClaimTuple {
+func (k *kipris) GetClaims(number string) storage.Data {
 
 	k.Info("getting claims of patent : " + number)
 
@@ -132,13 +132,13 @@ func (k *kipris) queryClaims(number string) (result storage.ClaimResult, err err
 
 }
 
-func (k *kipris) processClaim(claimData storage.ClaimResult) storage.ClaimTuple {
+func (k *kipris) processClaim(claimData storage.ClaimResult) storage.Data {
 
 	applicationNumber := claimData.ApplicationNumber()
 	title := claimData.Title()
 	claims := claimData.Claims()
 
-	return storage.ClaimTuple{ApplicationNumber: applicationNumber, Name: title, Claims: claims}
+	return storage.NewData(applicationNumber, title, claims)
 
 }
 

@@ -52,13 +52,13 @@ func Mongo(config Config, lg *logger.Logger) (storage.Cache, error) {
 
 }
 
-func (m *mongoDB) Find(applicationNumber string) (tuple storage.ClaimTuple, ok bool) {
+func (m *mongoDB) Find(applicationNumber string) (data storage.Data, ok bool) {
 
 	ok = false
 	dbResult := m.collection.FindOne(context.TODO(), bson.D{{"_id", applicationNumber}})
 
 	if err := dbResult.Err(); err == nil {
-		if err = dbResult.Decode(&tuple); err == nil {
+		if err = dbResult.Decode(&data); err == nil {
 			ok = true
 			m.Info("cache has " + applicationNumber)
 		}
@@ -68,11 +68,11 @@ func (m *mongoDB) Find(applicationNumber string) (tuple storage.ClaimTuple, ok b
 
 }
 
-func (m *mongoDB) Register(tuple storage.ClaimTuple) (err error) {
-	if _, err = m.collection.InsertOne(context.TODO(), tuple.BSON()); err != nil {
+func (m *mongoDB) Register(data storage.Data) (err error) {
+	if _, err = m.collection.InsertOne(context.TODO(), data.BSON()); err != nil {
 		m.Error(err)
 		return
 	}
-	m.Info("register " + tuple.ApplicationNumber + " successfully")
+	m.Info("register " + data.ApplicationNumber + " successfully")
 	return
 }

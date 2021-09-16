@@ -6,17 +6,21 @@ import (
 	"strings"
 )
 
-type ClaimTuple struct {
+type Data struct {
 	ApplicationNumber string   `bson:"_id"`
 	Name              string   `bson:"name"`
 	Claims            []string `bson:"claims"`
 }
 
-func (c ClaimTuple) CSVRow() model.CSVUnit {
-	claims := strings.Join(c.Claims, "\n")
-	return model.CSVUnit{Key: c.Name, Value: claims}
+func NewData(number string, name string, claims []string) Data {
+	return Data{number, name, claims}
 }
 
-func (c ClaimTuple) BSON() bson.D {
-	return bson.D{{"_id", c.ApplicationNumber}, {"name", c.Name}, {"claims", c.Claims}}
+func (d Data) CSVRow() model.CSVUnit {
+	claims := strings.Join(d.Claims, "\n")
+	return model.CSVUnit{Key: d.Name, Value: claims}
+}
+
+func (d Data) BSON() bson.D {
+	return bson.D{{"_id", d.ApplicationNumber}, {"name", d.Name}, {"claims", d.Claims}}
 }
