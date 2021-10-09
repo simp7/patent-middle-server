@@ -50,25 +50,34 @@ func (k *kipris) GetNumbers(input string, outCh chan<- string) {
 
 	k.Info("find application numbers by searching " + input)
 
-	queryResult, err := k.queryNumbers(input, 1)
+	var queryResult storage.SearchResult
+	var err error
+	var wg sync.WaitGroup
+
+	getNumbers := func(page int) {
+
+		defer wg.Done()
+
+		queryResult, err = k.queryNumbers(input, page)
+		k.check(err)
+
+		queryResult.ApplicationNumbers(outCh)
+		k.Info("got application numbers by page")
+
+	}
+
+	wg.Add(1)
+	go getNumbers(1)
+
+	total, err := queryResult.TotalPatent()
 	k.check(err)
 
-	lastPage := (queryResult.TotalPage()-1)/k.pageRow + 1
-
-	wg := sync.WaitGroup{}
-	wg.Add(lastPage)
-
-	queryResult.ApplicationNumbers(outCh)
-	wg.Done()
-	k.Logger.Info("got application numbers in page 1")
+	k.Infof("total number of patent is %d", total)
+	lastPage := (total-1)/k.pageRow + 1
 
 	for i := 2; i <= lastPage; i++ {
-		go func(page int) {
-			queryResult, err = k.queryNumbers(input, page)
-			queryResult.ApplicationNumbers(outCh)
-			wg.Done()
-			k.Logger.Infof("got application numbers in page %d", page)
-		}(i)
+		wg.Add(1)
+		go getNumbers(i)
 	}
 
 	wg.Wait()

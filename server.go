@@ -6,6 +6,7 @@ import (
 	"github.com/google/logger"
 	"github.com/simp7/patent-middle-server/model"
 	"github.com/simp7/patent-middle-server/model/formula"
+	"io"
 )
 
 type server struct {
@@ -68,20 +69,21 @@ func (s *server) Search(c *gin.Context) {
 	}()
 
 	s.Info("perform NLP")
-	data, err := s.performNLP(country, claims)
-	if err != nil {
-		s.Error(err)
-		c.Writer.WriteHeader(500)
+	if data, err := s.performNLP(country, claims); err == nil {
+		s.writeResult(c.Writer, data)
 		return
 	}
 
-	if _, err = c.Writer.Write(data); err != nil {
+	c.Writer.WriteHeader(500)
+
+}
+
+func (s *server) writeResult(writer io.Writer, data []byte) {
+	if _, err := writer.Write(data); err != nil {
 		s.Error(err)
 		return
 	}
-
 	s.Info("search finished successfully")
-
 }
 
 func (s *server) Hello(c *gin.Context) {
@@ -100,6 +102,9 @@ func (s *server) performNLP(country string, group *model.CSVGroup) ([]byte, erro
 	case "KR":
 		s.Info("select LDA")
 		return s.fs.LDA(args...)
+	case "LSA":
+		s.Info("select LSA")
+		return s.fs.LSA(args...)
 	case "US":
 		fallthrough
 	default:
