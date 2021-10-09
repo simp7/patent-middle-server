@@ -3,24 +3,33 @@ import sys
 import json
 import warnings
 import dataProcessing
+from konlpy.tag import Okt
 
 
 # word2vec 할 문서집합과 유사도를 검색할 단어를 파라미터로 사용
 def word2vec(corpus, word):
-    n_model = Word2Vec(sentences=corpus, vector_size=100, window=10, min_count=5, workers=10, sg=0)
-    return n_model.wv.most_similar(word)
+    try:
+        n_model = Word2Vec(sentences=corpus, vector_size=100, window=10, min_count=5, workers=10, sg=0)
+        return n_model.wv.most_similar(word)
+    except KeyError:
+        pass
 
 
 def main():
 
     data_path = sys.argv[1]
+    okt = Okt()
 
     name, item = dataProcessing.do(data_path)
     amount = int(sys.argv[2])
     words = sys.argv[3:]
 
+    divided = []
+    for _, word in enumerate(words):
+        divided.extend(okt.nouns(word))
+
     terms = list()
-    for i, word in enumerate(words):
+    for i, word in enumerate(divided):
         terms.append(word2vec(name, word))
 
     # json_data = [[""] * amount] * len(words)

@@ -51,9 +51,8 @@ type SearchResult struct {
 	} `xml:"count"`
 }
 
-func (s SearchResult) TotalPage() int {
-	result, _ := strconv.Atoi(s.Count.TotalCount)
-	return result
+func (s SearchResult) TotalPatent() (int, error) {
+	return strconv.Atoi(s.Count.TotalCount)
 }
 
 func (s SearchResult) ApplicationNumbers(outCh chan<- string) {

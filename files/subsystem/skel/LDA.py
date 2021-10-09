@@ -6,7 +6,7 @@ import json
 
 
 # word2vec 할 문서집합과 유사도를 검색할 단어, Topic 개수를 파라미터로 사용
-def lda(corpus, word, topic_num):
+def lda(corpus, topic_num):
     # 단어마다 고유번호를 매겨서, 어떤 단어인지 알 수 있는 사전을 만듬
     dictionary = gensim.corpora.Dictionary(corpus)
     text_corpus = [dictionary.doc2bow(text) for text in corpus]
@@ -24,7 +24,7 @@ def main():
     words = sys.argv[3:]
 
     clear_name, clear_item = dataProcessing.do(data_path)
-    topics = lda(clear_item, "", topic_num)
+    topics = lda(clear_item, topic_num)
 
     print(json.dumps(topics, ensure_ascii=False))
 

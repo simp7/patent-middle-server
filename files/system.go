@@ -112,11 +112,9 @@ func (s *system) LoadConfig() (conf config.Config, err error) {
 
 		var file *os.File
 
-		file, err = s.Open(CONFIG, false)
-		if err != nil {
+		if file, err = s.Open(CONFIG, false); err != nil {
 			return
 		}
-
 		if s.config, err = s.decodeConfig(file); err != nil {
 			return
 		}
