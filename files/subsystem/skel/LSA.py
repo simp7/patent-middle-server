@@ -8,7 +8,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import TruncatedSVD
 
 
-# 데이터 전처리까지 같이 함 (원본데이터 필요)
 def lsa(clear_item, topic_num):
 
     new_df = pd.DataFrame({'item': clear_item}).fillna("")

@@ -10,7 +10,6 @@ from konlpy.tag import Okt
 def word2vec(corpus, word):
     n_model = Word2Vec(sentences=corpus, vector_size=100, window=10, min_count=5, workers=10, sg=0)
     return n_model.wv.most_similar(word)
-    pass
 
 
 def main():
@@ -22,14 +21,18 @@ def main():
     amount = int(sys.argv[2])
     words = sys.argv[3:]
 
-    divided = []
+    divided = set()
     for word in words:
-        divided.extend(okt.nouns(word))
+        nouns = okt.nouns(word)
+        for noun in nouns:
+            divided.add(noun)
 
     keywords = list()
     for word in divided:
         try:
-            keywords.append(word2vec(name, word))
+            result = word2vec(name, word)
+            result.insert(0, (word, 1.0))
+            keywords.append(result)
         except KeyError:
             pass
 
