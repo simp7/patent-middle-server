@@ -24,10 +24,6 @@ type system struct {
 func System(main ReadWrite, sub ReadOnly) (sys *system, err error) {
 
 	sys = &system{ReadWrite: main, skelFS: sub}
-	_, err = sys.LoadConfig()
-	if err != nil {
-		log.Fatal(err)
-	}
 
 	if sys.isFirstTime() {
 
@@ -38,6 +34,10 @@ func System(main ReadWrite, sub ReadOnly) (sys *system, err error) {
 			return
 		}
 
+	}
+
+	if _, err = sys.LoadConfig(); err != nil {
+		log.Fatal(err)
 	}
 
 	err = sys.update()

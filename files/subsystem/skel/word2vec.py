@@ -8,11 +8,9 @@ from konlpy.tag import Okt
 
 # word2vec 할 문서집합과 유사도를 검색할 단어를 파라미터로 사용
 def word2vec(corpus, word):
-    try:
-        n_model = Word2Vec(sentences=corpus, vector_size=100, window=10, min_count=5, workers=10, sg=0)
-        return n_model.wv.most_similar(word)
-    except KeyError:
-        pass
+    n_model = Word2Vec(sentences=corpus, vector_size=100, window=10, min_count=5, workers=10, sg=0)
+    return n_model.wv.most_similar(word)
+    pass
 
 
 def main():
@@ -25,18 +23,25 @@ def main():
     words = sys.argv[3:]
 
     divided = []
-    for _, word in enumerate(words):
+    for word in words:
         divided.extend(okt.nouns(word))
 
-    terms = list()
-    for i, word in enumerate(divided):
-        terms.append(word2vec(name, word))
+    keywords = list()
+    for word in divided:
+        try:
+            keywords.append(word2vec(name, word))
+        except KeyError:
+            pass
 
-    # json_data = [[""] * amount] * len(words)
-    # for index, word in enumerate(words):
-    #     json_data.insert(index, terms[word])
+    json_data = list()
 
-    print(json.dumps(terms, ensure_ascii=False))
+    for keyword in keywords:
+        words = list()
+        for word_bundle in keyword:
+            words.append(word_bundle[0])
+        json_data.append(words)
+
+    print(json.dumps(json_data, ensure_ascii=False))
 
     return
 
