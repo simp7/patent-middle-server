@@ -62,11 +62,11 @@ func (s *server) Search(c *gin.Context) {
 		s.Fatal(err)
 	}
 
-	//defer func() {
-	//	if err := s.fs.RemoveCSVFile(claims); err != nil {
-	//		s.Error(err)
-	//	}
-	//}()
+	defer func() {
+		if err := s.fs.RemoveCSVFile(claims); err != nil {
+			s.Error(err)
+		}
+	}()
 
 	s.Info("perform NLP")
 	if data, err := s.performNLP(country, claims); err == nil {
