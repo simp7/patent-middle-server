@@ -12,12 +12,11 @@ def lsa(clear_item, topic_num):
 
     new_df = pd.DataFrame({'item': clear_item}).fillna("")
 
-    # 알파벳 이외 문자 제거
-    new_df['clean_doc'] = new_df['item'].str.replace("[^ㄱ-ㅎ|ㅏ-ㅣ|가-힣#]", " ")
-    print(new_df)
-
-    # 길이 3 이하 문자 제거
-    new_df['clean_doc'] = new_df['clean_doc'].apply(lambda x: ' '.join([w for w in x.split()]))
+    detokenized_doc = []
+    for i in range(len(new_df)):
+        t = ' '.join(clear_item[i])
+        detokenized_doc.append(t)
+    new_df['clean_doc'] = detokenized_doc
 
     # tf-idf 벡터로 변환
     vectorizer = TfidfVectorizer(max_features=1000, max_df=0.5, smooth_idf=True)
