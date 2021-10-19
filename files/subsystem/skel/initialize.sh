@@ -8,6 +8,7 @@ sudo apt install -y python3.9
 sudo apt install -y python3-pip
 sudo apt install -y python3.9-venv
 sudo apt install -y python3.9-dev
+sudo apt install -y swig
 
 python3.9 -m venv venv
 python3.9 -m pip install --upgrade pip
