@@ -53,6 +53,7 @@ func (k *kipris) GetNumbers(input string, outCh chan<- string) {
 	var queryResult storage.SearchResult
 	var err error
 	var wg sync.WaitGroup
+	var total int
 
 	getNumbers := func(page int) {
 
@@ -61,18 +62,19 @@ func (k *kipris) GetNumbers(input string, outCh chan<- string) {
 		queryResult, err = k.queryNumbers(input, page)
 		k.check(err)
 
+		if page == 1 {
+			total, err = queryResult.TotalPatent()
+			k.check(err)
+			k.Infof("total number of patent is %d", total)
+		}
+
 		queryResult.ApplicationNumbers(outCh)
-		k.Info("got application numbers by page")
 
 	}
 
 	wg.Add(1)
-	go getNumbers(1)
+	getNumbers(1)
 
-	total, err := queryResult.TotalPatent()
-	k.check(err)
-
-	k.Infof("total number of patent is %d", total)
 	lastPage := (total-1)/k.pageRow + 1
 
 	for i := 2; i <= lastPage; i++ {
@@ -102,7 +104,7 @@ func (k *kipris) queryNumbers(input string, page int) (result storage.SearchResu
 
 	request.URL.RawQuery = q.Encode()
 
-	k.Info("send " + request.URL.RawQuery)
+	k.Info("send " + request.URL.RequestURI())
 	response, err := k.Do(request)
 	if err != nil {
 		return
