@@ -99,13 +99,13 @@ func (s *server) performNLP(country string, group *model.CSVGroup) ([]byte, erro
 	args[1] = "10"
 
 	switch country {
-	case "KR":
+	case "LDA":
 		s.Info("select LDA")
 		return s.fs.LDA(args...)
 	case "LSA":
 		s.Info("select LSA")
 		return s.fs.LSA(args...)
-	case "US":
+	case "W2V":
 		fallthrough
 	default:
 		s.Info("select Word2vec")

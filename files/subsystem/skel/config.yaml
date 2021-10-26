@@ -10,4 +10,4 @@ database:
   collection: claim
 
 port: 12354
-version: "1.2b"
+version: "1.2c1"

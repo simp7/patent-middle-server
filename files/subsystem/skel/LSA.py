@@ -12,10 +12,10 @@ def lsa(clear_item, topic_num):
 
     new_df = pd.DataFrame({'item': clear_item}).fillna("")
 
-    detokenized_doc = []
-    for i in range(len(new_df)):
-        t = ' '.join(clear_item[i])
-        detokenized_doc.append(t)
+    # 토큰화된 단어를 빈 칸으로 묶음
+    detokenized_doc = list()
+    for token in clear_item:
+        detokenized_doc.append(' '.join(token))
     new_df['clean_doc'] = detokenized_doc
 
     # tf-idf 벡터로 변환
@@ -28,7 +28,12 @@ def lsa(clear_item, topic_num):
 
     terms = vectorizer.get_feature_names()
     components = svd_model.components_
-    return terms, components
+
+    json_data = list()
+    for topic in components:
+        json_data.append([terms[i] for i in topic.argsort()[: -topic_num - 1: -1]])
+
+    return json_data
 
 
 def main():
@@ -37,11 +42,7 @@ def main():
     amount = int(sys.argv[2])
 
     clear_name, clear_item = dataProcessing.do(data_path)
-    terms, components = lsa(clear_item, amount)
-
-    json_data = [[""]*amount]*amount
-    for index, topic in enumerate(components):
-        json_data[index] = [terms[i] for i in topic.argsort()[: -amount - 1: -1]]
+    json_data = lsa(clear_item, amount)
 
     print(json.dumps(json_data, ensure_ascii=False))
 

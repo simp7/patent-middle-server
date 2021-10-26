@@ -20,13 +20,12 @@ def lda(corpus, topic_num):
 def main():
 
     data_path = sys.argv[1]
-    topic_num = sys.argv[2]
-    words = sys.argv[3:]
+    topic_num = int(sys.argv[2])
 
     clear_name, clear_item = dataProcessing.do(data_path)
-    topics = lda(clear_item, topic_num)
+    json_data = lda(clear_item, topic_num)
 
-    print(json.dumps(topics, ensure_ascii=False))
+    print(json.dumps(json_data, ensure_ascii=False))
 
     return
 
