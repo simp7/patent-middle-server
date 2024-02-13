@@ -25,15 +25,8 @@ func System(main ReadWrite, sub ReadOnly) (sys *system, err error) {
 
 	sys = &system{ReadWrite: main, skelFS: sub}
 
-	if sys.isFirstTime() {
-
-		fmt.Println("It is first time to run server.")
-		fmt.Println("It will take few minutes, so BE PATIENT.")
-
-		if err = sys.installEssentials(); err != nil {
-			return
-		}
-
+	if err = sys.initialize(); err != nil {
+		log.Fatal(err)
 	}
 
 	if _, err = sys.LoadConfig(); err != nil {
@@ -190,17 +183,12 @@ func (s *system) saveConfig() (err error) {
 
 func (s *system) initialize() (err error) {
 
-	if s.isFirstTime() {
+	fmt.Println("It is first time to run server.")
+	fmt.Println("It will take few minutes, so BE PATIENT.")
 
-		fmt.Println("It is first time to run server.")
-		fmt.Println("It will take few minutes, so BE PATIENT.")
-
-		if err = s.installEssentials(); err != nil {
-			return
-		}
-
+	if err = s.installEssentials(); err != nil {
+		return
 	}
-
 	err = s.update()
 
 	return
@@ -214,9 +202,11 @@ func (s *system) installEssentials() (err error) {
 	}
 
 	fmt.Println("You should put password for sudo command to install/upgrade essential environment.")
-	err = s.Command(INITIALIZE).Run()
+	if err = s.Command(INITIALIZE).Run(); err != nil {
+		fmt.Println("error while executing " + INITIALIZE)
+		return
+	}
 	fmt.Println("Installing/Upgrading process has been done! Good luck!")
-
 	return
 
 }

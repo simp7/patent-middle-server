@@ -2,7 +2,7 @@
 
 ## 사양
 
-- *NIX 계열 OS(쉘 스크립트 사용)
+- LINUX 계열 OS(쉘 스크립트 사용)
 - go 1.6
 - mongoDB 4.0.1 -> https://docs.mongodb.com/manual/administration/install-on-linux/ 참조
 
